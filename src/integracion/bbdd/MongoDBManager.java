@@ -30,7 +30,7 @@ public class MongoDBManager {
 				.version(ServerApiVersion.V1)
 				.build();
 		// Replace the uri string with your MongoDB deployment's connection string
-		String uri = "mongodb+srv://admin:admin@MyHealthGym.nloeyru.mongodb.net/?retryWrites=true&w=majority";
+		String uri = "mongodb+srv://general:n2fAhuactRAJYxB9@cluster0.ogxis.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 		MongoClientSettings settings = MongoClientSettings.builder()
 				.applyConnectionString(new ConnectionString(uri))
 				.serverApi(serverApi)
@@ -39,7 +39,7 @@ public class MongoDBManager {
 		MongoDBManager.mongoClientv = MongoClients.create(settings);
 		try {
 			// Send a ping to confirm a successful connection
-			MongoDBManager.database = MongoDBManager.mongoClientv.getDatabase("MyHealthGym");
+			MongoDBManager.database = MongoDBManager.mongoClientv.getDatabase("VaultCode");
 			MongoDBManager.database.runCommand(new Document("ping", 1));
 			System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
 		} catch (MongoException e) {
@@ -138,7 +138,7 @@ public class MongoDBManager {
 				.version(ServerApiVersion.V1)
 				.build();
 		// Replace the uri string with your MongoDB deployment's connection string1q
-		String uri = "mongodb+srv://admin:admin@MyHealthGym.nloeyru.mongodb.net/?retryWrites=true&w=majority";
+		String uri = "mongodb+srv://general:n2fAhuactRAJYxB9@cluster0.ogxis.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 		MongoClientSettings settings = MongoClientSettings.builder()
 				.applyConnectionString(new ConnectionString(uri))
 				.serverApi(serverApi)
@@ -147,7 +147,7 @@ public class MongoDBManager {
 		mongoClientv = MongoClients.create(settings);
 		try {
 			// Send a ping to confirm a successful connection
-			database = mongoClientv.getDatabase("MyHealthGym");
+			database = mongoClientv.getDatabase("VaultCode");
 			database.runCommand(new Document("ping", 1));
 			System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
 		} catch (MongoException e) {

@@ -6,11 +6,13 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="JUnits"/>
 	<classpathentry kind="lib" path="MongoJARS/bson-5.0.0.jar"/>
 	<classpathentry kind="lib" path="MongoJARS/bson-record-codec-5.0.0.jar"/>
 	<classpathentry kind="lib" path="MongoJARS/mongodb-driver-core-5.0.0.jar"/>
 	<classpathentry kind="lib" path="MongoJARS/mongodb-driver-sync-5.0.0.jar"/>
 	<classpathentry kind="lib" path="MongoJARS/slf4j-api-2.0.12.jar"/>
 	<classpathentry kind="lib" path="MongoJARS/slf4j-nop-2.0.12.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

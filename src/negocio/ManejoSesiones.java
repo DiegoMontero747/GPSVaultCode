@@ -1,4 +1,4 @@
-package negocio.bbdd;
+package negocio;
 
 public class ManejoSesiones {
 

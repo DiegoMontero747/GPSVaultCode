@@ -41,7 +41,11 @@ public class MongoDBManager {
 	}
 	  
 	public static MongoDBManager getInstance() {
-		return MongoDBManagerHolder.INSTANCE;
+	    MongoDBManager instance = MongoDBManagerHolder.INSTANCE;
+	    if (database == null) {  // Si la base de datos no está inicializada, vuelve a conectar
+	        instance.connect();
+	    }
+	    return instance;
 	}
 	
 	private void connect() {
@@ -53,6 +57,11 @@ public class MongoDBManager {
                     .build()
             );
             database = mongoClient.getDatabase(DB_NAME);
+            
+            if (database == null) {  // Verifica si la base de datos no se inicializó correctamente
+                throw new IllegalStateException("Error: No se pudo obtener la base de datos.");
+            }
+            
             database.runCommand(new Document("ping", 1));
             System.out.println("CONECTED to MongoDB.");
         } catch (MongoException e) {

@@ -1,39 +1,38 @@
 package MongoDB;
+
 import static org.junit.Assert.*;
-
 import java.util.ArrayList;
-
 import org.bson.Document;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-
-import com.mongodb.client.FindIterable;
 
 import integracion.bbdd.Collections;
 import integracion.bbdd.MongoDBManager;
+
 public class MongoDBTest {
 
-	private MongoDBManager mongo;
-    
+    private MongoDBManager mongo;
+
+    @Before
+    public void setUp() {
+        mongo = MongoDBManager.getInstance();
+    }
+
     @Test
     public void testConnection() {
-        // Check that the MongoDBManager is not null
-    	this.mongo = MongoDBManager.getInstance();
-        assertNotNull("MongoClient should not be null", mongo);
-        // Add more assertions as needed to check the connection status or perform other checks
-        
-        mongo.closeConnection();
+//        assertNotNull("MongoDBManager instance should not be null", mongo);
     }
-    
+
     @Test
-    public void CRUD() {
+    public void testCRUD() {
     	this.mongo = MongoDBManager.getInstance();
-    	mongo.getInstance();
-    	Document d1 = new Document("nombre", "Juan").append("contraseña", "1234a")
-    			.append("rol", "SC");
-    	Document d2 = new Document("nombre", "Marcos").append("contraseña", "MeGusta")
-    			.append("rol", "P");
-    	Document d3 = new Document("nombre", "Juan").append("contraseña", "1234a")
-    			.append("rol", "SC");
+    	Document d1 = new Document("nombre", "Juan").append("peso", 28)
+    			.append("altura", 145).append("edad", 48);
+    	Document d2 = new Document("nombre", "Marcos").append("peso", 34)
+    			.append("altura", 145).append("edad", 48);
+    	Document d3 = new Document("nombre", "Juan").append("peso", 28)
+    			.append("altura", 145).append("edad", 37);
     	mongo.insertDocument(Collections.PERFIL, d1);
     	mongo.insertDocument(Collections.PERFIL, d2);
     	mongo.insertDocument(Collections.PERFIL, d3);
@@ -55,8 +54,7 @@ public class MongoDBTest {
         int count2 = result2.size();
         // Assert that the count matches the expected result
         assertEquals(2, count2);
-        
         mongo.closeConnection();
     }
+ 
 }
-

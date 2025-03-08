@@ -27,7 +27,7 @@ public class MongoDBTest {
     @Test
     public void CRUD() {
     	this.mongo = MongoDBManager.getInstance();
-    	mongo.open();
+    	mongo.getInstance();
     	Document d1 = new Document("nombre", "Juan").append("contraseña", "1234a")
     			.append("rol", "SC");
     	Document d2 = new Document("nombre", "Marcos").append("contraseña", "MeGusta")

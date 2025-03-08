@@ -23,36 +23,49 @@ import org.bson.conversions.Bson;
 public class MongoDBManager {
 	private static MongoDBManager instance;
 	private static MongoClient mongoClientv;
+	private static MongoClient mongoClient;
 	private static MongoDatabase database;
+	private static final String URI = "mongodb+srv://general:n2fAhuactRAJYxB9@cluster0.ogxis.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+	private static final String DB_NAME = "VaultCode";
 
-	public MongoDBManager() {
-		ServerApi serverApi = ServerApi.builder()
-				.version(ServerApiVersion.V1)
-				.build();
-		// Replace the uri string with your MongoDB deployment's connection string
-		String uri = "mongodb+srv://general:n2fAhuactRAJYxB9@cluster0.ogxis.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-		MongoClientSettings settings = MongoClientSettings.builder()
-				.applyConnectionString(new ConnectionString(uri))
-				.serverApi(serverApi)
-				.build();
-
-		MongoDBManager.mongoClientv = MongoClients.create(settings);
-		try {
-			// Send a ping to confirm a successful connection
-			MongoDBManager.database = MongoDBManager.mongoClientv.getDatabase("VaultCode");
-			MongoDBManager.database.runCommand(new Document("ping", 1));
-			System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
-		} catch (MongoException e) {
-			e.printStackTrace();
-		}
+	
+	
+	private static class MongoDBManagerHolder {
+        private static final MongoDBManager INSTANCE = new MongoDBManager();
+    }
+	
+	
+	
+	private MongoDBManager() {
+		connect();
 	}
-
-	public static synchronized MongoDBManager getInstance() {
-		if (instance == null) {
-			instance = new MongoDBManager();
-		}
-		return instance;
+	  
+	public static MongoDBManager getInstance() {
+		return MongoDBManagerHolder.INSTANCE;
 	}
+	
+	private void connect() {
+        try {
+            mongoClient = MongoClients.create(
+                MongoClientSettings.builder()
+                    .applyConnectionString(new ConnectionString(URI))
+                    .serverApi(ServerApi.builder().version(ServerApiVersion.V1).build())
+                    .build()
+            );
+            database = mongoClient.getDatabase(DB_NAME);
+            database.runCommand(new Document("ping", 1));
+            System.out.println("CONECTED to MongoDB.");
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+    }
+	
+	public void closeConnection() {
+        if (mongoClient != null) {
+            mongoClient.close();
+            System.out.println("Conexion is CLOSED.");
+        }
+    }
 
 	/*
 	 * creatQuery(Document d) passing a document creates a query with only the
@@ -124,41 +137,9 @@ public class MongoDBManager {
 		database.getCollection(CollectionName).updateOne(d, updateObject);
 	}
 
-	// Add other methods for database operations as needed
-
-	public void closeConnection() {
-		if (mongoClientv != null) {
-			mongoClientv.close();
-			System.out.println("Connection to MongoDB is CLOSED");
-		}
-	}
-
-	public static void open() {
-		ServerApi serverApi = ServerApi.builder()
-				.version(ServerApiVersion.V1)
-				.build();
-		// Replace the uri string with your MongoDB deployment's connection string1q
-		String uri = "mongodb+srv://general:n2fAhuactRAJYxB9@cluster0.ogxis.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-		MongoClientSettings settings = MongoClientSettings.builder()
-				.applyConnectionString(new ConnectionString(uri))
-				.serverApi(serverApi)
-				.build();
-
-		mongoClientv = MongoClients.create(settings);
-		try {
-			// Send a ping to confirm a successful connection
-			database = mongoClientv.getDatabase("VaultCode");
-			database.runCommand(new Document("ping", 1));
-			System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
-		} catch (MongoException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public static MongoCollection<Document> getCollection(String collectionName) {
 		return database.getCollection(collectionName);
 	}
-
 	
 	public Document getDocumentByNombre(String collectionName, String nombre) {
 		  Document document = null;

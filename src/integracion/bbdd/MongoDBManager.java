@@ -21,8 +21,6 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 
 public class MongoDBManager {
-	private static MongoDBManager instance;
-	private static MongoClient mongoClientv;
 	private static MongoClient mongoClient;
 	private static MongoDatabase database;
 	private static final String URI = "mongodb+srv://general:n2fAhuactRAJYxB9@cluster0.ogxis.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
@@ -37,9 +35,15 @@ public class MongoDBManager {
 	
 	
 	private MongoDBManager() {
-		connect();
 	}
-	  
+	
+	//metodo para inicializar la conexion en un primer momento para mas usos usar getIinstance 
+	//simplemente ayuda a la legibilidad
+	public static void initialize() {
+		MongoDBManagerHolder.INSTANCE.connect();
+	}
+	
+	//devuelve la instancia del manager
 	public static MongoDBManager getInstance() {
 	    MongoDBManager instance = MongoDBManagerHolder.INSTANCE;
 	    if (database == null) {  // Si la base de datos no está inicializada, vuelve a conectar

@@ -12,6 +12,6 @@ public abstract class CommandFactory {
 		
 		return factory;
 	}
-	
-	public abstract Command getCommand();
+
+	public abstract Command getCommand(Evento commandName);
 }

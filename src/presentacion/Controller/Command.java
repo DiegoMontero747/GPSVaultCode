@@ -1,5 +1,5 @@
 package presentacion.Controller;
 
-public class Command {
-
+public interface Command {
+	public Context execute(Object object);
 }

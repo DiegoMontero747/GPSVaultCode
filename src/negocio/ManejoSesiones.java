@@ -13,8 +13,7 @@ public class ManejoSesiones {
 	public int InicioSesion(String usuario, String contrasenya,String rol) {
 		MongoDBManager db = MongoDBManager.getInstance();
 		
-		//TODO Checkear si existe el usuario y la contraseña tiene mas de X caracteres + otros criterios
-		//TODO Crear el usuario y contraseña
+		//TODO Checkear si existe el usuario y que la contraseña coincide
 		Document doc = new Document();
 		doc.append("nombre", usuario);
 		doc.append("contrasenya", contrasenya);

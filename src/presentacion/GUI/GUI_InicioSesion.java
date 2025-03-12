@@ -5,7 +5,9 @@ import java.io.File;
 
 import javax.swing.*;
 
+import negocio.Factory.SAManejoSesionesImp;
 import presentacion.Controller.Context;
+import presentacion.Controller.Evento;
 
 public class GUI_InicioSesion implements ObservadorGUI {
     private JFrame frame;
@@ -84,6 +86,34 @@ public class GUI_InicioSesion implements ObservadorGUI {
         loginButton.setFocusPainted(false);
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
         loginButton.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2));
+     // ActionListener del botón
+        loginButton.addActionListener(e -> {
+            String username = userField.getText();
+            String password = new String(passField.getPassword()); // Convertir password a String
+
+            SAManejoSesionesImp servicioSesion = new SAManejoSesionesImp();
+            Evento resultado = servicioSesion.inicioSesion(username, password);
+
+            // Manejo de respuesta
+            switch (resultado) {
+                case INICIAR_SESSION_OK:
+                    JOptionPane.showMessageDialog(frame, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    // Aquí puedes abrir otra ventana o redirigir a otra sección
+                    break;
+
+                case INICIAR_SESSION_ERROR_1:
+                    JOptionPane.showMessageDialog(frame, "Usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+
+                case INICIAR_SESSION_KO_ERROR_2:
+                    JOptionPane.showMessageDialog(frame, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+
+                default:
+                    JOptionPane.showMessageDialog(frame, "Error desconocido", "Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+            }
+        });
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;

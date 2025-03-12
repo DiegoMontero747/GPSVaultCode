@@ -1,6 +1,8 @@
 package negocio.Factory;
 
+import presentacion.Controller.Evento;
+
 public interface SAManejoSesiones{
 
-	public int inicioSesion();
+	Evento inicioSesion(String username, String password);
 }

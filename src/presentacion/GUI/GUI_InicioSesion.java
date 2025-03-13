@@ -1,12 +1,10 @@
 package presentacion.GUI;
 
 import java.awt.*;
-import java.io.File;
 
 import javax.swing.*;
 
 import presentacion.Controller.Controller;
-import negocio.ManejoSesiones.SAManejoSesionesImp;
 import negocio.ManejoSesiones.TSesion;
 import presentacion.Controller.Context;
 import presentacion.Controller.Evento;
@@ -84,32 +82,6 @@ public class GUI_InicioSesion implements ObservadorGUI {
             String password = new String(passField.getPassword()); // Convertir password a String
 
             Controller.getInstance().handleRequest(new Context(Evento.INICIA_CUENTA, new TSesion(username, password, null)));
-          
-            /*
-            
-            //SAManejoSesionesImp servicioSesion = new SAManejoSesionesImp();
-            //Evento resultado = servicioSesion.inicioSesion(username, password);
-
-            // Manejo de respuesta
-            switch (resultado) {
-                case INICIAR_SESSION_OK:
-                    JOptionPane.showMessageDialog(frame, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    // Aquí puedes abrir otra ventana o redirigir a otra sección
-                    break;
-
-                case INICIAR_SESSION_ERROR_1:
-                    JOptionPane.showMessageDialog(frame, "Usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
-                    break;
-
-                case INICIAR_SESSION_KO_ERROR_2:
-                    JOptionPane.showMessageDialog(frame, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
-                    break;
-
-                default:
-                    JOptionPane.showMessageDialog(frame, "Error desconocido", "Error", JOptionPane.ERROR_MESSAGE);
-                    break;
-            }
-            */
         });
         
         //etiqueta para mostrar errores

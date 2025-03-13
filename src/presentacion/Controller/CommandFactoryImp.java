@@ -1,8 +1,6 @@
 package presentacion.Controller;
 
-import presentacion.Controller.Evento;
-import presentacion.Controller.Comandos.*;
-import presentacion.Controller.Comandos.ManejoSesiones.IniciaCuenta;
+import presentacion.Controller.Comandos.ManejoSesiones.command_InicioSesion;
 
 public class CommandFactoryImp extends CommandFactory{
 
@@ -12,7 +10,7 @@ public class CommandFactoryImp extends CommandFactory{
 		
 		switch(commandName) {
 		case INICIA_CUENTA:
-			comando = new IniciaCuenta();
+			comando = new command_InicioSesion();
 			break;
 		}
 		return comando;

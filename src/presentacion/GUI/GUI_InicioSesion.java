@@ -173,7 +173,6 @@ public class GUI_InicioSesion implements ObservadorGUI {
                 break;
         }
         
-        
 	}
 	
 	private void mostrarMensajeError(String mensaje) {

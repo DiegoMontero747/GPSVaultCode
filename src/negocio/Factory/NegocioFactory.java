@@ -1,5 +1,7 @@
 package negocio.Factory;
 
+import negocio.ManejoSesiones.SAManejoSesiones;
+
 public abstract class NegocioFactory {
 
 	private static NegocioFactory instancia;

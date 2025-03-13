@@ -16,6 +16,9 @@ public enum Evento {
 	//la contraseña no coincide 
 	INICIAR_SESSION_KO_ERROR_2,
 	
+	//datos incompletos
+	INICIAR_SESSION_KO_ERROR_3,
+	
 	//inicio de sesion valido
 	INICIAR_SESSION_OK;
 	

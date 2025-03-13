@@ -5,23 +5,15 @@ import java.io.File;
 
 import javax.swing.*;
 
-import negocio.Factory.SAManejoSesionesImp;
+import presentacion.Controller.Controller;
+import negocio.ManejoSesiones.SAManejoSesionesImp;
+import negocio.ManejoSesiones.TSesion;
 import presentacion.Controller.Context;
 import presentacion.Controller.Evento;
 
 public class GUI_InicioSesion implements ObservadorGUI {
     private JFrame frame;
-
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                GUI_InicioSesion window = new GUI_InicioSesion();
-                window.frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
+    private JLabel errorLabel;
 
     public GUI_InicioSesion() {
         initialize();
@@ -29,7 +21,7 @@ public class GUI_InicioSesion implements ObservadorGUI {
 
     private void initialize() {
     	frame = new JFrame("VAULTCODE - Iniciar Sesión");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(450, 350);
         frame.setLocationRelativeTo(null);
 
@@ -91,8 +83,12 @@ public class GUI_InicioSesion implements ObservadorGUI {
             String username = userField.getText();
             String password = new String(passField.getPassword()); // Convertir password a String
 
-            SAManejoSesionesImp servicioSesion = new SAManejoSesionesImp();
-            Evento resultado = servicioSesion.inicioSesion(username, password);
+            Controller.getInstance().handleRequest(new Context(Evento.INICIA_CUENTA, new TSesion(username, password, null)));
+          
+            /*
+            
+            //SAManejoSesionesImp servicioSesion = new SAManejoSesionesImp();
+            //Evento resultado = servicioSesion.inicioSesion(username, password);
 
             // Manejo de respuesta
             switch (resultado) {
@@ -113,7 +109,17 @@ public class GUI_InicioSesion implements ObservadorGUI {
                     JOptionPane.showMessageDialog(frame, "Error desconocido", "Error", JOptionPane.ERROR_MESSAGE);
                     break;
             }
+            */
         });
+        
+        //etiqueta para mostrar errores
+        errorLabel = new JLabel("");
+        errorLabel.setForeground(Color.RED);
+        errorLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        gbc.gridy = 4;
+        contentPanel.add(errorLabel, gbc);
+        
+        
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
@@ -143,7 +149,36 @@ public class GUI_InicioSesion implements ObservadorGUI {
 
 	@Override
 	public void actualizar(Context c) {
-		// TODO Auto-generated method stub
-		
+		Evento evento = (Evento) c.getEvento();
+        switch (evento) {
+            case INICIAR_SESSION_OK:
+                errorLabel.setText(""); // Borrar errores previos
+                JOptionPane.showMessageDialog(frame, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+               // abrirSesionCorrecta();
+                break;
+
+            case INICIAR_SESSION_ERROR_1:
+            	 JOptionPane.showMessageDialog(frame, "Usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+               // errorLabel.setText("Usuario no encontrado");
+                break;
+
+            case INICIAR_SESSION_KO_ERROR_2:
+            	 JOptionPane.showMessageDialog(frame, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
+               // errorLabel.setText("Contraseña incorrecta");
+                break;
+
+            default:
+            	  JOptionPane.showMessageDialog(frame, "Error desconocido", "Error", JOptionPane.ERROR_MESSAGE);
+                //errorLabel.setText("Error desconocido, inténtelo de nuevo.");
+                break;
+        }
+        
+        
+	}
+	
+	private void mostrarMensajeError(String mensaje) {
+	    errorLabel.setText(mensaje);  // Cambia el texto del JLabel
+	    errorLabel.setForeground(Color.RED);
+	    errorLabel.setVisible(true);
 	}
 }

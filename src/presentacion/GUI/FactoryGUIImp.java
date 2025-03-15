@@ -32,15 +32,17 @@ public class FactoryGUIImp extends FactoryGUI {
     private Class<? extends ObservadorGUI> getVistaClass(Evento evento) {
         // Mapeamos cada evento a su respectiva vista
         switch (evento) {
-            case GUI_INICIAR_SESSION:
+            case GUI_INICIO_SESION:
             	return GUI_InicioSesion.class;
-            case INICIAR_SESSION_OK:
+            case INICIO_SESION_OK:
             	return GUI_InicioSesion.class;
-            case INICIAR_SESSION_ERROR_1:
+            case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
             	return GUI_InicioSesion.class;
-            case INICIAR_SESSION_KO_ERROR_2:
+            case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
                 return GUI_InicioSesion.class;
-            case INICIAR_SESSION_KO_ERROR_3:
+            case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
+                return GUI_InicioSesion.class;
+            case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
                 return GUI_InicioSesion.class;
 
 

@@ -3,6 +3,7 @@ package presentacion.GUI;
 import java.awt.*;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 import presentacion.Controller.Controller;
 import negocio.ManejoSesiones.TSesion;
@@ -13,6 +14,9 @@ public class GUI_InicioSesion implements ObservadorGUI {
     private JFrame frame;
     private JLabel errorLabel;
 
+    private JTextField userField = new JTextField(15);
+    private JPasswordField passField = new JPasswordField(15);
+    
     public static void main(String[] args) {
     	GUI_InicioSesion sesion = new GUI_InicioSesion();
     }
@@ -54,7 +58,6 @@ public class GUI_InicioSesion implements ObservadorGUI {
         gbc.gridwidth = 1;
         contentPanel.add(userLabel, gbc);
 
-        JTextField userField = new JTextField(15);
         userField.setBackground(new Color(50, 50, 50));
         userField.setForeground(Color.WHITE);
         userField.setCaretColor(new Color(255, 94, 0));
@@ -67,7 +70,6 @@ public class GUI_InicioSesion implements ObservadorGUI {
         gbc.gridy = 2;
         contentPanel.add(passLabel, gbc);
 
-        JPasswordField passField = new JPasswordField(15);
         passField.setBackground(new Color(50, 50, 50));
         passField.setForeground(Color.WHITE);
         passField.setCaretColor(new Color(255, 94, 0));
@@ -84,6 +86,10 @@ public class GUI_InicioSesion implements ObservadorGUI {
         loginButton.addActionListener(e -> {
             String username = userField.getText();
             String password = new String(passField.getPassword()); // Convertir password a String
+            
+            // los bordes de los cuadros de texto vuelven al color normal
+       	 	userField.setBorder(new LineBorder(Color.WHITE));
+       	 	passField.setBorder(new LineBorder(Color.WHITE));
 
             Controller.getInstance().handleRequest(new Context(Evento.INICIA_CUENTA, new TSesion(username, password, null)));
         });
@@ -127,28 +133,33 @@ public class GUI_InicioSesion implements ObservadorGUI {
 	public void actualizar(Context c) {
 		Evento evento = (Evento) c.getEvento();
         switch (evento) {
-            case INICIAR_SESSION_OK:
+            case INICIO_SESION_OK:
                 errorLabel.setText(""); // Borrar errores previos
                 JOptionPane.showMessageDialog(frame, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                // abrirSesionCorrecta();
                 break;
 
-            case INICIAR_SESSION_ERROR_1:
-            	 JOptionPane.showMessageDialog(frame, "Usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+            case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
+            	JOptionPane.showMessageDialog(frame, "Usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
                // errorLabel.setText("Usuario no encontrado");
                 break;
 
-            case INICIAR_SESSION_KO_ERROR_2:
-            	 JOptionPane.showMessageDialog(frame, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
-               // errorLabel.setText("Contraseña incorrecta");
+            case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
+            	JOptionPane.showMessageDialog(frame, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
+            	// errorLabel.setText("Contraseña incorrecta");
                 break;
-            case INICIAR_SESSION_KO_ERROR_3:
-           	 JOptionPane.showMessageDialog(frame, "Faltan datos", "Error", JOptionPane.ERROR_MESSAGE);
-              // errorLabel.setText("Contraseña incorrecta");
+            case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
+           	 	JOptionPane.showMessageDialog(frame, "Faltan datos", "Error", JOptionPane.ERROR_MESSAGE);
+           	 	// errorLabel.setText("Contraseña incorrecta");
+           	 	userField.setBorder(new LineBorder(Color.RED));
                break;
-
+            case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
+           	 	JOptionPane.showMessageDialog(frame, "Faltan datos", "Error", JOptionPane.ERROR_MESSAGE);
+           	 	// errorLabel.setText("Contraseña incorrecta");
+           	 	passField.setBorder(new LineBorder(Color.RED));
+           	 	break;
             default:
-            	  JOptionPane.showMessageDialog(frame, "Error desconocido", "Error", JOptionPane.ERROR_MESSAGE);
+            	JOptionPane.showMessageDialog(frame, "Error desconocido", "Error", JOptionPane.ERROR_MESSAGE);
                 //errorLabel.setText("Error desconocido, inténtelo de nuevo.");
                 break;
         }

@@ -23,21 +23,23 @@ public class SAManejoSesionesImp implements SAManejoSesiones {
     	String username = ses.getUsername();
     	String password = ses.getPsswd();
     	
-        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
-        	
-            return new ResultContext(Evento.INICIAR_SESSION_KO_ERROR_3, null); // Datos incompletos
+        if (username == null || username.isBlank()) {
+            return new ResultContext(Evento.INICIO_SESION_ERROR_USUARIO_INCOMPLETO, null); // Usuario incompleto
         }
-       
+        
+        if (password == null || password.isBlank()) {
+        	return new ResultContext(Evento.INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA, null); // Contrasenya incompletos
+        }
        
         Document doc = db.getDocumentByNombre(Collections.PERFIL, username);
         if(doc == null) {
-        	 return new ResultContext(Evento.INICIAR_SESSION_ERROR_1, null); //No existe el usuario
+        	 return new ResultContext(Evento.INICIO_SESION_ERROR_USUARIO_INEXISTENTE, null); //No existe el usuario
         }
         if(!doc.get("password").toString().equals(password)) {
-        	 return new ResultContext(Evento.INICIAR_SESSION_KO_ERROR_2, null); //contrasenya incorrecta
+        	 return new ResultContext(Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA, null); //contrasenya incorrecta
         }
         
         
-        return new ResultContext(Evento.INICIAR_SESSION_OK, doc.get("rol")); // Inicio de sesión válido
+        return new ResultContext(Evento.INICIO_SESION_OK, doc.get("rol")); // Inicio de sesión válido
     }
 }

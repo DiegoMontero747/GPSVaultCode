@@ -6,21 +6,24 @@ public enum Evento {
 	//TODO no se si estos eventos cambiaran porque creo que estarian mejor colocados en el evento que devuelve el negocio
 	
 	
-	GUI_INICIAR_SESSION,
+	GUI_INICIO_SESION,
 	
 	INICIA_CUENTA,
 	
-	//usuario no existe en la BBDD
-	INICIAR_SESSION_ERROR_1,
+	// usuario no existe en la BBDD
+	INICIO_SESION_ERROR_USUARIO_INEXISTENTE,
 	
-	//la contraseña no coincide 
-	INICIAR_SESSION_KO_ERROR_2,
+	// la contraseña no coincide 
+	INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA,
 	
-	//datos incompletos
-	INICIAR_SESSION_KO_ERROR_3,
+	// usuario incompletos
+	INICIO_SESION_ERROR_USUARIO_INCOMPLETO,
+	
+	// contrasenya incompletos
+	INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA,
 	
 	//inicio de sesion valido
-	INICIAR_SESSION_OK;
+	INICIO_SESION_OK;
 	
 	
 }

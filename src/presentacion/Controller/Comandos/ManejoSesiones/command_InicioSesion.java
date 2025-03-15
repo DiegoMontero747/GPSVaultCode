@@ -12,7 +12,7 @@ public class command_InicioSesion implements Command {
 	    @Override
 	    public Context execute(Object object) {
 	        if (!(object instanceof TSesion)) {
-	            return new Context(Evento.INICIAR_SESSION_KO_ERROR_3, "Formato de datos incorrecto");
+	            return new Context(Evento.INICIO_SESION_ERROR_USUARIO_INCOMPLETO, "Formato de datos incorrecto");
 	        }
 
 	        TSesion sesion = (TSesion) object;

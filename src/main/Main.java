@@ -18,6 +18,6 @@ public class Main {
 
 		}
 
-		Controller.getInstance().handleRequest(new Context(Evento.GUI_INICIAR_SESSION, null));
+		Controller.getInstance().handleRequest(new Context(Evento.GUI_INICIO_SESION, null));
 	}
 }

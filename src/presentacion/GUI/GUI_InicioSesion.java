@@ -13,6 +13,10 @@ public class GUI_InicioSesion implements ObservadorGUI {
     private JFrame frame;
     private JLabel errorLabel;
 
+    public static void main(String[] args) {
+    	GUI_InicioSesion sesion = new GUI_InicioSesion();
+    }
+    
     public GUI_InicioSesion() {
         initialize();
     }
@@ -138,6 +142,10 @@ public class GUI_InicioSesion implements ObservadorGUI {
             	 JOptionPane.showMessageDialog(frame, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
                // errorLabel.setText("Contraseña incorrecta");
                 break;
+            case INICIAR_SESSION_KO_ERROR_3:
+           	 JOptionPane.showMessageDialog(frame, "Faltan datos", "Error", JOptionPane.ERROR_MESSAGE);
+              // errorLabel.setText("Contraseña incorrecta");
+               break;
 
             default:
             	  JOptionPane.showMessageDialog(frame, "Error desconocido", "Error", JOptionPane.ERROR_MESSAGE);

@@ -12,6 +12,10 @@ public class TSesion {
 		this.rol = rol;
 	}
 	
+	public TSesion() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getUsername() {
 		return this.username;
 	}

@@ -14,5 +14,10 @@
 	<classpathentry kind="lib" path="MongoJARS/slf4j-api-2.0.12.jar"/>
 	<classpathentry kind="lib" path="MongoJARS/slf4j-nop-2.0.12.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="Mockito/mockito-core-5.16.0.jar"/>
+	<classpathentry kind="lib" path="Mockito/mockito-junit-jupiter-5.16.0.jar"/>
+	<classpathentry kind="lib" path="Mockito/objenesis-3.4.jar"/>
+	<classpathentry kind="lib" path="Mockito/byte-buddy-1.17.2.jar"/>
+	<classpathentry kind="lib" path="Mockito/byte-buddy-agent-1.17.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -8,7 +8,15 @@ import negocio.Factory.ResultContext;
 import presentacion.Controller.Evento;
 
 public class SAManejoSesionesImp implements SAManejoSesiones {
-
+	
+	private MongoDBManager db;
+	public SAManejoSesionesImp() {
+		db = MongoDBManager.getInstance();
+	}
+	
+	public SAManejoSesionesImp(MongoDBManager db) {
+		this.db = db;
+	}
     @Override
     public ResultContext inicioSesion(TSesion ses) {
     	String username = ses.getUsername();
@@ -19,7 +27,7 @@ public class SAManejoSesionesImp implements SAManejoSesiones {
             return new ResultContext(Evento.INICIAR_SESSION_KO_ERROR_3, null); // Datos incompletos
         }
        
-        MongoDBManager db = MongoDBManager.getInstance();
+       
         Document doc = db.getDocumentByNombre(Collections.PERFIL, username);
         if(doc == null) {
         	 return new ResultContext(Evento.INICIAR_SESSION_ERROR_1, null); //No existe el usuario

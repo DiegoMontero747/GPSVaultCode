@@ -33,9 +33,14 @@ public class FactoryGUIImp extends FactoryGUI {
         // Mapeamos cada evento a su respectiva vista
         switch (evento) {
             case GUI_INICIAR_SESSION:
+            	return GUI_InicioSesion.class;
             case INICIAR_SESSION_OK:
+            	return GUI_InicioSesion.class;
             case INICIAR_SESSION_ERROR_1:
+            	return GUI_InicioSesion.class;
             case INICIAR_SESSION_KO_ERROR_2:
+                return GUI_InicioSesion.class;
+            case INICIAR_SESSION_KO_ERROR_3:
                 return GUI_InicioSesion.class;
 
 

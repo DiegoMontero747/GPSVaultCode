@@ -10,6 +10,7 @@ import presentacion.Controller.Evento;
 public class SAManejoSesionesImp implements SAManejoSesiones {
 	
 	private MongoDBManager db;
+	// necesario implementar dos constructores para poder hacer pruebas con mockito
 	public SAManejoSesionesImp() {
 		db = MongoDBManager.getInstance();
 	}

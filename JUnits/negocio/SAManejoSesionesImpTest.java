@@ -32,11 +32,31 @@ public class SAManejoSesionesImpTest {
         MockitoAnnotations.openMocks(this);
         sesion = new TSesion();
     }
+    
+    @Test
+    public void testInicioSesion_Ok() {
+        // Configurar el mock
+        Document doc = new Document("username", "usuario_existente")
+                .append("password", "password_correcta")
+                .append("rol", "admin");
 
+        when(db.getDocumentByNombre(Collections.PERFIL, "usuario_existente")).thenReturn(doc);
+
+        // Configurar la sesión
+        sesion.setUsername("usuario_existente");
+        sesion.setPsswd("password_correcta");
+
+        // Ejecutar el método bajo prueba
+        ResultContext result = saManejoSesiones.inicioSesion(sesion);
+
+        // Verificar el resultado
+        assertEquals(Evento.INICIO_SESION_OK, result.getEvento());
+        
+    }
+    
     @Test
     public void testInicioSesion_UsuarioNoExiste() {
         // Configurar el mock
-    	
         when(db.getDocumentByNombre(Collections.PERFIL, "usuario_inexistente")).thenReturn(null);
 
         // Configurar la sesión
@@ -47,7 +67,7 @@ public class SAManejoSesionesImpTest {
         ResultContext result = saManejoSesiones.inicioSesion(sesion);
 
         // Verificar el resultado
-        assertEquals(Evento.INICIAR_SESSION_ERROR_1, result.getEvento());
+        assertEquals(Evento.INICIO_SESION_ERROR_USUARIO_INEXISTENTE, result.getEvento());
     }
 
     @Test
@@ -67,28 +87,7 @@ public class SAManejoSesionesImpTest {
         ResultContext result = saManejoSesiones.inicioSesion(sesion);
 
         // Verificar el resultado
-        assertEquals(Evento.INICIAR_SESSION_KO_ERROR_2, result.getEvento());
-    }
-
-    @Test
-    public void testInicioSesion_Ok() {
-        // Configurar el mock
-        Document doc = new Document("username", "usuario_existente")
-                .append("password", "password_correcta")
-                .append("rol", "admin");
-
-        when(db.getDocumentByNombre(Collections.PERFIL, "usuario_existente")).thenReturn(doc);
-
-        // Configurar la sesión
-        sesion.setUsername("usuario_existente");
-        sesion.setPsswd("password_correcta");
-
-        // Ejecutar el método bajo prueba
-        ResultContext result = saManejoSesiones.inicioSesion(sesion);
-
-        // Verificar el resultado
-        assertEquals(Evento.INICIAR_SESSION_OK, result.getEvento());
-        
+        assertEquals(Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA, result.getEvento());
     }
 
     @Test
@@ -101,6 +100,110 @@ public class SAManejoSesionesImpTest {
         ResultContext result = saManejoSesiones.inicioSesion(sesion);
 
         // Verificar el resultado
-        assertEquals(Evento.INICIAR_SESSION_KO_ERROR_3, result.getEvento());
+        assertEquals(Evento.INICIO_SESION_ERROR_USUARIO_INCOMPLETO, result.getEvento());
+    }
+    
+    @Test
+    public void testInicioSesion_UsernameIncompleto() {
+        // Configurar la sesión sin username
+        sesion.setUsername("");
+        sesion.setPsswd("passwordCorrecta");
+
+        // Ejecutar el método bajo prueba
+        ResultContext result = saManejoSesiones.inicioSesion(sesion);
+
+        // Verificar el resultado
+        assertEquals(Evento.INICIO_SESION_ERROR_USUARIO_INCOMPLETO, result.getEvento());
+    }
+    
+    @Test
+    public void testInicioSesion_ContrasenyaIncompleta() {
+        // Configurar la sesión sin password
+        sesion.setUsername("usuarioexistente");
+        sesion.setPsswd("");
+
+        // Ejecutar el método bajo prueba
+        ResultContext result = saManejoSesiones.inicioSesion(sesion);
+
+        // Verificar el resultado
+        assertEquals(Evento.INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA, result.getEvento());
+    }
+    
+    @Test
+    public void testInicioSesion_DatosNulos() {
+        // Configurar la sesión con username y password nulos
+        sesion.setUsername(null);
+        sesion.setPsswd(null);
+
+        // Ejecutar el método bajo prueba
+        ResultContext result = saManejoSesiones.inicioSesion(sesion);
+
+        // Verificar el resultado
+        assertEquals(Evento.INICIO_SESION_ERROR_USUARIO_INCOMPLETO, result.getEvento());
+    }
+    
+    @Test
+    public void testInicioSesion_UsernameNulo() {
+        // Configurar la sesión con username nulo
+        sesion.setUsername(null);
+        sesion.setPsswd("passwordCorrecta");
+
+        // Ejecutar el método bajo prueba
+        ResultContext result = saManejoSesiones.inicioSesion(sesion);
+
+        // Verificar el resultado
+        assertEquals(Evento.INICIO_SESION_ERROR_USUARIO_INCOMPLETO, result.getEvento());
+    }
+    
+    @Test
+    public void testInicioSesion_ContrasenyaNula() {
+        // Configurar la sesión con password nula
+        sesion.setUsername("usuarioexistente");
+        sesion.setPsswd(null);
+
+        // Ejecutar el método bajo prueba
+        ResultContext result = saManejoSesiones.inicioSesion(sesion);
+
+        // Verificar el resultado
+        assertEquals(Evento.INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA, result.getEvento());
+    }
+    
+    @Test
+    public void testInicioSesion_DatosSoloEspacios() {
+        // Configurar la sesión con username y password nulos
+        sesion.setUsername("     ");
+        sesion.setPsswd("    ");
+
+        // Ejecutar el método bajo prueba
+        ResultContext result = saManejoSesiones.inicioSesion(sesion);
+
+        // Verificar el resultado
+        assertEquals(Evento.INICIO_SESION_ERROR_USUARIO_INCOMPLETO, result.getEvento());
+    }
+    
+    @Test
+    public void testInicioSesion_UsernameSoloEspacios() {
+        // Configurar la sesión con username nulo
+        sesion.setUsername("     ");
+        sesion.setPsswd("passwordCorrecta");
+
+        // Ejecutar el método bajo prueba
+        ResultContext result = saManejoSesiones.inicioSesion(sesion);
+
+        // Verificar el resultado
+        assertEquals(Evento.INICIO_SESION_ERROR_USUARIO_INCOMPLETO, result.getEvento());
+    }
+    
+    @Test
+    public void testInicioSesion_ContrasenyaSoloEspacios() {
+        // Configurar la sesión con password nula
+        sesion.setUsername("usuarioexistente");
+        sesion.setPsswd("    ");
+
+        // Ejecutar el método bajo prueba
+        ResultContext result = saManejoSesiones.inicioSesion(sesion);
+
+        // Verificar el resultado
+        assertEquals(Evento.INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA, result.getEvento());
     }
 }

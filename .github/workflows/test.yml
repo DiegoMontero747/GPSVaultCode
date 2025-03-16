@@ -5,10 +5,12 @@ on:
     branches:
       - main  # O la rama que prefieras
       - dev
+      - dev-InicioSesion
   pull_request:
     branches:
       - main  # O la rama que prefieras
       - dev
+      - dev-InicioSesion
 
 jobs:
   build:

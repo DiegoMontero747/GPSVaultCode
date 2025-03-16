@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main  # O la rama que prefieras
+      - dev
   pull_request:
     branches:
       - main  # O la rama que prefieras
+      - dev
 
 jobs:
   build:

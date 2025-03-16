@@ -1,5 +1,8 @@
 package presentacion.GUI;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import presentacion.Controller.Context;
 
 public abstract class FactoryGUI {

@@ -17,10 +17,6 @@ public class GUI_InicioSesion implements ObservadorGUI {
     private JTextField userField = new JTextField(15);
     private JPasswordField passField = new JPasswordField(15);
     
-    public static void main(String[] args) {
-    	GUI_InicioSesion sesion = new GUI_InicioSesion();
-    }
-    
     public GUI_InicioSesion() {
         initialize();
     }
@@ -132,43 +128,40 @@ public class GUI_InicioSesion implements ObservadorGUI {
 	@Override
 	public void actualizar(Context c) {
 		Evento evento = (Evento) c.getEvento();
-        switch (evento) {
-            case INICIO_SESION_OK:
-                errorLabel.setText(""); // Borrar errores previos
-                JOptionPane.showMessageDialog(frame, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-               // abrirSesionCorrecta();
-                break;
+		if (c == null) return;
 
-            case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
-            	JOptionPane.showMessageDialog(frame, "Usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
-               // errorLabel.setText("Usuario no encontrado");
-                break;
+	    switch (c.getEvento()) {
+	        case INICIO_SESION_OK:
+	            JOptionPane.showMessageDialog(frame, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+	            break;
 
-            case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
-            	JOptionPane.showMessageDialog(frame, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);
-            	// errorLabel.setText("Contraseña incorrecta");
-                break;
-            case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
-           	 	JOptionPane.showMessageDialog(frame, "Faltan datos", "Error", JOptionPane.ERROR_MESSAGE);
-           	 	// errorLabel.setText("Contraseña incorrecta");
-           	 	userField.setBorder(new LineBorder(Color.RED));
-               break;
-            case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
-           	 	JOptionPane.showMessageDialog(frame, "Faltan datos", "Error", JOptionPane.ERROR_MESSAGE);
-           	 	// errorLabel.setText("Contraseña incorrecta");
-           	 	passField.setBorder(new LineBorder(Color.RED));
-           	 	break;
-            default:
-            	JOptionPane.showMessageDialog(frame, "Error desconocido", "Error", JOptionPane.ERROR_MESSAGE);
-                //errorLabel.setText("Error desconocido, inténtelo de nuevo.");
-                break;
-        }
+	        case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
+	            mostrarMensajeError("Usuario no encontrado.");
+	            break;
+
+	        case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
+	            mostrarMensajeError("Contraseña incorrecta.");
+	            break;
+
+	        case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
+	            mostrarMensajeError("Debe ingresar una contraseña.");
+	            break;
+
+	        case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
+	            mostrarMensajeError("Debe ingresar un usuario.");
+	            break;
+
+	        default:
+	            mostrarMensajeError("Error desconocido.");
+	            break;
+	    }
         
 	}
 	
 	private void mostrarMensajeError(String mensaje) {
-	    errorLabel.setText(mensaje);  // Cambia el texto del JLabel
+		errorLabel.setText(mensaje);
 	    errorLabel.setForeground(Color.RED);
-	    errorLabel.setVisible(true);
+	    frame.revalidate();
+	    frame.repaint();
 	}
 }

@@ -10,14 +10,17 @@ public class ControllerImp extends Controller {
 
 		Command comando = CommandFactory.getInstance().getCommand(requestContext.getEvento());
 
-		if (comando != null) {
+        if (comando != null) {
+            Context commandContext = comando.execute(requestContext.getDato());
 
-			Context commandContext = comando.execute(requestContext.getDato());
-
-			ObservadorGUI vista = FactoryGUI.getInstance().generarGUI(commandContext);
-			vista.actualizar(commandContext);
-		} else
-			FactoryGUI.getInstance().generarGUI(requestContext);
+            // 🚨 Obtener la instancia existente para evitar duplicados
+            ObservadorGUI vista = FactoryGUI.getInstance().generarGUI(commandContext);
+            if (vista != null) {
+                vista.actualizar(commandContext);  // Solo actualiza, no crea nueva
+            }
+        }else {
+        	ObservadorGUI vista = FactoryGUI.getInstance().generarGUI(requestContext);
+        }
 	}
 
 }

@@ -1,48 +1,36 @@
 package presentacion.GUI;
 
-import presentacion.Controller.Context;
-import presentacion.Controller.Evento;
-
 import java.util.HashMap;
 import java.util.Map;
 
-public class FactoryGUIImp extends FactoryGUI {
-    
-    private final Map<Class<? extends ObservadorGUI>, ObservadorGUI> instancias = new HashMap<>();
+import presentacion.Controller.Context;
+import presentacion.Controller.Evento;
 
+public class FactoryGUIImp extends FactoryGUI {
+
+	protected final Map<Class<? extends ObservadorGUI>, ObservadorGUI> instancias = new HashMap<>();
+	
     @Override
     public ObservadorGUI generarGUI(Context commandContext) {
-        Evento evento = commandContext.getEvento();
-        Class<? extends ObservadorGUI> claveVista = getVistaClass(evento);
+    	 Class<? extends ObservadorGUI> claveVista = getVistaClass(commandContext.getEvento());
 
-        // Si ya existe, la reutilizamos
-        if (instancias.containsKey(claveVista)) {
-            return instancias.get(claveVista);
-        }
+         if (claveVista == null) {
+             return null;  // No se necesita ninguna GUI para este evento
+         }
 
-        ObservadorGUI nuevaGUI = crearNuevaVista(claveVista);
-
-        if (nuevaGUI != null) {
-            instancias.put(claveVista, nuevaGUI);
-        }
-
-        return nuevaGUI;
+         // Si la vista ya existe, simplemente la devolvemos
+         return instancias.computeIfAbsent(claveVista, this::crearNuevaVista);
     }
 
     private Class<? extends ObservadorGUI> getVistaClass(Evento evento) {
         // Mapeamos cada evento a su respectiva vista
         switch (evento) {
-            case GUI_INICIO_SESION:
-            	return GUI_InicioSesion.class;
-            case INICIO_SESION_OK:
-            	return GUI_InicioSesion.class;
-            case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
-            	return GUI_InicioSesion.class;
-            case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
-                return GUI_InicioSesion.class;
-            case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
-                return GUI_InicioSesion.class;
-            case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
+            case GUI_INICIO_SESION,
+            INICIO_SESION_OK,
+            INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA,
+            INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA, 
+            INICIO_SESION_ERROR_USUARIO_INCOMPLETO, 
+            INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
                 return GUI_InicioSesion.class;
 
 

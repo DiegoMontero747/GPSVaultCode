@@ -1,6 +1,8 @@
 package presentacion.GUI;
 
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -13,7 +15,11 @@ import presentacion.Controller.Evento;
 public class GUI_InicioSesion implements ObservadorGUI {
     private JFrame frame;
     private JLabel errorLabel;
+    private int contador = 0;
+    private static final int TIEMPO_BLOQUEO = 60000; // 1 minuto de bloqueo
+    private Timer timer;
 
+    JButton loginButton;
     private JTextField userField = new JTextField(15);
     private JPasswordField passField = new JPasswordField(15);
     
@@ -72,32 +78,29 @@ public class GUI_InicioSesion implements ObservadorGUI {
         gbc.gridx = 1;
         contentPanel.add(passField, gbc);
 
-        JButton loginButton = new JButton("Ingresar");
+        loginButton = new JButton("Ingresar");
         loginButton.setBackground(new Color(255, 94, 0));
         loginButton.setForeground(Color.BLACK);
         loginButton.setFocusPainted(false);
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
         loginButton.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2));
-     // ActionListener del botón
         loginButton.addActionListener(e -> {
             String username = userField.getText();
             String password = new String(passField.getPassword()); // Convertir password a String
-            
-            // los bordes de los cuadros de texto vuelven al color normal
-       	 	userField.setBorder(new LineBorder(Color.WHITE));
-       	 	passField.setBorder(new LineBorder(Color.WHITE));
-
+            userField.setBorder(new LineBorder(Color.WHITE));
+            passField.setBorder(new LineBorder(Color.WHITE));
             Controller.getInstance().handleRequest(new Context(Evento.INICIA_CUENTA, new TSesion(username, password, null)));
         });
-        
-        //etiqueta para mostrar errores
+
+        // Etiqueta para mostrar errores
         errorLabel = new JLabel("");
         errorLabel.setForeground(Color.RED);
         errorLabel.setFont(new Font("Arial", Font.BOLD, 12));
         gbc.gridy = 4;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;  // Permite que el JLabel de error se expanda horizontalmente
         contentPanel.add(errorLabel, gbc);
-        
-        
+
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
@@ -130,9 +133,10 @@ public class GUI_InicioSesion implements ObservadorGUI {
 		Evento evento = (Evento) c.getEvento();
 		if (c == null) return;
 
-	    switch (c.getEvento()) {
+	    switch (evento) {
 	        case INICIO_SESION_OK:
 	            JOptionPane.showMessageDialog(frame, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+	            contador = 0;
 	            break;
 
 	        case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
@@ -155,8 +159,36 @@ public class GUI_InicioSesion implements ObservadorGUI {
 	            mostrarMensajeError("Error desconocido.");
 	            break;
 	    }
+	    if(evento != Evento.INICIO_SESION_OK) {
+	    	contador++;
+	    }
+	    if(contador >= 3) {
+	    	bloquearSesion();
+	    }
         
 	}
+	
+	 private void bloquearSesion() {
+	        // Deshabilitar el botón de inicio de sesión
+	        loginButton.setEnabled(false);
+	        
+	        // Mostrar mensaje informando que la cuenta está bloqueada
+	        errorLabel.setText("Intente en 1 minuto.");
+	        
+	        // Crear un temporizador para habilitar el botón después de 3 minutos
+	        timer = new Timer();
+	        timer.schedule(new TimerTask() {
+	            @Override
+	            public void run() {
+	                // Habilitar el botón de inicio de sesión y restablecer el contador
+	                SwingUtilities.invokeLater(() -> {
+	                    loginButton.setEnabled(true);
+	                    errorLabel.setText("");
+	                    contador = 0;
+	                });
+	            }
+	        }, TIEMPO_BLOQUEO); // 3 minutos de bloqueo
+	    }
 	
 	private void mostrarMensajeError(String mensaje) {
 		errorLabel.setText(mensaje);

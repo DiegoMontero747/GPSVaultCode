@@ -34,7 +34,7 @@ public class GUI_InicioSesion implements ObservadorGUI {
         frame.setLocationRelativeTo(null);
 
         // Panel de fondo con la imagen
-        ImagePanel backgroundPanel = new ImagePanel("media/low-poly-grid-haikei.png");
+        ImagePanel backgroundPanel = new ImagePanel("media/background.png");
         backgroundPanel.setLayout(new BorderLayout());
 
         // Panel para los componentes (con fondo transparente)
@@ -83,7 +83,7 @@ public class GUI_InicioSesion implements ObservadorGUI {
         loginButton.setForeground(Color.BLACK);
         loginButton.setFocusPainted(false);
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
-        loginButton.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2));
+        loginButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         loginButton.addActionListener(e -> {
             String username = userField.getText();
             String password = new String(passField.getPassword()); // Convertir password a String
@@ -96,6 +96,7 @@ public class GUI_InicioSesion implements ObservadorGUI {
         errorLabel = new JLabel("");
         errorLabel.setForeground(Color.RED);
         errorLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        errorLabel.setPreferredSize(new Dimension(200, 25));
         gbc.gridy = 4;
         gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;  // Permite que el JLabel de error se expanda horizontalmente
@@ -190,10 +191,41 @@ public class GUI_InicioSesion implements ObservadorGUI {
 	        }, TIEMPO_BLOQUEO); // 3 minutos de bloqueo
 	    }
 	
-	private void mostrarMensajeError(String mensaje) {
-		errorLabel.setText(mensaje);
-	    errorLabel.setForeground(Color.RED);
-	    frame.revalidate();
-	    frame.repaint();
-	}
+	 private void mostrarMensajeError(String mensaje) {
+		    errorLabel.setText(mensaje);
+		    errorLabel.setForeground(new Color(255, 94, 0));
+
+		    errorLabel.setFont(new Font("Arial", Font.PLAIN, 14)); // Ajusta el tamaño y tipo de fuente
+		    errorLabel.setOpaque(false); // Asegura que el fondo sea transparente
+
+		    errorLabel.setUI(new javax.swing.plaf.basic.BasicLabelUI() {
+		        @Override
+		        public void paint(Graphics g, JComponent c) {
+		            Graphics2D g2 = (Graphics2D) g;
+		            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		            String text = ((JLabel) c).getText();
+		            FontMetrics fm = g2.getFontMetrics(errorLabel.getFont());
+		            int x = (errorLabel.getWidth() - fm.stringWidth(text)) / 2;
+		            int y = (errorLabel.getHeight() + fm.getAscent()) / 2 - fm.getDescent();
+
+		            // Dibujar el borde blanco (desplazando el texto en todas direcciones)
+		            g2.setColor(Color.BLACK);
+		            for (int i = -1; i <= 1; i++) {
+		                for (int j = -1; j <= 1; j++) {
+		                    if (i != 0 || j != 0) {
+		                        g2.drawString(text, x + i, y + j);
+		                    }
+		                }
+		            }
+
+		            // Dibujar el texto rojo encima
+		            g2.setColor(new Color(255, 94, 0));
+		            g2.drawString(text, x, y);
+		        }
+		    });
+
+		    frame.revalidate();
+		    frame.repaint();
+		}
 }

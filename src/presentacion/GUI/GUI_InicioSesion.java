@@ -159,7 +159,7 @@ public class GUI_InicioSesion implements ObservadorGUI {
 	            mostrarMensajeError("Error desconocido.");
 	            break;
 	    }
-	    if(evento != Evento.INICIO_SESION_OK) {
+	    if(evento == Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA) {
 	    	contador++;
 	    }
 	    if(contador >= 3) {

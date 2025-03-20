@@ -10,6 +10,11 @@ public class FactoryGUIImp extends FactoryGUI {
 
 	protected final Map<Class<? extends ObservadorGUI>, ObservadorGUI> instancias = new HashMap<>();
 	
+	public FactoryGUIImp() {
+        // Agregamos el ApplicationContainer al mapa de manera inicial
+        instancias.put(ApplicationContainer.class, ApplicationContainer.getInstance());
+    }
+	
     @Override
     public ObservadorGUI generarGUI(Context commandContext) {
     	 Class<? extends ObservadorGUI> claveVista = getVistaClass(commandContext.getEvento());
@@ -25,13 +30,15 @@ public class FactoryGUIImp extends FactoryGUI {
     private Class<? extends ObservadorGUI> getVistaClass(Evento evento) {
         // Mapeamos cada evento a su respectiva vista
         switch (evento) {
-            case GUI_INICIO_SESION,
-            INICIO_SESION_OK,
+            case INICIO_SESION_OK,
             INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA,
             INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA, 
             INICIO_SESION_ERROR_USUARIO_INCOMPLETO, 
             INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
                 return GUI_InicioSesion.class;
+            case GUI_INICIO_SESION:
+            	ApplicationContainer.getInstance().addView("LOGIN", new GUI_InicioSesion());
+            	return ApplicationContainer.class;
 
 
             // Agregar más casos según se necesiten

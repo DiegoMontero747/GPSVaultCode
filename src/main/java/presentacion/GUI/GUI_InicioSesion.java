@@ -12,8 +12,7 @@ import negocio.ManejoSesiones.TSesion;
 import presentacion.Controller.Context;
 import presentacion.Controller.Evento;
 
-public class GUI_InicioSesion implements ObservadorGUI {
-    private JFrame frame;
+public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
     private JLabel errorLabel;
     private int contador = 0;
     private static final int TIEMPO_BLOQUEO = 60000; // 1 minuto de bloqueo
@@ -28,19 +27,17 @@ public class GUI_InicioSesion implements ObservadorGUI {
     }
 
     private void initialize() {
-    	frame = new JFrame("VAULTCODE - Iniciar Sesión");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(450, 350);
-        frame.setLocationRelativeTo(null);
 
         // Panel de fondo con la imagen
         ImagePanel backgroundPanel = new ImagePanel("media/background.png");
         backgroundPanel.setLayout(new BorderLayout());
+        this.add(backgroundPanel);
 
         // Panel para los componentes (con fondo transparente)
         JPanel contentPanel = new JPanel();
         contentPanel.setOpaque(false); // Para que no tape la imagen de fondo
         contentPanel.setLayout(new GridBagLayout());
+        this.add(contentPanel);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -108,8 +105,7 @@ public class GUI_InicioSesion implements ObservadorGUI {
         contentPanel.add(loginButton, gbc);
 
         backgroundPanel.add(contentPanel, BorderLayout.CENTER);
-        frame.setContentPane(backgroundPanel);
-        frame.setVisible(true);
+        this.setVisible(true);
     }
     
     // Panel personalizado para el fondo con imagen
@@ -136,7 +132,7 @@ public class GUI_InicioSesion implements ObservadorGUI {
 
 	    switch (evento) {
 	        case INICIO_SESION_OK:
-	            JOptionPane.showMessageDialog(frame, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+	            JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 	            contador = 0;
 	            break;
 
@@ -225,7 +221,7 @@ public class GUI_InicioSesion implements ObservadorGUI {
 		        }
 		    });
 
-		    frame.revalidate();
-		    frame.repaint();
+		    this.revalidate();
+		    this.repaint();
 		}
 }

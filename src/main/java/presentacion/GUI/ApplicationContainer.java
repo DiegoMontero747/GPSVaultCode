@@ -1,6 +1,7 @@
 package presentacion.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import presentacion.Controller.Evento;
 public class ApplicationContainer extends JFrame implements ObservadorGUI{
 	
 	 private static ApplicationContainer instance;
+	 	private Container contentPane;
 	    private Map<String, JPanel> views; // Mapa para almacenar los paneles
 	    private JPanel currentView; // Panel actualmente mostrado
 
@@ -24,9 +26,8 @@ public class ApplicationContainer extends JFrame implements ObservadorGUI{
 	        setLocationRelativeTo(null);
 	        this.setLayout(new BorderLayout());
 
+	        contentPane = getContentPane();
 	        views = new HashMap<>();
-	        currentView = new JPanel();
-	        add(currentView);
 
 	        setVisible(true);
 	    }
@@ -46,10 +47,11 @@ public class ApplicationContainer extends JFrame implements ObservadorGUI{
 	    public void showView(String name) {
 	        JPanel newView = views.get(name);
 	        if (newView != null) {
-	            remove(currentView); // Quitar el panel actual
-	            currentView = newView;
-	            add(currentView); // Agregar el nuevo panel
-	            revalidate();
+	            contentPane.removeAll(); // Quitar el panel actual
+	            contentPane.add(newView, BorderLayout.CENTER); // Agregar el nuevo panel
+	            pack();
+	            validate();
+	            setVisible(true);
 	            repaint();
 	        } else {
 	            System.err.println("Error: Vista '" + name + "' no encontrada.");

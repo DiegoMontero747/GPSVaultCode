@@ -27,7 +27,7 @@ public class SACrearCuentaAdministracionImp implements SACrearCuentaAdministraci
 	public ResultContext crearCuenta(TCrearCuentaAdm data) {
 		//expresion regular para comprobar la validez del dni tiene que tener 8 numeros mas una letra de entre las que
 		//estan en el patron
-		String nifRegex = "/^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i";
+		String nifRegex = "^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$";
 		//compilamos el regex
 		Pattern patron = Pattern.compile(nifRegex);
 		//comprobamos que el dni tenga formato correcto

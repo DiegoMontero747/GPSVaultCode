@@ -2,15 +2,19 @@ package presentacion.GUI;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import presentacion.Controller.Context;
+
 import java.awt.*;
 
-public class GUI_VistaRolAdmin {
+public class GUI_VistaRolAdmin  implements ObservadorGUI {
     private JFrame frame;
     private JTable userTable;
-    private JButton addUserButton, deleteUserButton, logoutButton;
+    private JButton addFundsButton, retireFundsButton, logoutButton, createUserButton;
     
     public GUI_VistaRolAdmin() {
         initialize();
+        frame.setVisible(true);  
     }
 
     private void initialize() {
@@ -26,12 +30,14 @@ public class GUI_VistaRolAdmin {
         sidePanel.setBackground(new Color(30, 30, 30));
         sidePanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        addUserButton = createStyledButton("Agregar Usuario");
-        deleteUserButton = createStyledButton("Eliminar Usuario");
+        createUserButton = createStyledButton("Crear Usuario");
+        addFundsButton = createStyledButton("Añadir Fondos");
+        retireFundsButton = createStyledButton("Retirar Fondos");
         logoutButton = createStyledButton("Cerrar Sesión");
-        
-        sidePanel.add(addUserButton);
-        sidePanel.add(deleteUserButton);
+
+        sidePanel.add(createUserButton);
+        sidePanel.add(addFundsButton);
+        sidePanel.add(retireFundsButton);
         sidePanel.add(logoutButton);
         
         // Panel de contenido principal con tabla de usuarios
@@ -58,4 +64,10 @@ public class GUI_VistaRolAdmin {
         button.setOpaque(true);  // Asegura que el color de fondo se aplique
         return button;
     }
+
+	@Override
+	public void actualizar(Context c) {
+		// TODO Auto-generated method stub
+		
+	}
 }

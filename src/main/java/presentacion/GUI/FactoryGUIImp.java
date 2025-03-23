@@ -36,6 +36,8 @@ public class FactoryGUIImp extends FactoryGUI {
 
             // Agregar más casos según se necesiten
 
+            case VISTA_PRINCIPAL:
+            	return new GUI_Principal().getClass();
             default:
                 return null;
         }

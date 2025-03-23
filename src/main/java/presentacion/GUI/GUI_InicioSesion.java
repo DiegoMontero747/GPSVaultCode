@@ -27,7 +27,7 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
     }
 
     private void initialize() {
-    	this.setSize(600, 400);
+    	setPreferredSize(null);
 
         // Panel de fondo con la imagen
         ImagePanel backgroundPanel = new ImagePanel("media/background.png");

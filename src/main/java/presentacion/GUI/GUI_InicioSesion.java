@@ -21,28 +21,31 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
     JButton loginButton;
     private JTextField userField = new JTextField(15);
     private JPasswordField passField = new JPasswordField(15);
-    
+
     public GUI_InicioSesion() {
         initialize();
     }
 
     private void initialize() {
-    	setPreferredSize(null);
+        this.setBackground(Color.RED);
+        this.setPreferredSize(new Dimension(800, 600));
+        this.setLayout(new BorderLayout());
 
         // Panel de fondo con la imagen
         ImagePanel backgroundPanel = new ImagePanel("media/background.png");
         backgroundPanel.setLayout(new BorderLayout());
-        this.add(backgroundPanel);
+        this.add(backgroundPanel, BorderLayout.CENTER);  // Fondo añadido en el centro
 
         // Panel para los componentes (con fondo transparente)
         JPanel contentPanel = new JPanel();
-        contentPanel.setOpaque(false); // Para que no tape la imagen de fondo
         contentPanel.setLayout(new GridBagLayout());
-        this.add(contentPanel);
+        contentPanel.setOpaque(false);
+        backgroundPanel.add(contentPanel, BorderLayout.CENTER); // Panel con componentes también añadido al centro
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.CENTER;
 
         JLabel titleLabel = new JLabel("VAULTCODE", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
@@ -96,8 +99,7 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
         errorLabel.setFont(new Font("Arial", Font.BOLD, 12));
         errorLabel.setPreferredSize(new Dimension(200, 25));
         gbc.gridy = 4;
-        gbc.gridwidth = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;  // Permite que el JLabel de error se expanda horizontalmente
+        gbc.gridwidth = 2;
         contentPanel.add(errorLabel, gbc);
 
         gbc.gridx = 0;
@@ -105,16 +107,16 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
         gbc.gridwidth = 2;
         contentPanel.add(loginButton, gbc);
 
-        backgroundPanel.add(contentPanel, BorderLayout.CENTER);
         this.setVisible(true);
     }
-    
+
     // Panel personalizado para el fondo con imagen
     private static class ImagePanel extends JPanel {
         private Image backgroundImage;
 
         public ImagePanel(String imagePath) {
             backgroundImage = new ImageIcon(imagePath).getImage();
+            this.setPreferredSize(null); // Aseguramos que el tamaño se ajuste al contenido
         }
 
         @Override
@@ -126,103 +128,106 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
         }
     }
 
-	@Override
-	public void actualizar(Context c) {
-		Evento evento = (Evento) c.getEvento();
-		if (c == null) return;
+    @Override
+    public void actualizar(Context c) {
+        Evento evento = (Evento) c.getEvento();
+        if (c == null) return;
 
-	    switch (evento) {
-	        case INICIO_SESION_OK:
-	            JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-	            contador = 0;
-	            break;
+        switch (evento) {
+            case INICIO_SESION_OK:
+                JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                contador = 0;
+                break;
 
-	        case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
-	            mostrarMensajeError("Usuario no encontrado.");
-	            break;
+            case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
+                mostrarMensajeError("Usuario no encontrado.");
+                break;
 
-	        case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
-	            mostrarMensajeError("Contraseña incorrecta.");
-	            break;
+            case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
+                mostrarMensajeError("Contraseña incorrecta.");
+                break;
 
-	        case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
-	            mostrarMensajeError("Debe ingresar una contraseña.");
-	            break;
+            case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
+                mostrarMensajeError("Debe ingresar una contraseña.");
+                break;
 
-	        case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
-	            mostrarMensajeError("Debe ingresar un usuario.");
-	            break;
+            case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
+                mostrarMensajeError("Debe ingresar un usuario.");
+                break;
 
-	        default:
-	            mostrarMensajeError("Error desconocido.");
-	            break;
-	    }
-	    if(evento == Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA) {
-	    	contador++;
-	    }
-	    if(contador >= 3) {
-	    	bloquearSesion();
-	    }
-        
-	}
-	
-	 private void bloquearSesion() {
-	        // Deshabilitar el botón de inicio de sesión
-	        loginButton.setEnabled(false);
-	        
-	        // Mostrar mensaje informando que la cuenta está bloqueada
-	        errorLabel.setText("Intente en 1 minuto.");
-	        
-	        // Crear un temporizador para habilitar el botón después de 3 minutos
-	        timer = new Timer();
-	        timer.schedule(new TimerTask() {
-	            @Override
-	            public void run() {
-	                // Habilitar el botón de inicio de sesión y restablecer el contador
-	                SwingUtilities.invokeLater(() -> {
-	                    loginButton.setEnabled(true);
-	                    errorLabel.setText("");
-	                    contador = 0;
-	                });
-	            }
-	        }, TIEMPO_BLOQUEO); // 3 minutos de bloqueo
-	    }
-	
-	 private void mostrarMensajeError(String mensaje) {
-		    errorLabel.setText(mensaje);
-		    errorLabel.setForeground(new Color(255, 94, 0));
+            default:
+                mostrarMensajeError("Error desconocido.");
+                break;
+        }
+        if(evento == Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA) {
+            contador++;
+        }
+        if(contador >= 3) {
+            bloquearSesion();
+        }
+    }
 
-		    errorLabel.setFont(new Font("Arial", Font.PLAIN, 14)); // Ajusta el tamaño y tipo de fuente
-		    errorLabel.setOpaque(false); // Asegura que el fondo sea transparente
+    private void bloquearSesion() {
+        // Deshabilitar el botón de inicio de sesión
+        loginButton.setEnabled(false);
 
-		    errorLabel.setUI(new javax.swing.plaf.basic.BasicLabelUI() {
-		        @Override
-		        public void paint(Graphics g, JComponent c) {
-		            Graphics2D g2 = (Graphics2D) g;
-		            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // Mostrar mensaje informando que la cuenta está bloqueada
+        errorLabel.setText("Intente en 1 minuto.");
 
-		            String text = ((JLabel) c).getText();
-		            FontMetrics fm = g2.getFontMetrics(errorLabel.getFont());
-		            int x = (errorLabel.getWidth() - fm.stringWidth(text)) / 2;
-		            int y = (errorLabel.getHeight() + fm.getAscent()) / 2 - fm.getDescent();
+        // Crear un temporizador para habilitar el botón después de 1 minuto
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                // Habilitar el botón de inicio de sesión y restablecer el contador
+                SwingUtilities.invokeLater(() -> {
+                    loginButton.setEnabled(true);
+                    errorLabel.setText("");
+                    contador = 0;
+                });
+            }
+        }, TIEMPO_BLOQUEO); // 1 minuto de bloqueo
+    }
 
-		            // Dibujar el borde blanco (desplazando el texto en todas direcciones)
-		            g2.setColor(Color.BLACK);
-		            for (int i = -1; i <= 1; i++) {
-		                for (int j = -1; j <= 1; j++) {
-		                    if (i != 0 || j != 0) {
-		                        g2.drawString(text, x + i, y + j);
-		                    }
-		                }
-		            }
+    private void mostrarMensajeError(String mensaje) {
+    	 // Aseguramos que los cambios en el mensaje de error se procesen en el hilo de la interfaz gráfica.
+        SwingUtilities.invokeLater(() -> {
+            errorLabel.setText(mensaje);
+            errorLabel.setForeground(new Color(255, 94, 0));
+            errorLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+            errorLabel.setOpaque(false); // Asegura que el fondo sea transparente
 
-		            // Dibujar el texto rojo encima
-		            g2.setColor(new Color(255, 94, 0));
-		            g2.drawString(text, x, y);
-		        }
-		    });
+            // Redibujamos el texto para que se dibuje correctamente
+            errorLabel.setUI(new javax.swing.plaf.basic.BasicLabelUI() {
+                @Override
+                public void paint(Graphics g, JComponent c) {
+                    Graphics2D g2 = (Graphics2D) g;
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		    this.revalidate();
-		    this.repaint();
-		}
+                    String text = ((JLabel) c).getText();
+                    FontMetrics fm = g2.getFontMetrics(errorLabel.getFont());
+                    int x = (errorLabel.getWidth() - fm.stringWidth(text)) / 2;
+                    int y = (errorLabel.getHeight() + fm.getAscent()) / 2 - fm.getDescent();
+
+                    // Dibujar el borde blanco (desplazando el texto en todas direcciones)
+                    g2.setColor(Color.BLACK);
+                    for (int i = -1; i <= 1; i++) {
+                        for (int j = -1; j <= 1; j++) {
+                            if (i != 0 || j != 0) {
+                                g2.drawString(text, x + i, y + j);
+                            }
+                        }
+                    }
+
+                    // Dibujar el texto de color (naranja)
+                    g2.setColor(new Color(255, 94, 0));
+                    g2.drawString(text, x, y);
+                }
+            });
+
+            // Forzar la actualización del panel
+            revalidate();
+            repaint();
+        });
+    }
 }

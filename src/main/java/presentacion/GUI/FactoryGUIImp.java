@@ -5,6 +5,8 @@ import java.util.Map;
 
 import presentacion.Controller.Context;
 import presentacion.Controller.Evento;
+import presentacion.GUI.GUI_MenuAdmin;
+import presentacion.GUI.GUI_MenuCliente;
 
 public class FactoryGUIImp extends FactoryGUI {
 
@@ -35,7 +37,11 @@ public class FactoryGUIImp extends FactoryGUI {
 
 
             // Agregar más casos según se necesiten
-
+            case GUI_MENU_ADMIN:
+                return GUI_MenuAdmin.class;
+            case GUI_MENU_CLIENTE:
+                return GUI_MenuCliente.class;
+                
             default:
                 return null;
         }

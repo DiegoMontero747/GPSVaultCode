@@ -40,6 +40,6 @@ public class SAManejoSesionesImp implements SAManejoSesiones {
         }
         
         
-        return new ResultContext(Evento.INICIO_SESION_OK, doc.get("rol")); // Inicio de sesión válido
+        return new ResultContext(Evento.INICIO_SESION_OK, doc); // Inicio de sesión válido
     }
 }

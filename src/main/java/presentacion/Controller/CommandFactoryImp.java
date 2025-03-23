@@ -12,6 +12,12 @@ public class CommandFactoryImp extends CommandFactory{
 		case INICIA_CUENTA:
 			comando = new command_InicioSesion();
 			break;
+		 case GUI_MENU_ADMIN:
+            comando = new CommandMenuAdmin();
+            break;
+         case GUI_MENU_CLIENTE:
+            comando = new CommandMenuCliente();
+            break;
 		}
 		return comando;
 	}

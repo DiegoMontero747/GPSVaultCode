@@ -23,7 +23,12 @@ public enum Evento {
 	INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA,
 	
 	//inicio de sesion valido
-	INICIO_SESION_OK;
+	INICIO_SESION_OK,
 	
-	
+    // Nuevos eventos para el menú del rol
+    GUI_MENU_CLIENTE,
+    
+    GUI_MENU_ADMIN,
+    
+    CERRAR_SESION;
 }

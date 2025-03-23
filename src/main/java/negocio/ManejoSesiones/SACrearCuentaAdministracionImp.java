@@ -42,7 +42,7 @@ public class SACrearCuentaAdministracionImp implements SACrearCuentaAdministraci
 				}
 			}
 			//comprobamos que el rol introducido es el correcto
-			String rolRegex = "(?i)^(administracion|activo|pasivo)$";
+			String rolRegex = "(?i)^(servicios centrales|administracion|activo|pasivo)$";
 			if(data.getRol().matches(rolRegex)) {
 				Document nuevoperfil = new Document();
 				nuevoperfil.append("nombre",data.getNombre());

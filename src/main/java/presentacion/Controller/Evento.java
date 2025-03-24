@@ -23,9 +23,7 @@ public enum Evento {
 	INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA,
 	
 	//inicio de sesion valido
-	INICIO_SESION_OK,
-	
-	VISTA_PRINCIPAL;
+	INICIO_SESION_OK;
 	
 	
 }

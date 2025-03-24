@@ -1,10 +1,18 @@
 package presentacion.GUI;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.*;
+import javax.imageio.*;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataNode;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.border.LineBorder;
 
 import presentacion.Controller.Controller;
@@ -138,7 +146,9 @@ public class GUI_InicioSesion implements ObservadorGUI {
 
 		switch (evento) {
 		case INICIO_SESION_OK:
-			Controller.getInstance().handleRequest(new Context(Evento.VISTA_PRINCIPAL, null));
+			new GUI_Bienvenida();
+			TSesion s = (TSesion) c.getDato();
+			mostrarMensajeError(s.getUsername() + s.getPsswd() + s.getRol());
 			contador = 0;
 			break;
 
@@ -169,6 +179,83 @@ public class GUI_InicioSesion implements ObservadorGUI {
 			bloquearSesion();
 		}
 
+	}
+
+	private class GUI_Bienvenida extends JFrame {
+
+		public GUI_Bienvenida() {
+			init();
+		}
+
+		private void init() {
+			try {
+				File file = new File("/media/gif-ventana-bienvenida");
+				ImageInputStream inputStream = ImageIO.createImageInputStream(file);
+	            Iterator<ImageReader> readers = ImageIO.getImageReadersBySuffix("gif");
+
+	            if (!readers.hasNext()) {
+	                throw new IOException("No se encontró un lector para GIF.");
+	            }
+
+	            ImageReader reader = readers.next();
+	            reader.setInput(inputStream, false);
+
+	            // Calcular la duración total del GIF
+	            int numFrames = reader.getNumImages(true);
+	            int duracionTotal = 0;
+
+	            for (int i = 0; i < numFrames; i++) {
+	                IIOMetadata metadata = reader.getImageMetadata(i);
+	                String metaFormat = metadata.getNativeMetadataFormatName();
+	                IIOMetadataNode root = (IIOMetadataNode) metadata.getAsTree(metaFormat);
+	                
+	                IIOMetadataNode graphicsControlExtensionNode = getNode(root, "GraphicControlExtension");
+
+	                if (graphicsControlExtensionNode != null) {
+	                    String delayTime = graphicsControlExtensionNode.getAttribute("delayTime");
+	                    duracionTotal += Integer.parseInt(delayTime); // Está en centésimas de segundo
+	                }
+	            }
+
+	            // Convertir a milisegundos
+	            duracionTotal *= 10;
+
+	            // Mostrar el GIF en un JLabel
+	            ImageIcon gif = new ImageIcon("tu_gif.gif");
+	            JLabel label = new JLabel(gif);
+	            add(label);
+
+	            // Configurar JFrame
+	            setSize(gif.getIconWidth(), gif.getIconHeight());
+	            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	            setLocationRelativeTo(null);
+	            setVisible(true);
+
+	            // Cerrar la ventana automáticamente después de la duración total del GIF
+	            Timer timer = new Timer();
+	            timer.schedule(new TimerTask() {
+	                @Override
+	                public void run() {
+	                    dispose(); // Cierra la ventana
+	                    timer.cancel(); // Cancela la tarea
+	                }
+	            }, duracionTotal);
+
+			} catch (Exception e) {
+				mostrarMensajeError("No se pudo cargar la pantalla de bienvenida");
+
+			}
+		}
+		
+		private static IIOMetadataNode getNode(IIOMetadataNode root, String nodeName) {
+	        for (int i = 0; i < root.getLength(); i++) {
+	            if (root.item(i).getNodeName().equalsIgnoreCase(nodeName)) {
+	                return (IIOMetadataNode) root.item(i);
+	            }
+	        }
+	        return null;
+	    }
+		
 	}
 
 	private void bloquearSesion() {

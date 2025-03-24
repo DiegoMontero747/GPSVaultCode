@@ -16,6 +16,6 @@ public class Main {
 
 		}
 
-		Controller.getInstance().handleRequest(new Context(Evento.GUI_INICIO_SESION, null));
+		Controller.getInstance().handleRequest(new Context(Evento.GUI_CREAR_TARJETA_DEBITO, null));
 	}
 }

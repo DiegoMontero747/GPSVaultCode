@@ -23,7 +23,13 @@ public enum Evento {
 	INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA,
 	
 	//inicio de sesion valido
-	INICIO_SESION_OK;
+	INICIO_SESION_OK,
 	
+	
+	GUI_CREAR_TARJETA_DEBITO,
+	
+	//crear tarjeta de debito al titular de la cuenta
+	CREAR_TARJETA_DEBITO;
+
 	
 }

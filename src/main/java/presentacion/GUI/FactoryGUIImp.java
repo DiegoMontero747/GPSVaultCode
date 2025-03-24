@@ -33,7 +33,10 @@ public class FactoryGUIImp extends FactoryGUI {
             INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
                 return GUI_InicioSesion.class;
 
-
+            
+            case GUI_CREAR_TARJETA_DEBITO:
+                return GUI_CrearTarjetaDebito.class;
+                
             // Agregar más casos según se necesiten
 
             default:

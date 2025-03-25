@@ -1,4 +1,4 @@
-package Tarjetas;
+package negocio.Tarjetas;
 
 public class TTarjeta {
     

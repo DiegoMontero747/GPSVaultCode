@@ -2,13 +2,20 @@ package presentacion.GUI;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import Tarjetas.SATarjetasImp;
+import Tarjetas.TTarjeta;
+
+import negocio.Factory.ResultContext;
 import presentacion.Controller.Context;
+import presentacion.Controller.Evento;
+
 import java.awt.*;
 
 public class GUI_CrearTarjetaDebito implements ObservadorGUI {
     private JFrame frame;
     private JTextField nombreTitularField, documentoField, entidadField, oficinaField, digitoControlField, cuentaField;
-    private JComboBox<String> tipoDocumentoCombo, tipoCuentaCombo;
+    private JComboBox<String> tipoDocumentoCombo;
     private JButton crearTarjetaButton, cancelarButton;
 
     public GUI_CrearTarjetaDebito() {
@@ -66,12 +73,6 @@ public class GUI_CrearTarjetaDebito implements ObservadorGUI {
         ibanPanel.add(cuentaField);
         contentPanel.add(ibanPanel);
 
-        JLabel tipoCuentaLabel = new JLabel("Tipo de cuenta:");
-        setLabelStyle(tipoCuentaLabel);
-        contentPanel.add(tipoCuentaLabel);
-        tipoCuentaCombo = new JComboBox<>(new String[]{"Nómina", "Corriente", "Ahorro"});
-        contentPanel.add(tipoCuentaCombo);
-
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         crearTarjetaButton = createStyledButton("CREAR TARJETA");
         cancelarButton = createStyledButton("CANCELAR");
@@ -80,6 +81,68 @@ public class GUI_CrearTarjetaDebito implements ObservadorGUI {
 
         frame.add(contentPanel, BorderLayout.CENTER);
         frame.add(buttonPanel, BorderLayout.SOUTH);
+
+        cancelarButton.addActionListener(e -> frame.dispose());
+
+        crearTarjetaButton.addActionListener(e -> {
+            String nombreTitular = nombreTitularField.getText().trim();
+            String tipoDocumento = (String) tipoDocumentoCombo.getSelectedItem();
+            String numeroDocumento = documentoField.getText().trim();
+            String entidad = entidadField.getText().trim();
+            String oficina = oficinaField.getText().trim();
+            String digitoControl = digitoControlField.getText().trim();
+            String cuenta = cuentaField.getText().trim();
+            
+            if (entidad.isBlank() || oficina.isBlank() || digitoControl.isBlank() || cuenta.isBlank()) {
+                mensaje("Debe completar todos los campos del IBAN.", "Error", JOptionPane.ERROR_MESSAGE, false);
+                return;
+            }
+            
+            // Construimos el objeto TTarjeta
+            TTarjeta tarjeta = new TTarjeta(nombreTitular, tipoDocumento, numeroDocumento, entidad+oficina+digitoControl+cuenta);
+
+            // Llamamos al SA para crear la tarjeta
+            SATarjetasImp sat = new SATarjetasImp();
+            ResultContext result = sat.crearTarjetaDebito(tarjeta);
+
+            // Evaluamos la respuesta del SA
+            switch (result.getEvento()) {
+            case CREAR_TARJETA_OK:
+                mensaje("Tarjeta de débito creada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE, true);
+                break;
+            case CREAR_TARJETA_ERROR_TIPO_DOCUMENTO_INVALIDO:
+                mensaje("Número de documento inválido.", "Error", JOptionPane.ERROR_MESSAGE, true);
+                break;
+            case CREAR_TARJETA_ERROR_CUENTA_INEXISTENTE:
+                mensaje("La cuenta IBAN ingresada no existe.", "Error", JOptionPane.ERROR_MESSAGE, false);
+                break;
+            case CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS:
+                mensaje("Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE, false);
+                break;
+            case CREAR_TARJETA_ERROR_DB:
+                mensaje("Error en la base de datos al registrar la tarjeta.", "Error", JOptionPane.ERROR_MESSAGE, false);
+                break;
+        }
+
+        });
+    }
+    
+    private void mensaje(String msg, String title, int msgType, boolean limpiar) {
+        JOptionPane.showMessageDialog(frame, msg, title, msgType);
+        if (limpiar) {
+            limpiarCampos();
+        }
+    }
+
+
+    private void limpiarCampos() {
+        nombreTitularField.setText("");
+        documentoField.setText("");
+        entidadField.setText("");
+        oficinaField.setText("");
+        digitoControlField.setText("");
+        cuentaField.setText("");
+        tipoDocumentoCombo.setSelectedIndex(0);
     }
 
     private JButton createStyledButton(String text) {
@@ -104,5 +167,3 @@ public class GUI_CrearTarjetaDebito implements ObservadorGUI {
         // TODO: Implementación de actualización
     }
 }
-
-

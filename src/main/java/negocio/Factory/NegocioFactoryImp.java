@@ -9,5 +9,9 @@ public class NegocioFactoryImp extends NegocioFactory {
     public SAManejoSesiones crearSAManejoSesiones() {
         return new SAManejoSesionesImp();
     }
+    
+    public SATarjetas crearSATarjetas() {
+        return new SATarjetasImp();
+    }
 
 }

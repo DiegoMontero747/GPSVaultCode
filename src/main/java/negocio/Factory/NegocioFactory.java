@@ -13,5 +13,8 @@ public abstract class NegocioFactory {
 	}
 
 	public abstract SAManejoSesiones crearSAManejoSesiones();
+	
+	public abstract SATarjetas crearSATarjetas();
+
 
 }

@@ -3,8 +3,7 @@ package presentacion.GUI;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import Tarjetas.SATarjetasImp;
-import Tarjetas.TTarjeta;
+import negocio.Tarjetas.*;
 
 import negocio.Factory.ResultContext;
 import presentacion.Controller.Context;

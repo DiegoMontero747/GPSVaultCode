@@ -3,10 +3,10 @@ package negocio.Tarjetas;
 public class TTarjeta {
     
 		private String nombreCompleto;
-	    private String tipoDocumento; // DNI / NIE
+	    private String tipoDocumento; // DNI o NIE
 	    private String numeroDocumento;
-	    private String numeroCuenta; // IBAN
-	    private String tipoTarjeta; // "Debito" o "Credito"
+	    private String numeroCuenta;
+	    private String tipoTarjeta; // Debito o credito
 	    private String estado; // Activa, Bloqueada, etc.
 	    private double limiteCredito; // Solo para crédito
 
@@ -15,19 +15,18 @@ public class TTarjeta {
         this.tipoDocumento = tipoDocumento;
         this.numeroDocumento = numeroDocumento;
         this.numeroCuenta = numeroCuenta;
-        this.tipoTarjeta = "Debito"; // Por defecto, débito
-        this.estado = "Activa"; // Se crea activa por defecto
-        this.limiteCredito = 0.0; // No aplica a débito
+        this.tipoTarjeta = "Debito";
+        this.estado = "Activa";
+        this.limiteCredito = 0.0; // No en debito
     }
 
-    // Constructor para tarjeta de crédito
     public TTarjeta(String nombreCompleto, String tipoDocumento, String numeroDocumento, String numeroCuenta, double limiteCredito) {
         this.nombreCompleto = nombreCompleto;
         this.tipoDocumento = tipoDocumento;
         this.numeroDocumento = numeroDocumento;
         this.numeroCuenta = numeroCuenta;
-        this.tipoTarjeta = "Credito"; // Específico para crédito
-        this.estado = "Activa"; // Se crea activa por defecto
+        this.tipoTarjeta = "Credito";
+        this.estado = "Activa";
         this.limiteCredito = limiteCredito;
     }
     

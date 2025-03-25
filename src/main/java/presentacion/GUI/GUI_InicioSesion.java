@@ -1,7 +1,6 @@
 package presentacion.GUI;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -21,6 +20,10 @@ import presentacion.Controller.Context;
 import presentacion.Controller.Evento;
 
 public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel errorLabel;
 	private int contador = 0;
 	private static final int TIEMPO_BLOQUEO = 60000; // 1 minuto de bloqueo
@@ -54,10 +57,6 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
 		gbc.insets = new Insets(10, 10, 10, 10);
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.anchor = GridBagConstraints.CENTER;
-
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(10, 10, 10, 10);
-		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		JLabel titleLabel = new JLabel("VAULTCODE", SwingConstants.CENTER);
 		titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
@@ -115,22 +114,24 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
 		gbc.gridwidth = 1;
 		gbc.fill = GridBagConstraints.HORIZONTAL; // Permite que el JLabel de error se expanda horizontalmente
 		contentPanel.add(errorLabel, gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		gbc.gridwidth = 2;
+		contentPanel.add(loginButton, gbc);
 
 		this.setVisible(true);
 	}
 
 	// Panel personalizado para el fondo con imagen
 	private static class ImagePanel extends JPanel {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private Image backgroundImage;
 
-		public ImagePanel(String imagePath) {
-			backgroundImage = new ImageIcon(imagePath).getImage();
-			this.setPreferredSize(null); // Aseguramos que el tamaño se ajuste al contenido
-		}
-
 		// Panel personalizado para el fondo con imagen
-		private static class ImagePanel extends JPanel {
-			private Image backgroundImage;
 
 			public ImagePanel(String imagePath) {
 				backgroundImage = new ImageIcon(imagePath).getImage();
@@ -143,52 +144,59 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
 					g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 				}
 			}
-		}
+	}
 
 		@Override
 		public void actualizar(Context c) {
 			Evento evento = (Evento) c.getEvento();
-			if (c == null)
-				return;
+			if (c != null) {
+				switch (evento) {
+					case INICIO_SESION_OK:
+						new GUI_Bienvenida();
+						TSesion s = (TSesion) c.getDato();
+						mostrarMensajeError(s.getUsername() + s.getPsswd() + s.getRol());
+						contador = 0;
+						break;
 
-			switch (evento) {
-				case INICIO_SESION_OK:
-					new GUI_Bienvenida();
-					TSesion s = (TSesion) c.getDato();
-					mostrarMensajeError(s.getUsername() + s.getPsswd() + s.getRol());
-					contador = 0;
-					break;
+					case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
+						mostrarMensajeError("Usuario no encontrado.");
+						break;
 
-				case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
-					mostrarMensajeError("Usuario no encontrado.");
-					break;
+					case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
+						mostrarMensajeError("Contraseña incorrecta.");
+						break;
 
-				case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
-					mostrarMensajeError("Contraseña incorrecta.");
-					break;
+					case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
+						mostrarMensajeError("Debe ingresar una contraseña.");
+						break;
 
-				case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
-					mostrarMensajeError("Debe ingresar una contraseña.");
-					break;
+					case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
+						mostrarMensajeError("Debe ingresar un usuario.");
+						break;
 
-				case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
-					mostrarMensajeError("Debe ingresar un usuario.");
-					break;
-
-				default:
-					mostrarMensajeError("Error desconocido.");
-					break;
+					default:
+						mostrarMensajeError("Error desconocido.");
+						break;
+				}
+				if (evento == Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA) {
+					contador++;
+				}
+				if (contador >= 3) {
+					bloquearSesion();
 			}
-			if (evento == Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA) {
-				contador++;
 			}
-			if (contador >= 3) {
-				bloquearSesion();
-			}
+			
+			
+			
 
 		}
 
 		private class GUI_Bienvenida extends JFrame {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			public GUI_Bienvenida() {
 				init();
@@ -321,8 +329,8 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
 				}
 			});
 
-			frame.revalidate();
-			frame.repaint();
+			this.revalidate();
+			this.repaint();
 		}
 	}
-}
+

@@ -22,7 +22,7 @@ public class ApplicationContainer extends JFrame implements ObservadorGUI{
         
         cardLayout = new CardLayout();
         setLayout(cardLayout);
-
+        
         setVisible(true);
     }
 
@@ -36,6 +36,10 @@ public class ApplicationContainer extends JFrame implements ObservadorGUI{
 
     public void addView(String name, JPanel view) {
         add(view, name); // Agrega el panel al CardLayout
+     // Registrarse como observador
+        Controller.getInstance().registerObserver(this);
+        Controller.getInstance().registerObserver((ObservadorGUI) view);
+        
     }
 
     public void showView(String name) {

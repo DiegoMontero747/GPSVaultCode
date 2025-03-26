@@ -1,4 +1,4 @@
-package negocio.Tarjetas;
+package negocio;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;

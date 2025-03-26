@@ -52,7 +52,6 @@ public class SATarjetasImp implements SATarjetas {
 	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_CUENTA_INEXISTENTE, null);
 	    }
 
-
 	    // Crear documento de la tarjeta
 	    Document nuevaTarjeta = new Document()
 	        .append("nombreCompleto", nombre)

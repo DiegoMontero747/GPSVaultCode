@@ -40,6 +40,8 @@ public class FactoryGUIImp extends FactoryGUI {
             	ApplicationContainer.getInstance().addView("LOGIN", new GUI_InicioSesion());
             	return ApplicationContainer.class;
 
+            case GUI_VISTAROLADMIN:
+                return GUI_VistaRolAdmin.class;
 
             // Agregar más casos según se necesiten
             default:

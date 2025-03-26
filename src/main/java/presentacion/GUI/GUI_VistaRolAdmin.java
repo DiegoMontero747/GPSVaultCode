@@ -1,0 +1,73 @@
+package presentacion.GUI;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
+import presentacion.Controller.Context;
+
+import java.awt.*;
+
+public class GUI_VistaRolAdmin  implements ObservadorGUI {
+    private JFrame frame;
+    private JTable userTable;
+    private JButton addFundsButton, retireFundsButton, logoutButton, createUserButton;
+    
+    public GUI_VistaRolAdmin() {
+        initialize();
+        frame.setVisible(true);  
+    }
+
+    private void initialize() {
+        frame = new JFrame("Panel de Administración - VAULTCODE");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(800, 500);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(new BorderLayout());
+
+        // Panel lateral con opciones
+        JPanel sidePanel = new JPanel();
+        sidePanel.setLayout(new GridLayout(4, 1, 10, 10));
+        sidePanel.setBackground(new Color(30, 30, 30));
+        sidePanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        createUserButton = createStyledButton("Crear Usuario");
+        addFundsButton = createStyledButton("Añadir Fondos");
+        retireFundsButton = createStyledButton("Retirar Fondos");
+        logoutButton = createStyledButton("Cerrar Sesión");
+
+        sidePanel.add(createUserButton);
+        sidePanel.add(addFundsButton);
+        sidePanel.add(retireFundsButton);
+        sidePanel.add(logoutButton);
+        
+        // Panel de contenido principal con tabla de usuarios
+        JPanel contentPanel = new JPanel(new BorderLayout());
+        contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        
+        JScrollPane scrollPane = new JScrollPane(userTable);
+        
+        contentPanel.add(new JLabel("Usuarios"), BorderLayout.NORTH);
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
+
+        frame.add(sidePanel, BorderLayout.WEST);
+        frame.add(contentPanel, BorderLayout.CENTER);
+        frame.setVisible(true);
+    }
+    
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        button.setBackground(new Color(0, 87, 160));
+        button.setForeground(Color.BLACK);
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        button.setOpaque(true);  // Asegura que el color de fondo se aplique
+        return button;
+    }
+
+	@Override
+	public void actualizar(Context c) {
+		// TODO Auto-generated method stub
+		
+	}
+}

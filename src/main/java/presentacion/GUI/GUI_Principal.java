@@ -7,22 +7,18 @@ import presentacion.Controller.Context;
 
 import java.awt.*;
 
-public class GUI_VistaRolAdmin  implements ObservadorGUI {
-    private JFrame frame;
+public class GUI_Principal extends JPanel implements ObservadorGUI {
     private JTable userTable;
     private JButton addFundsButton, retireFundsButton, logoutButton, createUserButton;
     
-    public GUI_VistaRolAdmin() {
+    public GUI_Principal() {
         initialize();
-        frame.setVisible(true);  
+        this.setVisible(true);  
     }
 
     private void initialize() {
-        frame = new JFrame("Panel de Administración - VAULTCODE");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(800, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setLayout(new BorderLayout());
+        this.setSize(800, 500);
+        this.setLayout(new BorderLayout());
 
         // Panel lateral con opciones
         JPanel sidePanel = new JPanel();
@@ -49,9 +45,9 @@ public class GUI_VistaRolAdmin  implements ObservadorGUI {
         contentPanel.add(new JLabel("Usuarios"), BorderLayout.NORTH);
         contentPanel.add(scrollPane, BorderLayout.CENTER);
 
-        frame.add(sidePanel, BorderLayout.WEST);
-        frame.add(contentPanel, BorderLayout.CENTER);
-        frame.setVisible(true);
+        this.add(sidePanel, BorderLayout.WEST);
+        this.add(contentPanel, BorderLayout.CENTER);
+        this.setVisible(true);
     }
     
     private JButton createStyledButton(String text) {

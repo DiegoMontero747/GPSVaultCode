@@ -152,9 +152,8 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
 			if (c != null) {
 				switch (evento) {
 					case INICIO_SESION_OK:
-						new GUI_Bienvenida();
-						TSesion s = (TSesion) c.getDato();
-						mostrarMensajeError(s.getUsername() + s.getPsswd() + s.getRol());
+						
+						Controller.getInstance().handleRequest(new Context(Evento.GUI_VISTAROLADMIN, c.getDato()));
 						contador = 0;
 						break;
 
@@ -174,9 +173,6 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
 						mostrarMensajeError("Debe ingresar un usuario.");
 						break;
 
-					default:
-						mostrarMensajeError("Error desconocido.");
-						break;
 				}
 				if (evento == Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA) {
 					contador++;

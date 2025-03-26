@@ -22,4 +22,9 @@ private static Controller instance;
 	public abstract void registerObserver(ObservadorGUI obs);
 	
 	public abstract void notificarObservadores(Context c);
+
+	public void UNregisterObserver(ObservadorGUI obs) {
+		// TODO Auto-generated method stub
+		
+	}
 }

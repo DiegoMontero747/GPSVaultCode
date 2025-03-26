@@ -35,4 +35,10 @@ public class ControllerImp extends Controller {
 	          obs.actualizar(c);
 	      }
 	 }
+	 
+	 @Override
+	 public void UNregisterObserver(ObservadorGUI obs) {
+		 if(observadores.contains(obs))
+			 observadores.remove(obs);
+	 }
 }

@@ -1,5 +1,6 @@
 package presentacion.GUI;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 
 import javax.swing.JFrame;
@@ -54,6 +55,9 @@ public class ApplicationContainer extends JFrame implements ObservadorGUI{
             case GUI_INICIO_SESION:
                 showView("LOGIN");
                 break;
+            case GUI_VISTAROLADMIN:
+            	//Controller.getInstance().UNregisterObserver((ObservadorGUI) ((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.CENTER));
+            	showView("VISTA_PRINCIPAL");
         }
     }
 }

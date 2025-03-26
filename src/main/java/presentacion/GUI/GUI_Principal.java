@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import presentacion.Controller.Context;
+import presentacion.GUI_Components.Menu_Header;
 
 import java.awt.*;
 
@@ -19,6 +20,13 @@ public class GUI_Principal extends JPanel implements ObservadorGUI {
     private void initialize() {
         this.setSize(800, 500);
         this.setLayout(new BorderLayout());
+        this.setBackground(new Color(50, 50, 50));
+        
+        
+        //Header de Menu
+        this.add(new Menu_Header(), BorderLayout.NORTH);
+        
+        
 
         // Panel lateral con opciones
         JPanel sidePanel = new JPanel();
@@ -44,6 +52,7 @@ public class GUI_Principal extends JPanel implements ObservadorGUI {
         
         contentPanel.add(new JLabel("Usuarios"), BorderLayout.NORTH);
         contentPanel.add(scrollPane, BorderLayout.CENTER);
+        contentPanel.setOpaque(false);
 
         this.add(sidePanel, BorderLayout.WEST);
         this.add(contentPanel, BorderLayout.CENTER);

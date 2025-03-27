@@ -37,6 +37,7 @@ public class CrearTarjetaDebitoIntegracionTest {
                 .append("numeroCuenta", "ES1234567890123456789012");
         //tenemos que eliminar los usuarios de la bd que vayamos a crear si existen y luego volver a crearlos
         db.deleteDocument(Collections.TARJETA, doc);
+        tarjeta = new TTarjeta();
     }
     
     @After

@@ -44,19 +44,6 @@ public class GUI_Principal extends JPanel implements ObservadorGUI {
         sidePanel.add(retireFundsButton);
         sidePanel.add(logoutButton);
         
-        // Panel de contenido principal con tabla de usuarios
-        JPanel contentPanel = new JPanel(new BorderLayout());
-        contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        
-        JScrollPane scrollPane = new JScrollPane(userTable);
-        
-        contentPanel.add(new JLabel("Usuarios"), BorderLayout.NORTH);
-        contentPanel.add(scrollPane, BorderLayout.CENTER);
-        contentPanel.setOpaque(false);
-
-        this.add(sidePanel, BorderLayout.WEST);
-        this.add(contentPanel, BorderLayout.CENTER);
-        this.setVisible(true);
     }
     
     private JButton createStyledButton(String text) {

@@ -11,6 +11,8 @@ import java.awt.*;
 public class GUI_Principal extends JPanel implements ObservadorGUI {
     private JTable userTable;
     private JButton addFundsButton, retireFundsButton, logoutButton, createUserButton;
+    private JPanel cardPanel;
+    private CardLayout cardLayout;
     
     public GUI_Principal() {
         initialize();
@@ -25,6 +27,12 @@ public class GUI_Principal extends JPanel implements ObservadorGUI {
         
         //Header de Menu
         this.add(new Menu_Header(), BorderLayout.NORTH);
+        
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
+        cardPanel.setOpaque(false);
+        
+        this.add(cardPanel, BorderLayout.CENTER);
         
         
 

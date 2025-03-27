@@ -54,4 +54,13 @@ public class TCrearCuentaAdm {
 		
 		return false;
 	}
+	
+	public boolean datosVacios() {
+		if(!nullData()) {
+			return nombre.isBlank() || usuario.isBlank() || dni.isBlank() || rol.isBlank() || contrasenya.isBlank()
+					|| apellido.isBlank();
+		}
+		//devuelve falso si los datos son nulos
+		return false;
+	}
 }

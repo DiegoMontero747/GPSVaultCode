@@ -31,6 +31,10 @@ public class SACrearCuentaAdministracionImp implements SACrearCuentaAdministraci
 			return new ResultContext(Evento.CREAR_CUENTA_ADM_ERROR_DATOS_NULOS,data);
 		}
 		
+		if (data.datosVacios()) {
+			return new ResultContext(Evento.CREAR_CUENTA_ADM_ERROR_DATOS_VACIOS,data);
+		}
+		
 	
 		
 		if(validarDNI(data.getDni()) || validarNIE(data.getDni())) {

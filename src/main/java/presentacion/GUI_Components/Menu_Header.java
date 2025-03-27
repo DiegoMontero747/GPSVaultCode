@@ -20,25 +20,37 @@ public class Menu_Header extends JPanel {
         setPreferredSize(new Dimension(800, 50)); // Ajustado para mejor proporción
         setBackground(new Color(40, 40, 40));
 
-        // 🔹 Crear botón con imagen
+        //boton menu
         JButton btnMenu = new JButton();
         ImageIcon icon = new ImageIcon("media/icons8-menu-64.png"); // Ruta de la imagen
         Image img = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         btnMenu.setIcon(new ImageIcon(img));
         
+        //Boton de usuario
+        JButton btnOpt = new JButton();
+        icon = new ImageIcon("media/icons8-user-64.png"); // Ruta de la imagen
+        img = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        btnOpt.setIcon(new ImageIcon(img));
+        
         // Ajustar tamaño del botón al de la imagen
         btnMenu.setPreferredSize(new Dimension(50, 50));
         btnMenu.setMinimumSize(new Dimension(50, 50));
         btnMenu.setMaximumSize(new Dimension(50, 50));
+        
+        btnOpt.setPreferredSize(new Dimension(50, 50));
+        btnOpt.setMinimumSize(new Dimension(50, 50));
+        btnOpt.setMaximumSize(new Dimension(50, 50));
 
         // Eliminar bordes y relleno
         btnMenu.setBorderPainted(false);
         btnMenu.setContentAreaFilled(false);
         btnMenu.setFocusPainted(false);
         btnMenu.setMargin(new java.awt.Insets(0, 0, 0, 0));
-
-        // 🔹 Botón de opciones
-        JButton btnOpt = new JButton("Options");
+        
+        btnOpt.setBorderPainted(false);
+        btnOpt.setContentAreaFilled(false);
+        btnOpt.setFocusPainted(false);
+        btnOpt.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         // Agregar componentes con espacio flexible
         add(btnMenu);

@@ -34,7 +34,7 @@ public class SACrearCuentaAdministracionImp implements SACrearCuentaAdministraci
 		Matcher matcher = patron.matcher(data.getDni());
 		boolean nif_correct = matcher.find();
 		if(nif_correct) {
-			List<Document> perfiles = db.getAllDocuments(Collections.PERFIL);
+			List<Document> perfiles = db.readDocument(null, Collections.PERFIL);
 			//iteramos sobre los perfiles buscando si ya hay alguno con ese DNI
 			for(Document doc: perfiles) {
 				if(doc.containsValue(data.getDni())) {

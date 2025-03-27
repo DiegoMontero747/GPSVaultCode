@@ -28,6 +28,7 @@ public class GUI_Principal extends JPanel implements ObservadorGUI {
         //Header de Menu
         this.add(new Menu_Header(), BorderLayout.NORTH);
         
+        //Este CardLayout permitira que podamos mostrar las diferentes subvistas sin mucha complcacion
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
         cardPanel.setOpaque(false);

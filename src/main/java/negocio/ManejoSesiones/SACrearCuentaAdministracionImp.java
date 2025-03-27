@@ -25,6 +25,11 @@ public class SACrearCuentaAdministracionImp implements SACrearCuentaAdministraci
 	
 	@Override
 	public ResultContext crearCuenta(TCrearCuentaAdm data) {
+		
+		if(data.nullData()) {
+			
+			return new ResultContext(Evento.CREAR_CUENTA_ADM_ERROR_DATOS_NULOS,data);
+		}
 		//expresion regular para comprobar la validez del dni tiene que tener 8 numeros mas una letra de entre las que
 		//estan en el patron
 		String nifRegex = "^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$";

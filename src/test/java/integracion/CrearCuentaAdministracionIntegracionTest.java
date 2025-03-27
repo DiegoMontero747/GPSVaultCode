@@ -106,4 +106,10 @@ public class CrearCuentaAdministracionIntegracionTest {
 		ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
 		assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_ROL_INCORRECTO, resultado.getEvento());
 	}
+	
+	@Test
+	public void crearCuentaAdm_Nulos() {
+		ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
+		assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_DATOS_NULOS, resultado.getEvento());
+	}
 }

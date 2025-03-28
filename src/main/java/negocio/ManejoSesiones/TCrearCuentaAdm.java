@@ -4,7 +4,7 @@ public class TCrearCuentaAdm {
 
 	private String nombre;
 	private String apellido;
-	private String constrasenya;
+	private String contrasenya;
 	private String dni;
 	private String usuario;
 	private String rol;
@@ -22,10 +22,10 @@ public class TCrearCuentaAdm {
 		this.apellido = apellido;
 	}
 	public String getConstrasenya() {
-		return constrasenya;
+		return contrasenya;
 	}
 	public void setConstrasenya(String constrasenya) {
-		this.constrasenya = constrasenya;
+		this.contrasenya = constrasenya;
 	}
 	public String getDni() {
 		return dni;
@@ -44,5 +44,23 @@ public class TCrearCuentaAdm {
 	}
 	public void setRol(String rol) {
 		this.rol = rol;
+	}
+	
+	public boolean nullData() {
+		if(nombre == null || usuario == null || dni == null || rol == null || contrasenya == null || apellido == null)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean datosVacios() {
+		if(!nullData()) {
+			return nombre.isBlank() || usuario.isBlank() || dni.isBlank() || rol.isBlank() || contrasenya.isBlank()
+					|| apellido.isBlank();
+		}
+		//devuelve falso si los datos son nulos
+		return false;
 	}
 }

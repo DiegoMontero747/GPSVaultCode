@@ -54,4 +54,62 @@ public class CrearCuentaAdministracionIntegracionTest {
 		ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
 		assertEquals(Evento.CREAR_CUENTA_ADM_EXITO, resultado.getEvento());
 	}
+	@Test
+	public void crearCuentaAdm_DNI_Erroneo() {
+		datos_crearCuenta.setNombre("Mario");
+		datos_crearCuenta.setApellido("Bros");
+		datos_crearCuenta.setDni("1234567P");
+		datos_crearCuenta.setRol("administracion");
+		datos_crearCuenta.setUsuario("Champinyon");
+		datos_crearCuenta.setConstrasenya("mario64");
+		
+		ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
+		assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_FORMATO_DNI, resultado.getEvento());
+	}
+	@Test
+	public void crearCuentaAdm_DNI_Existente() {
+		//creamos el personal primero
+		 db.insertDocument(Collections.PERFIL, new Document("nombre", "Mario")
+	                .append("contrasenya", "mario64")
+	                .append("rol", "administracion")
+	                .append("usuario", "Champinyon")
+	                .append("dni", "12345678P")
+	                .append("apellido", "Bros"));
+		
+		
+		
+		datos_crearCuenta.setNombre("Mario");
+		datos_crearCuenta.setApellido("Bros");
+		datos_crearCuenta.setDni("12345678P");
+		datos_crearCuenta.setRol("administracion");
+		datos_crearCuenta.setUsuario("Champinyon");
+		datos_crearCuenta.setConstrasenya("mario64");
+		
+		ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
+		assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_DNI_ENCONTRADO, resultado.getEvento());
+	}
+	
+	@Test
+	public void crearCuentaAdm_ROL_Incorrecto() {
+		//creamos el personal primero
+		 
+		
+		
+		
+		datos_crearCuenta.setNombre("Mario");
+		datos_crearCuenta.setApellido("Bros");
+		datos_crearCuenta.setDni("12345678P");
+		datos_crearCuenta.setRol("lider");
+		datos_crearCuenta.setUsuario("Champinyon");
+		datos_crearCuenta.setConstrasenya("mario64");
+		
+		ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
+		assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_ROL_INCORRECTO, resultado.getEvento());
+	}
+	
+	@Test
+	public void crearCuentaAdm_Nulos() {
+		ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
+		assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_DATOS_NULOS, resultado.getEvento());
+	}
 }

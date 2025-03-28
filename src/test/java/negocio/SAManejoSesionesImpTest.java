@@ -60,7 +60,8 @@ public class SAManejoSesionesImpTest {
     @Test
     public void testInicioSesion_UsuarioNoExiste() {
         // Configurar el mock
-        when(db.readDocument((new Document()).append("nombre", "usuario_inexistente"), Collections.PERFIL)).thenReturn(null);
+    	ArrayList<Document> doc = new ArrayList<Document>();
+        when(db.readDocument((new Document()).append("nombre", "usuario_inexistente"), Collections.PERFIL)).thenReturn(doc);
 
         // Configurar la sesión
         sesion.setUsername("usuario_inexistente");

@@ -25,16 +25,22 @@ public class SACrearCuentaAdministracionImp implements SACrearCuentaAdministraci
 	
 	@Override
 	public ResultContext crearCuenta(TCrearCuentaAdm data) {
-		//expresion regular para comprobar la validez del dni tiene que tener 8 numeros mas una letra de entre las que
-		//estan en el patron
-		String nifRegex = "^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$";
-		//compilamos el regex
-		Pattern patron = Pattern.compile(nifRegex);
-		//comprobamos que el dni tenga formato correcto
-		Matcher matcher = patron.matcher(data.getDni());
-		boolean nif_correct = matcher.find();
-		if(nif_correct) {
-			List<Document> perfiles = db.readDocument(null, Collections.PERFIL);
+
+		
+		if(data.nullData()) {
+			
+			return new ResultContext(Evento.CREAR_CUENTA_ADM_ERROR_DATOS_NULOS,data);
+		}
+		
+		if (data.datosVacios()) {
+			return new ResultContext(Evento.CREAR_CUENTA_ADM_ERROR_DATOS_VACIOS,data);
+		}
+		
+	
+		
+		if(validarDNI(data.getDni()) || validarNIE(data.getDni())) {
+			List<Document> perfiles = db.readDocument(null,Collections.PERFIL);
+
 			//iteramos sobre los perfiles buscando si ya hay alguno con ese DNI
 			for(Document doc: perfiles) {
 				if(doc.containsValue(data.getDni())) {
@@ -42,8 +48,8 @@ public class SACrearCuentaAdministracionImp implements SACrearCuentaAdministraci
 				}
 			}
 			//comprobamos que el rol introducido es el correcto
-			String rolRegex = "(?i)^(administracion|activo|pasivo)$";
-			if(data.getRol().matches(rolRegex)) {
+			
+			if(validarROL(data.getRol())) {
 				Document nuevoperfil = new Document();
 				nuevoperfil.append("nombre",data.getNombre());
 				nuevoperfil.append("apellido",data.getApellido());
@@ -66,5 +72,23 @@ public class SACrearCuentaAdministracionImp implements SACrearCuentaAdministraci
 		}
 		
 	}
+	
+// Validar DNI: 8 numeros y una letra
+	private boolean validarDNI(String dni) {
+	    String regexDNI = "^[0-9]{8}[A-Za-z]$";
+	    return dni.matches(regexDNI);
+	}
+
+	// Validar NIE: Letra X/Y/Z, 7 numeros y una letra
+	private boolean validarNIE(String nie) {
+	    String regexNIE = "^[XYZ]\\d{7}[A-Za-z]$";
+	    return nie.matches(regexNIE);
+	}
+	
+	// Validar NIE: Letra X/Y/Z, 7 numeros y una letra
+		private boolean validarROL(String rol) {
+			String rolRegex = "(?i)^(servicios centrales|administracion|activo|pasivo)$";
+		    return rol.matches(rolRegex);
+		}
 
 }

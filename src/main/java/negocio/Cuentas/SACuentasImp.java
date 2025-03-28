@@ -37,8 +37,8 @@ public class SACuentasImp implements SACuentas {
 
         if (nombre == null || apellidos == null || dni == null || direccion == null || telefono == null)
             return new ResultContext(Evento.CREAR_CUENTA_BANCARIA_ERROR_DATOS_NULOS, null);
-        
-    	nombre = nombre.trim();
+
+        nombre = nombre.trim();
         apellidos = apellidos.trim();
         dni = dni.trim();
         direccion = direccion.trim();
@@ -46,6 +46,14 @@ public class SACuentasImp implements SACuentas {
 
         if (nombre.isBlank() || apellidos.isBlank() || dni.isBlank() || direccion.isBlank() || telefono.isBlank()) {
             return new ResultContext(Evento.CREAR_CUENTA_BANCARIA_ERROR_DATOS_INCOMPLETOS, null);
+        }
+        
+        if (!validarSoloAlfabeticos(nombre)) {
+            return new ResultContext(Evento.CREAR_CUENTA_BANCARIA_ERROR_CADENA_NO_ALFABETICA, null);
+        }
+
+        if (!validarSoloAlfabeticos(apellidos)) {
+            return new ResultContext(Evento.CREAR_CUENTA_BANCARIA_ERROR_CADENA_NO_ALFABETICA, null);
         }
 
         if (!validarDNI(dni)) {
@@ -76,8 +84,8 @@ public class SACuentasImp implements SACuentas {
         return dni.matches(regexDNI);
     }
 
-    /*private boolean validarNIE(String nie) {
-        String regexNIE = "^[XYZ]\\d{7}[A-Za-z]$";
-        return nie.matches(regexNIE);
-    } TODO VER SI AL FINAL SE USA DNI Y NIE O SOLO DNI(CAMBIAR SINO TAMBIEN EN TARJETAS)*/
+    private boolean validarSoloAlfabeticos(String cadena) {
+        String regex = "^[A-Za-z]+$";
+        return cadena.matches(regex);
+    }
 }

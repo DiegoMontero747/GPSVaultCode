@@ -37,6 +37,7 @@ public enum Evento {
     CREAR_CUENTA_BANCARIA_ERROR_CUENTA_NO_VALIDA,
     CREAR_CUENTA_BANCARIA_ERROR_DATOS_INCOMPLETOS, // Faltan datos obligatorios
     CREAR_CUENTA_BANCARIA_ERROR_DATOS_NULOS, // Faltan datos obligatorios
+    CREAR_CUENTA_BANCARIA_ERROR_CADENA_NO_ALFABETICA, // La cadena no contiene SOLO caracteres alfabeticos
     CREAR_CUENTA_BANCARIA_ERROR_TIPO_DOCUMENTO_INVALIDO, // Tipo de documento no valido
     CREAR_CUENTA_BANCARIA_ERROR_DB, // Error al insertar en la base de datos
     

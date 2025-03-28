@@ -22,7 +22,7 @@ public class SATarjetasImp implements SATarjetas {
 	@Override
 	public ResultContext crearTarjetaDebito(TTarjeta tarjeta) {
 	    if (tarjeta == null) {
-	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_TARJETA_NO_VALIDA, null);
+	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_TARJETA_NULL, null);
 	    }
 
 	    String nombre = tarjeta.getNombreCompleto();
@@ -42,14 +42,9 @@ public class SATarjetasImp implements SATarjetas {
 	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS, null);
 	    }
 
-	    // Validación del tipo de documento (DNI o NIE)
 	    if ("DNI".equalsIgnoreCase(tipoDocumento)) {
 	        if (!validarDNI(numeroDocumento))
-	            return new ResultContext(Evento.CREAR_TARJETA_ERROR_TIPO_DOCUMENTO_INVALIDO, null); // DNI inválido
-	        
-	    } else if ("NIE".equalsIgnoreCase(tipoDocumento)) {
-	        if (!validarNIE(numeroDocumento))
-	            return new ResultContext(Evento.CREAR_TARJETA_ERROR_TIPO_DOCUMENTO_INVALIDO, null); // NIE inválido
+	            return new ResultContext(Evento.CREAR_TARJETA_ERROR_TIPO_DOCUMENTO_INVALIDO, null); // DNI inválido   
 	    }
 
 	    // Validar si la cuenta IBAN existe en la base de datos
@@ -86,12 +81,6 @@ public class SATarjetasImp implements SATarjetas {
 	private boolean validarDNI(String dni) {
 	    String regexDNI = "^[0-9]{8}[A-Za-z]$";
 	    return dni.matches(regexDNI);
-	}
-
-	// Validar NIE: Letra X/Y/Z, 7 numeros y una letra
-	private boolean validarNIE(String nie) {
-	    String regexNIE = "^[XYZ]\\d{7}[A-Za-z]$";
-	    return nie.matches(regexNIE);
 	}
 
 	private boolean validarIBAN(String iban) {

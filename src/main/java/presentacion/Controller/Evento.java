@@ -21,7 +21,8 @@ public enum Evento {
 
     // Errores en la creacion de tarjeta de debito
     CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS, // Faltan datos obligatorios
-    CREAR_TARJETA_ERROR_DATOS_NULOS,
+    CREAR_TARJETA_ERROR_DATOS_NULOS, //Datos nulos
+    CREAR_TARJETA_ERROR_TARJETA_NULL, //La tarjeta no es valida (es null)
     CREAR_TARJETA_ERROR_TIPO_DOCUMENTO_INVALIDO, // Tipo de documento no valido
     CREAR_TARJETA_ERROR_CUENTA_INEXISTENTE, // La cuenta IBAN no existe en la base de datos
     CREAR_TARJETA_ERROR_DB, // Error al insertar en la base de datos

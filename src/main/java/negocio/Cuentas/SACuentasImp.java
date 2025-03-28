@@ -52,14 +52,6 @@ public class SACuentasImp implements SACuentas {
             return new ResultContext(Evento.CREAR_CUENTA_BANCARIA_ERROR_TIPO_DOCUMENTO_INVALIDO, null);
         }
 
-        // Comprobamos si ya existe una cuenta con el mismo número de documento
-        Document docExistente = new Document();
-        docExistente.append("numeroDocumento", dni);
-        List<Document> cuentasExistentes = db.readDocument(docExistente, Collections.CUENTABANC);
-        if (!cuentasExistentes.isEmpty()) {
-            return new ResultContext(Evento.CREAR_CUENTA_BANCARIA_ERROR_CUENTA_EXISTENTE, null); 
-        }
-
         Document nuevaCuenta = new Document()
             .append("nombreCompleto", nombre + " " + apellidos)
             .append("dni", dni)

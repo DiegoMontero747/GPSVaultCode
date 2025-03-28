@@ -38,7 +38,6 @@ public enum Evento {
     CREAR_CUENTA_BANCARIA_ERROR_DATOS_INCOMPLETOS, // Faltan datos obligatorios
     CREAR_CUENTA_BANCARIA_ERROR_DATOS_NULOS, // Faltan datos obligatorios
     CREAR_CUENTA_BANCARIA_ERROR_TIPO_DOCUMENTO_INVALIDO, // Tipo de documento no valido
-    CREAR_CUENTA_BANCARIA_ERROR_CUENTA_EXISTENTE, // El titular ya tiene una cuenta bancaria
     CREAR_CUENTA_BANCARIA_ERROR_DB, // Error al insertar en la base de datos
     
     // Tarjeta creada con exito

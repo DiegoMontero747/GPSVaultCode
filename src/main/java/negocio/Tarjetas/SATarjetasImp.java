@@ -22,7 +22,7 @@ public class SATarjetasImp implements SATarjetas {
 	@Override
 	public ResultContext crearTarjetaDebito(TTarjeta tarjeta) {
 	    if (tarjeta == null) {
-	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS, null);
+	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_TARJETA_NO_VALIDA, null);
 	    }
 
 	    String nombre = tarjeta.getNombreCompleto();

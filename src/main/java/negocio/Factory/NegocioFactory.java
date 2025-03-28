@@ -1,6 +1,7 @@
 package negocio.Factory;
 
 import negocio.ManejoSesiones.SAManejoSesiones;
+import negocio.Tarjetas.SATarjetas;
 
 public abstract class NegocioFactory {
 

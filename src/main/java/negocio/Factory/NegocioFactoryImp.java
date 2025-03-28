@@ -2,6 +2,7 @@ package negocio.Factory;
 
 import negocio.ManejoSesiones.SAManejoSesiones;
 import negocio.ManejoSesiones.SAManejoSesionesImp;
+import negocio.Tarjetas.*;
 
 public class NegocioFactoryImp extends NegocioFactory {
 

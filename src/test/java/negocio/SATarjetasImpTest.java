@@ -37,28 +37,40 @@ public class SATarjetasImpTest {
 
     @Test
     public void testCrearTarjetaDebito_Ok() {
-        //cuenta bancaria existente en la BBDD
-    	ArrayList<Document> listaCuentas = new ArrayList<>();
+        // Simular cuenta bancaria existente en la BBDD
+        ArrayList<Document> listaCuentas = new ArrayList<>();
         Document doc = new Document("nombreCompleto", "Juan Pérez")
                 .append("tipoDocumento", "DNI")
                 .append("numeroDocumento", "12345678A")
                 .append("numeroCuenta", "ES1234567890123456789012");
         listaCuentas.add(doc);
-		
-		
-        when(db.readDocument(new Document().append("numeroCuenta", "ES1234567890123456789012"),Collections.CUENTABANC)).thenReturn(listaCuentas);
+
+        when(db.readDocument(new Document().append("numeroCuenta", "ES1234567890123456789012"), Collections.CUENTABANC))
+                .thenReturn(listaCuentas);
 
         tarjeta.setNombreCompleto("Juan Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345678A");
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
-        //TODO CAMBIAR ESTO PARA QUE DEVUELVA UNA LISTA CON LA TARKJETA
-        when(db.readDocument(new Document().append("numeroDocumento", "12345678A"),Collections.TARJETA)).thenReturn(new ArrayList<Document>());
+
+        ArrayList<Document> listaTarjetas = new ArrayList<>();
+        Document tarjetaInsertada = new Document()
+                .append("nombreCompleto", "Juan Pérez")
+                .append("tipoDocumento", "DNI")
+                .append("numeroDocumento", "12345678A")
+                .append("numeroCuenta", "ES1234567890123456789012")
+                .append("tipoTarjeta", "Debito")
+                .append("estado", "Activa");
+        listaTarjetas.add(tarjetaInsertada);
+
+        when(db.readDocument(new Document().append("numeroDocumento", "12345678A"), Collections.TARJETA))
+                .thenReturn(listaTarjetas);
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
         assertEquals(Evento.CREAR_TARJETA_OK, result.getEvento());
     }
+
 
     @Test
     public void testCrearTarjetaDebito_CuentaNoExiste() {
@@ -80,7 +92,6 @@ public class SATarjetasImpTest {
         tarjeta.setTipoDocumento("");
         tarjeta.setNumeroDocumento("");
         tarjeta.setNumeroCuenta("");
-        
         
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);

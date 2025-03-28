@@ -26,7 +26,7 @@ public class SACuentasImp implements SACuentas {
     @Override
     public ResultContext crearCuentaBancaria(TCuenta cuenta) {
         if (cuenta == null) {
-            return new ResultContext(Evento.CREAR_CUENTA_BANCARIA_ERROR_CUENTA_NO_VALIDA, null);
+            return new ResultContext(Evento.CREAR_CUENTA_BANCARIA_ERROR_CUENTA_NULL, null);
         }
 
         String nombre = cuenta.getNombre();

@@ -34,7 +34,7 @@ public enum Evento {
     CREAR_CUENTA_BANCARIA, // Evento para ejecutar la creacion de la tarjeta
 
     // Errores en la creacion de tarjeta de debito
-    CREAR_CUENTA_BANCARIA_ERROR_CUENTA_NO_VALIDA,
+    CREAR_CUENTA_BANCARIA_ERROR_CUENTA_NULL,
     CREAR_CUENTA_BANCARIA_ERROR_DATOS_INCOMPLETOS, // Faltan datos obligatorios
     CREAR_CUENTA_BANCARIA_ERROR_DATOS_NULOS, // Faltan datos obligatorios
     CREAR_CUENTA_BANCARIA_ERROR_CADENA_NO_ALFABETICA, // La cadena no contiene SOLO caracteres alfabeticos

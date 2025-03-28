@@ -26,5 +26,21 @@ public enum Evento {
     CREAR_TARJETA_ERROR_DB, // Error al insertar en la base de datos
     
     // Tarjeta creada con exito
-    CREAR_TARJETA_OK
+    CREAR_TARJETA_OK,
+    
+ // ----------------- CREACION DE CUENTA BANCARIA -----------------
+    GUI_CREAR_CUENTA_BANCARIA, // Evento para abrir la vista de creacion de tarjeta
+
+    CREAR_CUENTA_BANCARIA, // Evento para ejecutar la creacion de la tarjeta
+
+    // Errores en la creacion de tarjeta de debito
+    CREAR_CUENTA_BANCARIA_ERROR_CUENTA_NO_VALIDA,
+    CREAR_CUENTA_BANCARIA_ERROR_DATOS_INCOMPLETOS, // Faltan datos obligatorios
+    CREAR_CUENTA_BANCARIA_ERROR_DATOS_NULOS, // Faltan datos obligatorios
+    CREAR_CUENTA_BANCARIA_ERROR_TIPO_DOCUMENTO_INVALIDO, // Tipo de documento no valido
+    CREAR_CUENTA_BANCARIA_ERROR_CUENTA_EXISTENTE, // El titular ya tiene una cuenta bancaria
+    CREAR_CUENTA_BANCARIA_ERROR_DB, // Error al insertar en la base de datos
+    
+    // Tarjeta creada con exito
+    CREAR_CUENTA_BANCARIA_OK
 }

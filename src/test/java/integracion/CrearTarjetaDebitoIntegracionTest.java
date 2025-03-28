@@ -36,7 +36,7 @@ public class CrearTarjetaDebitoIntegracionTest {
                 .append("numeroDocumento", "12345678A")
                 .append("numeroCuenta", "ES1234567890123456789012");
         //tenemos que eliminar los usuarios de la bd que vayamos a crear si existen y luego volver a crearlos
-        db.deleteDocument(Collections.TARJETA, doc);
+        db.deleteDocument(Collections.CUENTABANC, doc);
         tarjeta = new TTarjeta();
     }
     
@@ -46,7 +46,7 @@ public class CrearTarjetaDebitoIntegracionTest {
                 .append("tipoDocumento", "DNI")
                 .append("numeroDocumento", "12345678A")
                 .append("numeroCuenta", "ES1234567890123456789012");
-    	db.deleteDocument(Collections.TARJETA, doc);
+    	db.deleteDocument(Collections.CUENTABANC, doc);
     }
     
     @Test
@@ -58,7 +58,7 @@ public class CrearTarjetaDebitoIntegracionTest {
                 .append("numeroCuenta", "ES1234567890123456789012");
 
         
-        db.insertDocument(Collections.TARJETA, doc);
+        db.insertDocument(Collections.CUENTABANC, doc);
 
         tarjeta.setNombreCompleto("Juan Pérez");
         tarjeta.setTipoDocumento("DNI");
@@ -101,7 +101,7 @@ public class CrearTarjetaDebitoIntegracionTest {
 
         result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
-        assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS, result.getEvento());
+        assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_NULOS, result.getEvento());
     }
 
 
@@ -114,7 +114,7 @@ public class CrearTarjetaDebitoIntegracionTest {
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
-        assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS, result.getEvento());
+        assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_NULOS, result.getEvento());
     }
 
     @Test

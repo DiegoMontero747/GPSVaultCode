@@ -1,5 +1,7 @@
 package negocio.Tarjetas;
 
+import java.util.List;
+
 import org.bson.Document;
 
 import integracion.bbdd.Collections;
@@ -32,6 +34,10 @@ public class SATarjetasImp implements SATarjetas {
 	    	nombre = nombre.trim(); numeroDocumento = numeroDocumento.trim(); iban = iban.trim();
 	    }
 	    
+	    if (nombre == null|| numeroDocumento == null || iban == null) {
+	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_DATOS_NULOS, null);
+	    }
+	    
 	    if (nombre.isBlank() || numeroDocumento.isBlank() || iban.isBlank()) {
 	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS, null);
 	    }
@@ -47,8 +53,10 @@ public class SATarjetasImp implements SATarjetas {
 	    }
 
 	    // Validar si la cuenta IBAN existe en la base de datos
-	    Document cuentaExistente = db.getDocumentByNombre(Collections.CUENTABANC, iban);
-	    if (cuentaExistente == null || !validarIBAN(iban)) {
+	    Document docIban = new Document();
+	    docIban.append("numeroCuenta", iban);
+	    List<Document> listaCuentas = db.readDocument( docIban,Collections.CUENTABANC);
+	    if (listaCuentas.isEmpty()  || !validarIBAN(iban)) {
 	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_CUENTA_INEXISTENTE, null);
 	    }
 
@@ -65,12 +73,13 @@ public class SATarjetasImp implements SATarjetas {
 	    db.insertDocument(Collections.TARJETA, nuevaTarjeta);
 
 	    // Verificación de que la tarjeta fue insertada buscando nuevamente el documento.
-	    Document tarjetaInsertada = db.getDocumentByNombre(Collections.TARJETA, nuevaTarjeta.getString("numeroDocumento"));
-	    if (tarjetaInsertada == null) {
+	    Document docLeerTarjeta = new Document().append("numeroDocumento", nuevaTarjeta.getString("numeroDocumento"));
+	   List<Document> listaTarjetas = db.readDocument(docLeerTarjeta,Collections.TARJETA);
+	    if (listaTarjetas.isEmpty()) {
 	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_DB, null); // Si no encontramos el documento, ha fallado la inserción
 	    }
 
-	    return new ResultContext(Evento.CREAR_TARJETA_OK, tarjetaInsertada); // Si encontramos el documento, la inserción fue exitosa
+	    return new ResultContext(Evento.CREAR_TARJETA_OK,listaTarjetas.getFirst()); // Si encontramos el documento, la inserción fue exitosa
 	}
 
 	// Validar DNI: 8 numeros y una letra

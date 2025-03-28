@@ -26,5 +26,6 @@ public enum Evento {
     CREAR_TARJETA_ERROR_DB, // Error al insertar en la base de datos
     
     // Tarjeta creada con exito
-    CREAR_TARJETA_OK
+    CREAR_TARJETA_OK, 
+    CREAR_TARJETA_ERROR_DATOS_NULOS
 }

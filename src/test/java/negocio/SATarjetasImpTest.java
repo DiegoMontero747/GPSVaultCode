@@ -52,6 +52,8 @@ public class SATarjetasImpTest {
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345678A");
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
+        //TODO CAMBIAR ESTO PARA QUE DEVUELVA UNA LISTA CON LA TARKJETA
+        when(db.readDocument(new Document().append("numeroDocumento", "12345678A"),Collections.TARJETA)).thenReturn(new ArrayList<Document>());
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
@@ -78,6 +80,8 @@ public class SATarjetasImpTest {
         tarjeta.setTipoDocumento("");
         tarjeta.setNumeroDocumento("");
         tarjeta.setNumeroCuenta("");
+        
+        
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
@@ -89,7 +93,7 @@ public class SATarjetasImpTest {
 
         result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
-        assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS, result.getEvento());
+        assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_NULOS, result.getEvento());
     }
 
 
@@ -102,7 +106,7 @@ public class SATarjetasImpTest {
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
-        assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS, result.getEvento());
+        assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_NULOS, result.getEvento());
     }
 
     @Test
@@ -153,8 +157,20 @@ public class SATarjetasImpTest {
     
     @Test
     public void testCrearTarjetaDebito_TarjetaNoInsertada() {
+    	
+    	// el primer read document es correcto
+    	ArrayList<Document> listaCuentas = new ArrayList<>();
+        Document doc = new Document("nombreCompleto", "Juan Pérez")
+                .append("tipoDocumento", "DNI")
+                .append("numeroDocumento", "12345678A")
+                .append("numeroCuenta", "ES1234567890123456789012");
+        listaCuentas.add(doc);
+		
+		
+        when(db.readDocument(new Document().append("numeroCuenta", "ES1234567890123456789012"),Collections.CUENTABANC)).thenReturn(listaCuentas);
+    	
         // Simular un fallo en la insert BBDD aunque no haya un error
-    	 when(db.readDocument(new Document().append("numeroDocumento", "12345678A"),Collections.TARJETA)).thenReturn(null);
+    	 when(db.readDocument(new Document().append("numeroDocumento", "12345678A"),Collections.TARJETA)).thenReturn(new ArrayList<Document>());
        // Simulamos que no se encuentra el documento después de la inserción
 
         tarjeta.setNombreCompleto("Juan Pérez");

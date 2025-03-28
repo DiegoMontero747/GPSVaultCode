@@ -7,7 +7,7 @@ public class TTarjeta {
 	    private String numeroDocumento;
 	    private String numeroCuenta;
 	    private String tipoTarjeta; // Debito o credito
-	    private String estado; // Activa, Bloqueada, etc.
+		private String estado; // Activa, Bloqueada, etc.
 	    private double limiteCredito; // Solo para crédito
 
     public TTarjeta(String nombreCompleto, String tipoDocumento, String numeroDocumento, String numeroCuenta) {
@@ -78,4 +78,24 @@ public class TTarjeta {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+    
+    public void setTipoTarjeta(String tipoTarjeta) {
+		this.tipoTarjeta = tipoTarjeta;
+	}
+
+	public double getLimiteCredito() {
+		return limiteCredito;
+	}
+
+	public void setLimiteCredito(double limiteCredito) {
+		this.limiteCredito = limiteCredito;
+	}
+	
+	@Override
+	public String toString() {
+		return "TTarjeta{" + "nombreCompleto='" + nombreCompleto + '\'' + ", tipoDocumento='" + tipoDocumento + '\''
+				+ ", numeroDocumento='" + numeroDocumento + '\'' + ", numeroCuenta='" + numeroCuenta + '\''
+				+ ", tipoTarjeta='" + tipoTarjeta + '\'' + ", estado='" + estado + '\'' + ", limiteCredito="
+				+ limiteCredito + '}';
+	}
 }

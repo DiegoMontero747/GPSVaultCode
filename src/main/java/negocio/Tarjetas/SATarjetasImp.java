@@ -79,7 +79,7 @@ public class SATarjetasImp implements SATarjetas {
 	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_DB, null); // Si no encontramos el documento, ha fallado la inserción
 	    }
 
-	    return new ResultContext(Evento.CREAR_TARJETA_OK,listaTarjetas.getFirst()); // Si encontramos el documento, la inserción fue exitosa
+	    return new ResultContext(Evento.CREAR_TARJETA_OK,listaTarjetas.get(0)); // Si encontramos el documento, la inserción fue exitosa
 	}
 
 	// Validar DNI: 8 numeros y una letra

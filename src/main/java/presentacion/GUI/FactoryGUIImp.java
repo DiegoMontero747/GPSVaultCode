@@ -33,6 +33,8 @@ public class FactoryGUIImp extends FactoryGUI {
             INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
                 return GUI_InicioSesion.class;
 
+            case GUI_CREAR_CUENTA_ADMINISTRACION:
+            	return GUI_CrearCuentaAdministracion.class;
 
             // Agregar más casos según se necesiten
 

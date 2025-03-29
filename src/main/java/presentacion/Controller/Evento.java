@@ -23,7 +23,11 @@ public enum Evento {
 	INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA,
 	
 	//inicio de sesion valido
-	INICIO_SESION_OK;
+	INICIO_SESION_OK,
+	
+	
+	// CREAR CUENTA DESDE ADMINISTRACIÓN -------------------------
+	GUI_CREAR_CUENTA_ADMINISTRACION;
 	
 	
 }

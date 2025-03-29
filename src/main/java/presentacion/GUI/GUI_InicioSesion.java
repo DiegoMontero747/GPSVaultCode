@@ -153,7 +153,7 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
 				switch (evento) {
 					case INICIO_SESION_OK:
 						
-						Controller.getInstance().handleRequest(new Context(Evento.GUI_VISTAROLADMIN, c.getDato()));
+						Controller.getInstance().handleRequest(new Context(Evento.BOTON_MENU, c.getDato()));
 						contador = 0;
 						break;
 

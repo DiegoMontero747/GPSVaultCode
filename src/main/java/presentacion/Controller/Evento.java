@@ -28,8 +28,8 @@ public enum Evento {
 	// inicio de sesion valido
 	INICIO_SESION_OK,
 
-	// Si el usuario es un administrador
-	GUI_VISTAROLADMIN,
+	//Se presiona el boton de menu en el header
+	BOTON_MENU,
 
 	// ------------------------CREAR CUENTA ADMINISTRACION-----------------------
 	CREAR_CUENTA_ADM,

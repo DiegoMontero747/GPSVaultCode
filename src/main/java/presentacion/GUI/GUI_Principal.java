@@ -4,14 +4,17 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import presentacion.Controller.Context;
+import presentacion.Controller.Evento;
 import presentacion.GUI_Components.Menu_Header;
 import presentacion.GUI_Components.Menu_Sidebar;
 
 import java.awt.*;
 
 public class GUI_Principal extends JPanel implements ObservadorGUI {
-	//private JTable userTable;
-	//private JButton addFundsButton, retireFundsButton, logoutButton, createUserButton;
+	private static final long serialVersionUID = 1L;
+	// private JTable userTable;
+	// private JButton addFundsButton, retireFundsButton, logoutButton,
+	// createUserButton;
 	private JPanel cardPanel;
 	private CardLayout cardLayout;
 	private Menu_Sidebar menu;
@@ -36,16 +39,17 @@ public class GUI_Principal extends JPanel implements ObservadorGUI {
 		cardPanel.setOpaque(false);
 
 		this.add(cardPanel, BorderLayout.CENTER);
-		menu = new Menu_Sidebar("admin");
-		this.add(menu, BorderLayout.WEST);
 		this.setVisible(true);
-		menu.setVisible(true);
-		
 	}
 
 	@Override
 	public void actualizar(Context c) {
 		// TODO Auto-generated method stub
+		if (c.getEvento() == Evento.BOTON_MENU) {
+			menu = new Menu_Sidebar((String) c.getDato());
+			this.add(menu, BorderLayout.WEST);
+			menu.setVisible(true);
+		}
 
 	}
 }

@@ -54,6 +54,7 @@ public class Menu_Sidebar extends JPanel {
 		default:
 			break;
 		}
+		this.setVisible(false);
 	}
 
 	private JPanel crearPanel(Queue<JButton> cola) {

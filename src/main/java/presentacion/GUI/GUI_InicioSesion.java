@@ -151,11 +151,6 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
 			Evento evento = (Evento) c.getEvento();
 			if (c != null) {
 				switch (evento) {
-					case INICIO_SESION_OK:
-						
-						Controller.getInstance().handleRequest(new Context(Evento.GUI_VISTAROLADMIN, c.getDato()));
-						contador = 0;
-						break;
 
 					case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
 						mostrarMensajeError("Usuario no encontrado.");

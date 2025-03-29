@@ -42,6 +42,11 @@ public class GUI_Principal extends JPanel implements ObservadorGUI {
 		sidePanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
 		createUserButton = createStyledButton("Crear Usuario");
+		createUserButton.addActionListener(e -> {
+			GUI_Formulario_ClienteBanco formularioClienteBanco = new GUI_Formulario_ClienteBanco();
+		    cardPanel.add(formularioClienteBanco, "FormularioClienteBanco");
+		    cardLayout.show(cardPanel, "FormularioClienteBanco");
+		});
 		addFundsButton = createStyledButton("Añadir Fondos");
 		retireFundsButton = createStyledButton("Retirar Fondos");
 		logoutButton = createStyledButton("Cerrar Sesión");
@@ -50,7 +55,7 @@ public class GUI_Principal extends JPanel implements ObservadorGUI {
 		sidePanel.add(addFundsButton);
 		sidePanel.add(retireFundsButton);
 		sidePanel.add(logoutButton);
-
+		this.add(sidePanel, BorderLayout.WEST);
 		this.setVisible(true);
 	}
 

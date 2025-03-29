@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.table.DefaultTableModel;
 
-public class GUI_Formulario_ClienteBanco extends JFrame {
+public class GUI_Formulario_ClienteBanco extends JPanel {
     
     // Componentes de la interfaz
     private JTextField txtDni, txtNombre, txtApellidos, txtDireccion, txtTelefono;
@@ -15,9 +15,9 @@ public class GUI_Formulario_ClienteBanco extends JFrame {
 
     public GUI_Formulario_ClienteBanco() {
         // Configuración de la ventana
-        setTitle("Formulario Cliente Banco");
+        
         setSize(400, 350);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
         setLayout(new BorderLayout());
         
         // Panel para el formulario

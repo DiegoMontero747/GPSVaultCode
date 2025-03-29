@@ -34,7 +34,8 @@ public class ApplicationContainer extends JFrame implements ObservadorGUI{
         }
         return instance;
     }
-
+    
+    
     public void addView(String name, JPanel view) {
         add(view, name); // Agrega el panel al CardLayout
      // Registrarse como observador

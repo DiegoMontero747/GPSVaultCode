@@ -55,7 +55,7 @@ public class ApplicationContainer extends JFrame implements ObservadorGUI{
             case GUI_INICIO_SESION:
                 showView("LOGIN");
                 break;
-            case GUI_VISTAROLADMIN:
+            case INICIO_SESION_OK:
             	//Controller.getInstance().UNregisterObserver((ObservadorGUI) ((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.CENTER));
             	showView("VISTA_PRINCIPAL");
         }

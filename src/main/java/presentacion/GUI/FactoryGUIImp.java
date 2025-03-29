@@ -9,55 +9,53 @@ import presentacion.Controller.Evento;
 public class FactoryGUIImp extends FactoryGUI {
 
 	protected final Map<Class<? extends ObservadorGUI>, ObservadorGUI> instancias = new HashMap<>();
-	
+
 	public FactoryGUIImp() {
-        // Agregamos el ApplicationContainer al mapa de manera inicial
-        instancias.put(ApplicationContainer.class, ApplicationContainer.getInstance());
-    }
-	
-    @Override
-    public ObservadorGUI generarGUI(Context commandContext) {
-    	 Class<? extends ObservadorGUI> claveVista = getVistaClass(commandContext.getEvento());
+		// Agregamos el ApplicationContainer al mapa de manera inicial
+		instancias.put(ApplicationContainer.class, ApplicationContainer.getInstance());
+	}
 
-         if (claveVista == null) {
-             return null;  // No se necesita ninguna GUI para este evento
-         }
+	@Override
+	public ObservadorGUI generarGUI(Context commandContext) {
+		Class<? extends ObservadorGUI> claveVista = getVistaClass(commandContext.getEvento());
 
-         // Si la vista ya existe, simplemente la devolvemos
-         return instancias.computeIfAbsent(claveVista, this::crearNuevaVista);
-    }
+		if (claveVista == null) {
+			return null; // No se necesita ninguna GUI para este evento
+		}
 
-    private Class<? extends ObservadorGUI> getVistaClass(Evento evento) {
-        // Mapeamos cada evento a su respectiva vista
-        switch (evento) {
-            case INICIO_SESION_OK,
-            INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA,
-            INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA, 
-            INICIO_SESION_ERROR_USUARIO_INCOMPLETO, 
-            INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
-                return GUI_InicioSesion.class;
-            case GUI_INICIO_SESION:
-            	ApplicationContainer.getInstance().addView("LOGIN", new GUI_InicioSesion());
-            	return ApplicationContainer.class;
+		// Si la vista ya existe, simplemente la devolvemos
+		return instancias.computeIfAbsent(claveVista, this::crearNuevaVista);
+	}
 
-            case GUI_VISTAROLADMIN:
-            	ApplicationContainer.getInstance().addView("VISTA_PRINCIPAL", new GUI_Principal());
-                return GUI_Principal.class;
+	private Class<? extends ObservadorGUI> getVistaClass(Evento evento) {
+		// Mapeamos cada evento a su respectiva vista
+		switch (evento) {
+		case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA, INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA,
+				INICIO_SESION_ERROR_USUARIO_INCOMPLETO, INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
+			return GUI_InicioSesion.class;
+		case GUI_INICIO_SESION:
+			ApplicationContainer.getInstance().addView("LOGIN", new GUI_InicioSesion());
+			return ApplicationContainer.class;
 
-            // Agregar más casos según se necesiten
-            default:
-                return null;
-        }
-    }
+		case INICIO_SESION_OK:
+			ApplicationContainer.getInstance().addView("VISTA_PRINCIPAL", new GUI_Principal());
+			return GUI_Principal.class;
 
-    private ObservadorGUI crearNuevaVista(Class<? extends ObservadorGUI> vistaClass) {
-        if (vistaClass == null) return null;
+		// Agregar más casos según se necesiten
+		default:
+			return null;
+		}
+	}
 
-        try {
-            return vistaClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+	private ObservadorGUI crearNuevaVista(Class<? extends ObservadorGUI> vistaClass) {
+		if (vistaClass == null)
+			return null;
+
+		try {
+			return vistaClass.getDeclaredConstructor().newInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

@@ -1,5 +1,6 @@
 package negocio.Factory;
 
+import negocio.ManejoSesiones.SACrearCuentaAdministracion;
 import negocio.ManejoSesiones.SAManejoSesiones;
 
 public abstract class NegocioFactory {
@@ -13,5 +14,6 @@ public abstract class NegocioFactory {
 	}
 
 	public abstract SAManejoSesiones crearSAManejoSesiones();
+	public abstract SACrearCuentaAdministracion crearSACrearCuentaAdministracion();
 
 }

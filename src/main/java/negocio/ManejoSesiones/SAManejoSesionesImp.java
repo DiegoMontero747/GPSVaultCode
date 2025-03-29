@@ -1,5 +1,7 @@
 package negocio.ManejoSesiones;
 
+import java.util.ArrayList;
+
 import org.bson.Document;
 
 import integracion.bbdd.Collections;
@@ -31,15 +33,20 @@ public class SAManejoSesionesImp implements SAManejoSesiones {
         	return new ResultContext(Evento.INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA, null); // Contrasenya incompletos
         }
        
-        Document doc = db.getDocumentByNombre(Collections.PERFIL, username);
-        if(doc == null) {
-        	 return new ResultContext(Evento.INICIO_SESION_ERROR_USUARIO_INEXISTENTE, null); //No existe el usuario
-        }
-        if(!doc.get("password").toString().equals(password)) {
-        	 return new ResultContext(Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA, null); //contrasenya incorrecta
+        ArrayList<Document> docList = db.readDocument(new Document().append("nombre", username), Collections.PERFIL);
+        if (docList.isEmpty()) {
+            return new ResultContext(Evento.INICIO_SESION_ERROR_USUARIO_INEXISTENTE, null);
+        }else {
+        
+        Document doc = docList.get(0); // Tomamos el primer documento encontrado
+
+        if (!password.equals(doc.getString("password"))) {
+            return new ResultContext(Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA, null);
         }
         
-        
-        return new ResultContext(Evento.INICIO_SESION_OK, doc.get("rol")); // Inicio de sesión válido
+        return new ResultContext(Evento.INICIO_SESION_OK, doc.getString("rol"));
+        }
     }
+    
+    
 }

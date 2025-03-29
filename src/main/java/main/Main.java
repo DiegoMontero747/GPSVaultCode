@@ -4,18 +4,20 @@ import integracion.bbdd.MongoDBManager;
 import presentacion.Controller.Context;
 import presentacion.Controller.Controller;
 import presentacion.Controller.Evento;
+import presentacion.GUI.ApplicationContainer;
 
 public class Main {
+	public static  ApplicationContainer appCon;
 	public static void main(String[] args) {
 
 		try {
-			 MongoDBManager.initialize();
+			MongoDBManager.initialize();
 		} catch (Exception e) {
 
 			e.printStackTrace();
 
 		}
 
-		Controller.getInstance().handleRequest(new Context(Evento.GUI_INICIO_SESION, null));
+		ApplicationContainer.getInstance();
 	}
 }

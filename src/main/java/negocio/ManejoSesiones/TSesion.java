@@ -1,5 +1,7 @@
 package negocio.ManejoSesiones;
 
+import org.bson.Document;
+
 public class TSesion {
 	
 	private String username;
@@ -36,5 +38,13 @@ public class TSesion {
 	}
 	public void setRol(String rol) {
 		this.rol = rol;
+	}
+
+	public Document toDocument() {
+		Document doc = new Document();
+	    if (username != null) doc.append("username", username);
+	    if (psswd != null) doc.append("psswd", psswd);
+	    if (rol != null) doc.append("rol", rol);
+	    return doc;
 	}
 }

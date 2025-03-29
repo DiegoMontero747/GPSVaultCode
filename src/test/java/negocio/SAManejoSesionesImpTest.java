@@ -2,6 +2,8 @@ package negocio;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
+
 import org.bson.Document;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,11 +38,12 @@ public class SAManejoSesionesImpTest {
     @Test
     public void testInicioSesion_Ok() {
         // Configurar el mock
-        Document doc = new Document("username", "usuario_existente")
+    	ArrayList<Document> doc = new ArrayList<Document>();
+        doc.add(new  Document("nombre", "usuario_existente")
                 .append("password", "password_correcta")
-                .append("rol", "admin");
+                .append("rol", "admin"));
 
-        when(db.getDocumentByNombre(Collections.PERFIL, "usuario_existente")).thenReturn(doc);
+        when(db.readDocument((new Document()).append("nombre", "usuario_existente"), Collections.PERFIL)).thenReturn(doc);
 
         // Configurar la sesión
         sesion.setUsername("usuario_existente");
@@ -57,7 +60,8 @@ public class SAManejoSesionesImpTest {
     @Test
     public void testInicioSesion_UsuarioNoExiste() {
         // Configurar el mock
-        when(db.getDocumentByNombre(Collections.PERFIL, "usuario_inexistente")).thenReturn(null);
+    	ArrayList<Document> doc = new ArrayList<Document>();
+        when(db.readDocument((new Document()).append("nombre", "usuario_inexistente"), Collections.PERFIL)).thenReturn(doc);
 
         // Configurar la sesión
         sesion.setUsername("usuario_inexistente");
@@ -73,11 +77,12 @@ public class SAManejoSesionesImpTest {
     @Test
     public void testInicioSesion_ContrasenyaIncorrecta() {
         // Configurar el mock
-        Document doc = new Document("username", "usuario_existente")
+        ArrayList<Document> doc = new ArrayList<Document>();
+        doc.add(new  Document("nombre", "usuario_existente")
                 .append("password", "password_correcta")
-                .append("rol", "admin");
+                .append("rol", "admin"));
        
-        when(db.getDocumentByNombre(Collections.PERFIL, "usuario_existente")).thenReturn(doc);
+        when(db.readDocument((new Document()).append("nombre", "usuario_existente"), Collections.PERFIL)).thenReturn(doc);
 
         // Configurar la sesión
         sesion.setUsername("usuario_existente");

@@ -39,9 +39,7 @@ public class Menu_Sidebar extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("paso1");
 				Controller.getInstance().handleRequest(new Context(Evento.GUI_CREAR_CUENTA_ADMINISTRACION, null));
-				System.out.println("finalizado");
 			}
 			
 		});

@@ -25,14 +25,21 @@ public class GUI_CrearCuentaAdministracion extends JPanel implements ObservadorG
 
     private void initialize() {
 
-        // Panel de fondo con la imagen
-        ImagePanel backgroundPanel = new ImagePanel("media/background.png");
-        backgroundPanel.setLayout(new BorderLayout());
+    	this.setBackground(Color.RED);
+		this.setPreferredSize(new Dimension(800, 600));
+		this.setLayout(new BorderLayout());
 
-        // Panel para los componentes (con fondo transparente)
-        JPanel contentPanel = new JPanel();
-        contentPanel.setOpaque(false); // Para que no tape la imagen de fondo
-        contentPanel.setLayout(new GridBagLayout());
+		// Panel de fondo con la imagen
+		ImagePanel backgroundPanel = new ImagePanel("media/background.png");
+		backgroundPanel.setLayout(new BorderLayout());
+		this.add(backgroundPanel, BorderLayout.CENTER); // Fondo añadido en el centro
+
+		// Panel para los componentes (con fondo transparente)
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new GridBagLayout());
+		contentPanel.setOpaque(false);
+		backgroundPanel.add(contentPanel, BorderLayout.CENTER); // Panel con componentes también añadido al centro
+
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -178,8 +185,6 @@ public class GUI_CrearCuentaAdministracion extends JPanel implements ObservadorG
         gbc.gridwidth = 2;
         contentPanel.add(checkButton, gbc);
 
-        backgroundPanel.add(contentPanel, BorderLayout.CENTER);
-        this.add(backgroundPanel);
         this.setVisible(true);
     }
     

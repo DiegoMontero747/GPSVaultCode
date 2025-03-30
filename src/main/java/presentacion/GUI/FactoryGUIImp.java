@@ -20,7 +20,6 @@ public class FactoryGUIImp extends FactoryGUI {
     @Override
     public ObservadorGUI generarGUI(Context commandContext) {
         Class<? extends ObservadorGUI> claveVista = getVistaClass(commandContext.getEvento());
-        System.out.println("paso2");
 
         if (claveVista == null) {
             return null; // No se necesita ninguna GUI para este evento

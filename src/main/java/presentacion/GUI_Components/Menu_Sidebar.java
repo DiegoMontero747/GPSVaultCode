@@ -17,9 +17,7 @@ public class Menu_Sidebar extends JPanel {
 	
 	public Menu_Sidebar() {
 		contenedor = new JPanel(cardLayout);
-		
-		setLayout(new BorderLayout());
-		add(contenedor, BorderLayout.CENTER);
+		//setPreferredSize(new Dimension(100, 100));
 	}
 
 	public void init(String opcion) {
@@ -28,39 +26,43 @@ public class Menu_Sidebar extends JPanel {
 		colaServiciosGenerales = new LinkedList<>();
 		colaPasivo = new LinkedList<>();
 		colaRiesgo = new LinkedList<>();
-		cardLayout = new CardLayout();
 		
 		crear_cuenta = createStyledButton("Crear cuenta");
-		
 		colaAdmin.add(crear_cuenta);
 		
+		cardLayout = new CardLayout();
+		contenedor = new JPanel(cardLayout);
+		
 		// Crear paneles para cada cola
-		contenedor.add(crearPanel(colaAdmin));
-		contenedor.add(crearPanel(colaServiciosGenerales));
-		contenedor.add(crearPanel(colaPasivo));
-		contenedor.add(crearPanel(colaRiesgo));
-
+		contenedor.add(crearPanel(colaAdmin), "ADMIN");
+		contenedor.add(crearPanel(colaServiciosGenerales), "SERVICIOS GENERALES");
+		contenedor.add(crearPanel(colaPasivo), "PASIVO");
+		contenedor.add(crearPanel(colaRiesgo), "RIESGO");
+		
+		setLayout(new BorderLayout());
+		add(contenedor, BorderLayout.CENTER);
+		
 		// Mostrar el panel según la opción
 		switch (opcion.toUpperCase()) {
-		case "admin":
+		case "ADMIN":
 			cardLayout.show(contenedor, "ADMIN");
 			break;
-		case "administracion":
+		case "ADMINISTRACION":
 			cardLayout.show(contenedor, "ADMIN");
 			break;
-		case "servicios generales":
+		case "SERVICIOS GENERALES":
 			cardLayout.show(contenedor, "SERVICIOS GENERALES");
 			break;
-		case "riesgo":
+		case "RIESGO":
 			cardLayout.show(contenedor, "RIESGO");
 			break;
-		case "pasivo":
+		case "PASIVO":
 			cardLayout.show(contenedor, "PASIVO");
 			break;
 		default:
 			break;
 		}
-		this.setVisible(false);
+		this.setVisible(true);
 	}
 
 	private JPanel crearPanel(Queue<JButton> cola) {

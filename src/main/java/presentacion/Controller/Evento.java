@@ -6,7 +6,9 @@ public enum Evento {
     // ----------------- EVENTOS COMUNES -----------------
 
     ERROR_CADENA_NO_ALFABETICA, // La cadena no contiene SOLO caracteres alfabeticos
-    ERROR_TIPO_DOCUMENTO_INVALIDO, // Tipo de documento no valido
+    ERROR_TIPO_DOCUMENTO_INVALIDO,
+    ERROR_NUMERO_TELEFONO_INVALIDO, 
+
 
 
     // ----------------- INICIO DE SESION -----------------
@@ -31,6 +33,7 @@ public enum Evento {
     CREAR_TARJETA_ERROR_TARJETA_NULL,
     CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS,
     CREAR_TARJETA_ERROR_DATOS_NULOS,
+    CREAR_TARJETA_ERROR_MAX_TARJETAS,
     CREAR_TARJETA_ERROR_CUENTA_INEXISTENTE, // La cuenta IBAN no existe en la base de datos
     CREAR_TARJETA_ERROR_DB, // Error al insertar la tarjeta en la base de datos
     

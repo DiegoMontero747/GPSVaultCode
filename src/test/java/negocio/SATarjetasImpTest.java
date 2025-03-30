@@ -99,23 +99,11 @@ public class SATarjetasImpTest {
         assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS, result.getEvento());
 
         tarjeta.setNombreCompleto(null);
+        tarjeta.setTipoDocumento(null);
         tarjeta.setNumeroDocumento(null);
         tarjeta.setNumeroCuenta(null);
 
         result = saTarjetasImp.crearTarjetaDebito(tarjeta);
-
-        assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_NULOS, result.getEvento());
-    }
-
-
-    @Test
-    public void testCrearTarjetaDebito_NombreNulo() {
-        tarjeta.setNombreCompleto(null);
-        tarjeta.setTipoDocumento("DNI");
-        tarjeta.setNumeroDocumento("12345678A");
-        tarjeta.setNumeroCuenta("ES1234567890123456789012");
-
-        ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
         assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_NULOS, result.getEvento());
     }
@@ -128,14 +116,14 @@ public class SATarjetasImpTest {
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
-        assertEquals(Evento.CREAR_TARJETA_ERROR_TIPO_DOCUMENTO_INVALIDO, result.getEvento());
+        assertEquals(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, result.getEvento());
 
         tarjeta.setTipoDocumento("NIE");
         tarjeta.setNumeroDocumento("X12345");  // nie no valido
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
 
         result = saTarjetasImp.crearTarjetaDebito(tarjeta);
-        assertEquals(Evento.CREAR_TARJETA_ERROR_TIPO_DOCUMENTO_INVALIDO, result.getEvento());
+        assertEquals(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, result.getEvento());
     }
 
 

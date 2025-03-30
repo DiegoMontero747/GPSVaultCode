@@ -2,18 +2,16 @@ package presentacion.GUI;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import negocio.Tarjetas.*;
-
 import negocio.Factory.ResultContext;
 import presentacion.Controller.Context;
 import presentacion.Controller.Evento;
-
 import java.awt.*;
 
 public class GUI_CrearTarjetaDebito implements ObservadorGUI {
     private JFrame frame;
-    private JTextField nombreTitularField, documentoField, entidadField, oficinaField, digitoControlField, cuentaField;
+    private JTextField nombreField, apellidosField, documentoField, entidadField, oficinaField, digitoControlField, cuentaField;
+    private JTextField direccionField, telefonoField, fechaNacimientoField;
     private JComboBox<String> tipoDocumentoCombo;
     private JButton crearTarjetaButton, cancelarButton;
 
@@ -25,7 +23,7 @@ public class GUI_CrearTarjetaDebito implements ObservadorGUI {
     private void initialize() {
         frame = new JFrame("Crear Tarjeta de Débito - VAULTCODE");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(600, 600);
+        frame.setSize(600, 700);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
         frame.getContentPane().setBackground(new Color(110, 110, 110));
@@ -36,31 +34,20 @@ public class GUI_CrearTarjetaDebito implements ObservadorGUI {
         titleLabel.setForeground(Color.BLACK);
         frame.add(titleLabel, BorderLayout.NORTH);
 
-        JPanel contentPanel = new JPanel(new GridLayout(10, 1, 10, 10));
+        JPanel contentPanel = new JPanel(new GridLayout(14, 1, 10, 10));
         contentPanel.setBorder(new EmptyBorder(20, 50, 20, 50));
 
-        JLabel nombreTitularLabel = new JLabel("Nombre completo:");
-        setLabelStyle(nombreTitularLabel);
-        contentPanel.add(nombreTitularLabel);
-        nombreTitularField = new JTextField();
-        contentPanel.add(nombreTitularField);
+        contentPanel.add(createLabeledField("Nombre:", nombreField = new JTextField()));
+        contentPanel.add(createLabeledField("Apellidos:", apellidosField = new JTextField()));
 
-        JLabel tipoDocumentoLabel = new JLabel("Tipo de documento:");
-        setLabelStyle(tipoDocumentoLabel);
-        contentPanel.add(tipoDocumentoLabel);
-        tipoDocumentoCombo = new JComboBox<>(new String[]{"DNI", "NIE"});
-        contentPanel.add(tipoDocumentoCombo);
+        contentPanel.add(createLabeledCombo("Tipo de documento:", tipoDocumentoCombo = new JComboBox<>(new String[]{"DNI", "NIE"})));
+        contentPanel.add(createLabeledField("Número de documento:", documentoField = new JTextField()));
 
-        JLabel documentoLabel = new JLabel("Número de documento:");
-        setLabelStyle(documentoLabel);
-        contentPanel.add(documentoLabel);
-        documentoField = new JTextField();
-        contentPanel.add(documentoField);
+        contentPanel.add(createLabeledField("Dirección:", direccionField = new JTextField()));
+        contentPanel.add(createLabeledField("Teléfono:", telefonoField = new JTextField()));
+        contentPanel.add(createLabeledField("Fecha de nacimiento (YYYY-MM-DD):", fechaNacimientoField = new JTextField()));
 
-        JLabel numeroCuentaLabel = new JLabel("Número de cuenta (IBAN):");
-        setLabelStyle(numeroCuentaLabel);
-        contentPanel.add(numeroCuentaLabel);
-
+        contentPanel.add(new JLabel("Número de cuenta (IBAN):"));
         JPanel ibanPanel = new JPanel(new GridLayout(1, 4, 5, 5));
         entidadField = new JTextField(4);
         oficinaField = new JTextField(4);
@@ -83,49 +70,61 @@ public class GUI_CrearTarjetaDebito implements ObservadorGUI {
 
         cancelarButton.addActionListener(e -> frame.dispose());
 
-        crearTarjetaButton.addActionListener(e -> {
-            String nombreTitular = nombreTitularField.getText().trim();
-            String tipoDocumento = (String) tipoDocumentoCombo.getSelectedItem();
-            String numeroDocumento = documentoField.getText().trim();
-            String entidad = entidadField.getText().trim();
-            String oficina = oficinaField.getText().trim();
-            String digitoControl = digitoControlField.getText().trim();
-            String cuenta = cuentaField.getText().trim();
-            
-            if (entidad.isBlank() || oficina.isBlank() || digitoControl.isBlank() || cuenta.isBlank()) {
-                mensaje("Debe completar todos los campos del IBAN.", "Error", JOptionPane.ERROR_MESSAGE, false);
-                return;
-            }
-            
-            // Construimos el objeto TTarjeta
-            TTarjeta tarjeta = new TTarjeta(nombreTitular, tipoDocumento, numeroDocumento, entidad+oficina+digitoControl+cuenta);
+        crearTarjetaButton.addActionListener(e -> crearTarjeta());
+    }
 
-            // Llamamos al SA para crear la tarjeta
-            SATarjetasImp sat = new SATarjetasImp();
-            ResultContext result = sat.crearTarjetaDebito(tarjeta);
+    private void crearTarjeta() {
+        String nombre = nombreField.getText().trim();
+        String apellidos = apellidosField.getText().trim();
+        String tipoDocumento = (String) tipoDocumentoCombo.getSelectedItem();
+        String numeroDocumento = documentoField.getText().trim();
+        String direccion = direccionField.getText().trim();
+        String telefono = telefonoField.getText().trim();
+        String fechaNacimiento = fechaNacimientoField.getText().trim();
+        String entidad = entidadField.getText().trim();
+        String oficina = oficinaField.getText().trim();
+        String digitoControl = digitoControlField.getText().trim();
+        String cuenta = cuentaField.getText().trim();
 
-            // Evaluamos la respuesta del SA
-            switch (result.getEvento()) {
+        if (entidad.isBlank() || oficina.isBlank() || digitoControl.isBlank() || cuenta.isBlank()) {
+            mensaje("Debe completar todos los campos del IBAN.", "Error", JOptionPane.ERROR_MESSAGE, false);
+            return;
+        }
+
+        // Construcción del objeto TTarjeta
+        TTarjeta tarjeta = new TTarjeta(nombre, apellidos, tipoDocumento, numeroDocumento,
+                entidad + oficina + digitoControl + cuenta, direccion, telefono, fechaNacimiento);
+
+        // Llamamos al SA para crear la tarjeta
+        SATarjetasImp sat = new SATarjetasImp();
+        ResultContext result = sat.crearTarjetaDebito(tarjeta);
+
+        // Evaluamos la respuesta del SA
+        switch (result.getEvento()) {
             case CREAR_TARJETA_OK:
                 mensaje("Tarjeta de débito creada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE, true);
                 break;
-            case CREAR_TARJETA_ERROR_TIPO_DOCUMENTO_INVALIDO:
+            case ERROR_TIPO_DOCUMENTO_INVALIDO:
                 mensaje("Número de documento inválido.", "Error", JOptionPane.ERROR_MESSAGE, true);
                 break;
             case CREAR_TARJETA_ERROR_CUENTA_INEXISTENTE:
                 mensaje("La cuenta IBAN ingresada no existe.", "Error", JOptionPane.ERROR_MESSAGE, false);
                 break;
+            case CREAR_TARJETA_ERROR_TARJETA_NULL:
+                mensaje("La tarjeta es null.", "Error", JOptionPane.ERROR_MESSAGE, false);
+                break;
             case CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS:
                 mensaje("Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE, false);
+                break;
+            case CREAR_TARJETA_ERROR_DATOS_NULOS:
+                mensaje("Hay campos a null, todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE, false);
                 break;
             case CREAR_TARJETA_ERROR_DB:
                 mensaje("Error en la base de datos al registrar la tarjeta.", "Error", JOptionPane.ERROR_MESSAGE, false);
                 break;
         }
-
-        });
     }
-    
+
     private void mensaje(String msg, String title, int msgType, boolean limpiar) {
         JOptionPane.showMessageDialog(frame, msg, title, msgType);
         if (limpiar) {
@@ -133,10 +132,13 @@ public class GUI_CrearTarjetaDebito implements ObservadorGUI {
         }
     }
 
-
     private void limpiarCampos() {
-        nombreTitularField.setText("");
+        nombreField.setText("");
+        apellidosField.setText("");
         documentoField.setText("");
+        direccionField.setText("");
+        telefonoField.setText("");
+        fechaNacimientoField.setText("");
         entidadField.setText("");
         oficinaField.setText("");
         digitoControlField.setText("");
@@ -147,13 +149,27 @@ public class GUI_CrearTarjetaDebito implements ObservadorGUI {
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(new Color(88, 88, 88));
-        button.setForeground(new Color(255, 255, 255));
+        button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 16));
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 1));
-        button.setPreferredSize(new Dimension(160, 40));
-        button.setOpaque(true);
         return button;
+    }
+
+    private JPanel createLabeledField(String labelText, JTextField textField) {
+        JPanel panel = new JPanel(new GridLayout(2, 1));
+        JLabel label = new JLabel(labelText);
+        setLabelStyle(label);
+        panel.add(label);
+        panel.add(textField);
+        return panel;
+    }
+
+    private JPanel createLabeledCombo(String labelText, JComboBox<String> comboBox) {
+        JPanel panel = new JPanel(new GridLayout(2, 1));
+        JLabel label = new JLabel(labelText);
+        setLabelStyle(label);
+        panel.add(label);
+        panel.add(comboBox);
+        return panel;
     }
 
     private void setLabelStyle(JLabel label) {

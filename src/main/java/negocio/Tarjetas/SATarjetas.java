@@ -1,4 +1,4 @@
-package negocio.Cuentas;
+package negocio.Tarjetas;
 
 import negocio.Factory.ResultContext;
 

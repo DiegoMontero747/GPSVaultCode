@@ -28,6 +28,7 @@ public class Menu_Sidebar extends JPanel {
 		colaRiesgo = new LinkedList<>();
 		
 		crear_cuenta = createStyledButton("Crear cuenta");
+		
 		colaAdmin.add(crear_cuenta);
 		
 		cardLayout = new CardLayout();

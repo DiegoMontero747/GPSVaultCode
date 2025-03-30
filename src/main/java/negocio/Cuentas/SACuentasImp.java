@@ -44,7 +44,7 @@ public class SACuentasImp implements SACuentas {
         direccion = direccion.trim();
         telefono = telefono.trim();
 
-        if (nombre.isBlank() || apellidos.isBlank() || dni.isBlank() || direccion.isBlank() || telefono.isBlank()) {
+        if (nombre.isBlank() || apellidos.isBlank() || tipoDoc.isBlank() || direccion.isBlank() || telefono.isBlank()) {
             return new ResultContext(Evento.CREAR_CUENTA_BANCARIA_ERROR_DATOS_INCOMPLETOS, null);
         }
         

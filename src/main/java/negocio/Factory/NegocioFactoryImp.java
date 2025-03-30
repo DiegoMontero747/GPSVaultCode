@@ -1,5 +1,7 @@
 package negocio.Factory;
 
+import negocio.Cuentas.SACuentas;
+import negocio.Cuentas.SACuentasImp;
 import negocio.ManejoSesiones.SACrearCuentaAdministracion;
 import negocio.ManejoSesiones.SACrearCuentaAdministracionImp;
 import negocio.ManejoSesiones.SAManejoSesiones;
@@ -19,8 +21,12 @@ public class NegocioFactoryImp extends NegocioFactory {
 
 	@Override
 	public SACrearCuentaAdministracion crearSACrearCuentaAdministracion() {
-		// TODO Auto-generated method stub
 		return new SACrearCuentaAdministracionImp();
+	}
+
+	@Override
+	public SACuentas crearSACuentas() {
+		return new SACuentasImp();
 	}
     
     

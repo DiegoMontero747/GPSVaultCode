@@ -51,6 +51,10 @@ public enum Evento {
 
     // Tarjeta creada con éxito
     CREAR_TARJETA_OK,
+    // Se presiona el boton de menu en el header
+    BOTON_MENU,
+
+    GUI_PRINCIPAL,
 
     // ----------------- CREACIÓN DE CUENTA BANCARIA -----------------
     GUI_CREAR_CUENTA_BANCARIA, // Evento para abrir la vista de creación de cuenta

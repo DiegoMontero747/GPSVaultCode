@@ -34,9 +34,11 @@ public class FactoryGUIImp extends FactoryGUI {
                 ApplicationContainer.getInstance().addView("LOGIN", new GUI_InicioSesion());
                 return ApplicationContainer.class;
 
-            case INICIO_SESION_OK:
-                ApplicationContainer.getInstance().addView("VISTA_PRINCIPAL", new GUI_Principal());
-                return GUI_Principal.class;
+		case INICIO_SESION_OK:
+			ApplicationContainer.getInstance().addView("VISTA_PRINCIPAL", new GUI_Principal());
+			return ApplicationContainer.class;
+		case GUI_PRINCIPAL:
+			return GUI_Principal.class;
 
             case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA,
                  INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA,

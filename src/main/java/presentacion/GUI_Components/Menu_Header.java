@@ -3,6 +3,8 @@ package presentacion.GUI_Components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -10,8 +12,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import presentacion.Controller.Context;
+import presentacion.Controller.Controller;
+import presentacion.Controller.Evento;
+
 public class Menu_Header extends JPanel {
-	public Menu_Header(){
+	Menu_Sidebar sb;
+	
+	public Menu_Header(Menu_Sidebar sb){
+		this.sb = sb;
 		init();
 	}
 	
@@ -25,6 +34,17 @@ public class Menu_Header extends JPanel {
         ImageIcon icon = new ImageIcon("media/icons8-menu-64.png"); // Ruta de la imagen
         Image img = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         btnMenu.setIcon(new ImageIcon(img));
+        btnMenu.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(sb.isVisible())
+					sb.setVisible(false);
+				else
+					sb.setVisible(true);
+			}
+		});
         
         //Boton de usuario
         JButton btnOpt = new JButton();

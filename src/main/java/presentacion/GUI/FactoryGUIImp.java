@@ -3,6 +3,8 @@ package presentacion.GUI;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JPanel;
+
 import presentacion.Controller.Context;
 import presentacion.Controller.Evento;
 
@@ -18,36 +20,46 @@ public class FactoryGUIImp extends FactoryGUI {
     @Override
     public ObservadorGUI generarGUI(Context commandContext) {
         Class<? extends ObservadorGUI> claveVista = getVistaClass(commandContext.getEvento());
+        System.out.println("paso2");
 
         if (claveVista == null) {
             return null; // No se necesita ninguna GUI para este evento
         }
 
         // Si la vista ya existe, simplemente la devolvemos
-        return instancias.computeIfAbsent(claveVista, this::crearNuevaVista);
+        return instancias.get(claveVista);
     }
 
     private Class<? extends ObservadorGUI> getVistaClass(Evento evento) {
         // Mapeamos cada evento a su respectiva vista
         switch (evento) {
             case GUI_INICIO_SESION:
-                ApplicationContainer.getInstance().addView("LOGIN", new GUI_InicioSesion());
+            	instancias.putIfAbsent(GUI_InicioSesion.class, new GUI_InicioSesion());
+                ApplicationContainer.getInstance().addView("LOGIN",
+                		(JPanel) instancias.get(GUI_InicioSesion.class));
                 return ApplicationContainer.class;
 
 		case INICIO_SESION_OK:
-			ApplicationContainer.getInstance().addView("VISTA_PRINCIPAL", new GUI_Principal());
+			instancias.putIfAbsent(GUI_Principal.class, GUI_Principal.getInstance());
+			ApplicationContainer.getInstance().addView("VISTA_PRINCIPAL",
+					(JPanel) instancias.get(GUI_Principal.class));
 			return ApplicationContainer.class;
 		case GUI_PRINCIPAL:
 			return GUI_Principal.class;
 
-            case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA,
-                 INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA,
-                 INICIO_SESION_ERROR_USUARIO_INCOMPLETO,
-                 INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
-                return GUI_InicioSesion.class;
+		case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA,
+             INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA,
+             INICIO_SESION_ERROR_USUARIO_INCOMPLETO,
+             INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
+             return GUI_InicioSesion.class;
 
-            case GUI_CREAR_TARJETA_DEBITO:
-                return GUI_CrearTarjetaDebito.class;
+        case GUI_CREAR_TARJETA_DEBITO:
+             return GUI_CrearTarjetaDebito.class;
+        case GUI_CREAR_CUENTA_ADMINISTRACION:
+        	instancias.putIfAbsent(GUI_CrearCuentaAdministracion.class, new GUI_CrearCuentaAdministracion());
+        	GUI_Principal.getInstance().addView("CREAR_CUENTA_ADMINISTRACION",
+        			(JPanel) instancias.get(GUI_CrearCuentaAdministracion.class));
+        	return GUI_Principal.class;
 
             // Agregar más casos según se necesiten
             default:

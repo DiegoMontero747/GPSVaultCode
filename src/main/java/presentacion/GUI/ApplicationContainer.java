@@ -58,6 +58,7 @@ public class ApplicationContainer extends JFrame implements ObservadorGUI{
             case INICIO_SESION_OK:
             	//Controller.getInstance().UNregisterObserver((ObservadorGUI) ((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.CENTER));
             	showView("VISTA_PRINCIPAL");
+            	break;
         }
     }
 }

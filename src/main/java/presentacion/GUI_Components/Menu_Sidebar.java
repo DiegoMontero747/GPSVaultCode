@@ -1,7 +1,14 @@
 package presentacion.GUI_Components;
 
 import javax.swing.*;
+
+import presentacion.Controller.Context;
+import presentacion.Controller.Controller;
+import presentacion.Controller.Evento;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -28,7 +35,16 @@ public class Menu_Sidebar extends JPanel {
 		colaRiesgo = new LinkedList<>();
 		
 		crear_cuenta = createStyledButton("Crear cuenta");
-		
+		crear_cuenta.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("paso1");
+				Controller.getInstance().handleRequest(new Context(Evento.GUI_CREAR_CUENTA_ADMINISTRACION, null));
+				System.out.println("finalizado");
+			}
+			
+		});
 		colaAdmin.add(crear_cuenta);
 		
 		cardLayout = new CardLayout();
@@ -46,9 +62,6 @@ public class Menu_Sidebar extends JPanel {
 		// Mostrar el panel según la opción
 		switch (opcion.toUpperCase()) {
 		case "ADMIN":
-			cardLayout.show(contenedor, "ADMIN");
-			break;
-		case "ADMINISTRACION":
 			cardLayout.show(contenedor, "ADMIN");
 			break;
 		case "SERVICIOS GENERALES":

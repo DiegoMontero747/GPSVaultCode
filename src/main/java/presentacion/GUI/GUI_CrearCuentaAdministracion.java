@@ -5,8 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 import presentacion.Controller.Context;
 
-public class GUI_CrearCuentaAdministracion implements ObservadorGUI {
-    private JFrame frame;
+public class GUI_CrearCuentaAdministracion extends JPanel implements ObservadorGUI {
     private JLabel errorLabel;
 
     private JTextField userField = new JTextField(15);
@@ -25,10 +24,6 @@ public class GUI_CrearCuentaAdministracion implements ObservadorGUI {
     }
 
     private void initialize() {
-    	frame = new JFrame("VAULTCODE - Crear cuenta desde administración");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(450, 350);
-        frame.setLocationRelativeTo(null);
 
         // Panel de fondo con la imagen
         ImagePanel backgroundPanel = new ImagePanel("media/background.png");
@@ -184,8 +179,8 @@ public class GUI_CrearCuentaAdministracion implements ObservadorGUI {
         contentPanel.add(checkButton, gbc);
 
         backgroundPanel.add(contentPanel, BorderLayout.CENTER);
-        frame.setContentPane(backgroundPanel);
-        frame.setVisible(true);
+        this.add(backgroundPanel);
+        this.setVisible(true);
     }
     
 	

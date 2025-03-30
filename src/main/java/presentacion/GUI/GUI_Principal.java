@@ -1,9 +1,9 @@
 package presentacion.GUI;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 import presentacion.Controller.Context;
+import presentacion.Controller.Controller;
 import presentacion.Controller.Evento;
 import presentacion.GUI_Components.Menu_Header;
 import presentacion.GUI_Components.Menu_Sidebar;
@@ -12,9 +12,7 @@ import java.awt.*;
 
 public class GUI_Principal extends JPanel implements ObservadorGUI {
 	private static final long serialVersionUID = 1L;
-	// private JTable userTable;
-	// private JButton addFundsButton, retireFundsButton, logoutButton,
-	// createUserButton;
+	private static GUI_Principal instance;
 	private JPanel cardPanel;
 	private CardLayout cardLayout;
 	private Menu_Sidebar menu;
@@ -23,6 +21,13 @@ public class GUI_Principal extends JPanel implements ObservadorGUI {
 		initialize();
 		// this.setVisible(true);
 	}
+	
+	public static GUI_Principal getInstance() {
+        if (instance == null) {
+            instance = new GUI_Principal();
+        }
+        return instance;
+    }
 
 	private void initialize() {
 		this.setSize(800, 500);
@@ -38,19 +43,42 @@ public class GUI_Principal extends JPanel implements ObservadorGUI {
 		cardLayout = new CardLayout();
 		cardPanel = new JPanel(cardLayout);
 		cardPanel.setOpaque(false);
+		cardPanel.setVisible(true);
 
 		this.add(cardPanel, BorderLayout.CENTER);
 		this.setVisible(true);
 	}
+	
+	
+	public void addView(String name, JPanel view) {
+        cardPanel.add(view, name); // Agrega el panel al CardLayout
+     // Registrarse como observador
+        Controller.getInstance().registerObserver(this);
+        Controller.getInstance().registerObserver((ObservadorGUI) view);
+        
+    }
+
+    public void showView(String name) {
+         cardLayout.show(cardPanel, name); // Muestra el panel sin eliminar nada
+         revalidate();
+         repaint();
+    }
 
 	@Override
 	public void actualizar(Context c) {
 		// TODO Auto-generated method stub
-		if (c.getEvento() == Evento.GUI_PRINCIPAL) {
+		switch (c.getEvento()) {
+		case GUI_PRINCIPAL:
 			System.out.println(c.getDato());
 			menu.init((String) c.getDato());
 			this.add(menu, BorderLayout.WEST);
 			menu.setVisible(false);
+			break;
+		case GUI_CREAR_CUENTA_ADMINISTRACION:
+			showView("CREAR_CUENTA_ADMINISTRACION");
+			break;
+		
+		
 		}
 
 	}

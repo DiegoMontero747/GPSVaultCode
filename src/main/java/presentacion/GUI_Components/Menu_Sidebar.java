@@ -42,13 +42,16 @@ public class Menu_Sidebar extends JPanel {
 		case "admin":
 			cardLayout.show(contenedor, "ADMIN");
 			break;
-		case "COLA2":
+		case "administracion":
+			cardLayout.show(contenedor, "ADMIN");
+			break;
+		case "servicios generales":
 			cardLayout.show(contenedor, "SERVICIOS GENERALES");
 			break;
-		case "COLA3":
+		case "riesgo":
 			cardLayout.show(contenedor, "RIESGO");
 			break;
-		case "COLA4":
+		case "pasivo":
 			cardLayout.show(contenedor, "PASIVO");
 			break;
 		default:

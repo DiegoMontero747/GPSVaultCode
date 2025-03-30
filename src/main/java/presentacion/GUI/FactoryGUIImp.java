@@ -39,6 +39,8 @@ public class FactoryGUIImp extends FactoryGUI {
 
 		case INICIO_SESION_OK:
 			ApplicationContainer.getInstance().addView("VISTA_PRINCIPAL", new GUI_Principal());
+			return ApplicationContainer.class;
+		case GUI_PRINCIPAL:
 			return GUI_Principal.class;
 
 		// Agregar más casos según se necesiten

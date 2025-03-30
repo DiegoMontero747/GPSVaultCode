@@ -30,7 +30,8 @@ public class GUI_Principal extends JPanel implements ObservadorGUI {
 		this.setBackground(new Color(50, 50, 50));
 
 		// Header de Menu
-		this.add(new Menu_Header(), BorderLayout.NORTH);
+		menu = new Menu_Sidebar();
+		this.add(new Menu_Header(menu), BorderLayout.NORTH);
 
 		// Este CardLayout permitira que podamos mostrar las diferentes subvistas sin
 		// mucha complcacion
@@ -45,10 +46,11 @@ public class GUI_Principal extends JPanel implements ObservadorGUI {
 	@Override
 	public void actualizar(Context c) {
 		// TODO Auto-generated method stub
-		if (c.getEvento() == Evento.BOTON_MENU) {
-			menu = new Menu_Sidebar((String) c.getDato());
+		if (c.getEvento() == Evento.GUI_PRINCIPAL) {
+			System.out.println(c.getDato());
+			menu.init((String) c.getDato());
 			this.add(menu, BorderLayout.WEST);
-			menu.setVisible(true);
+			menu.setVisible(false);
 		}
 
 	}

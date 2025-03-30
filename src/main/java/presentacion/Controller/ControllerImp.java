@@ -16,10 +16,6 @@ public class ControllerImp extends Controller {
 	        
 	        //notificar a los observadores
 	        notificarObservadores(commandContext);
-
-	        if (vista != null) {
-	            vista.actualizar(commandContext);  // Si la vista existe, actualizarla
-	        }
 	    }
 
 	 @Override

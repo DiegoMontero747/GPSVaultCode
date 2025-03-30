@@ -30,6 +30,8 @@ public enum Evento {
 
 	//Se presiona el boton de menu en el header
 	BOTON_MENU,
+	
+	GUI_PRINCIPAL,
 
 	// ------------------------CREAR CUENTA ADMINISTRACION-----------------------
 	CREAR_CUENTA_ADM,

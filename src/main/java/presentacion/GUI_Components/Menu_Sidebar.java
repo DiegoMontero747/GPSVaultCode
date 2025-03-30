@@ -14,16 +14,22 @@ public class Menu_Sidebar extends JPanel {
 	private CardLayout cardLayout;
 	private JPanel contenedor;
 	private JButton crear_cuenta;
+	
+	public Menu_Sidebar() {
+		contenedor = new JPanel(cardLayout);
+		
+		setLayout(new BorderLayout());
+		add(contenedor, BorderLayout.CENTER);
+	}
 
-	public Menu_Sidebar(String opcion) {
+	public void init(String opcion) {
 		// Inicializar las colas
 		colaAdmin = new LinkedList<>();
 		colaServiciosGenerales = new LinkedList<>();
 		colaPasivo = new LinkedList<>();
 		colaRiesgo = new LinkedList<>();
 		cardLayout = new CardLayout();
-		contenedor = new JPanel(cardLayout);
-
+		
 		crear_cuenta = createStyledButton("Crear cuenta");
 		
 		colaAdmin.add(crear_cuenta);
@@ -33,9 +39,6 @@ public class Menu_Sidebar extends JPanel {
 		contenedor.add(crearPanel(colaServiciosGenerales));
 		contenedor.add(crearPanel(colaPasivo));
 		contenedor.add(crearPanel(colaRiesgo));
-
-		setLayout(new BorderLayout());
-		add(contenedor, BorderLayout.CENTER);
 
 		// Mostrar el panel según la opción
 		switch (opcion.toUpperCase()) {

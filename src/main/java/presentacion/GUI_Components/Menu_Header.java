@@ -17,7 +17,10 @@ import presentacion.Controller.Controller;
 import presentacion.Controller.Evento;
 
 public class Menu_Header extends JPanel {
-	public Menu_Header(){
+	Menu_Sidebar sb;
+	
+	public Menu_Header(Menu_Sidebar sb){
+		this.sb = sb;
 		init();
 	}
 	
@@ -36,7 +39,10 @@ public class Menu_Header extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Controller.getInstance().handleRequest(new Context(Evento.BOTON_MENU, null));
+				if(sb.isVisible())
+					sb.setVisible(false);
+				else
+					sb.setVisible(true);
 			}
 		});
         

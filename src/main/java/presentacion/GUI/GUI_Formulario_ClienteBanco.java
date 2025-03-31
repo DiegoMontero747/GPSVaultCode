@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 import negocio.ManejoSesiones.Roles;
+import presentacion.Controller.Context;
 import presentacion.GUI_Components.GeneralForm;
 import presentacion.GUI_Components.RoundedComponents.RoundedButton;
 
-public class GUI_Formulario_ClienteBanco extends JFrame {
+public class GUI_Formulario_ClienteBanco extends JFrame implements ObservadorGUI {
     /** TODO CAMBIAR A JPANEL Y ENLAZARLO AL BOTON CORRESPONDIENTE CUANDO ESTÉ
 	 * 
 	 */
@@ -171,7 +172,6 @@ public class GUI_Formulario_ClienteBanco extends JFrame {
         });
     }
 
-	@Override
 	public void actualizar(Context c) {
 		// TODO Auto-generated method stub
 		

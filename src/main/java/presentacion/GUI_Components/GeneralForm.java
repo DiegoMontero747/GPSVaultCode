@@ -91,10 +91,13 @@ public class GeneralForm {
 	}
 	
 	// permite mostrar el mensaje de error del formulario
-	public void mostrarMensajeError(String mensaje) {
+	public void mostrarMensaje(String mensaje, boolean error) {
 		errorLabel.setText(mensaje);
-		errorLabel.setForeground(new Color(255, 94, 0));
-
+		
+		// si es error, se muestra en naranja, sino en verde
+		if(error) errorLabel.setForeground(new Color(255, 94, 0));
+		else errorLabel.setForeground(Color.GREEN);
+			
 		errorLabel.setFont(new Font("Arial", Font.PLAIN, 14)); // Ajusta el tamaño y tipo de fuente
 		errorLabel.setOpaque(false); // Asegura que el fondo sea transparente
 

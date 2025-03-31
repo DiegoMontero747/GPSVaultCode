@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -29,9 +30,9 @@ public class Menu_Sidebar extends JPanel {
     private static final int BUTTON_HEIGHT = 40;
     
     // Colores
-    private static final Color BACKGROUND_COLOR = new Color(40, 40, 40);
-    private static final Color BUTTON_COLOR = new Color(0, 87, 160);
-    private static final Color BUTTON_HOVER_COLOR = new Color(0, 120, 215);
+    private static final Color BACKGROUND_COLOR = new Color(20, 20, 20, 180); 
+    private static final Color BUTTON_COLOR = new Color(0, 87, 160, 150);
+    private static final Color BUTTON_HOVER_COLOR = new Color(0, 120, 215, 180);
     private static final Color BUTTON_TEXT_COLOR = Color.WHITE;
 
     public Menu_Sidebar() {
@@ -92,7 +93,7 @@ public class Menu_Sidebar extends JPanel {
                     JButton button = (JButton) comp;
                     
                     // Ajustar tamaño y fuente 
-                    button.setMaximumSize(new Dimension(this.getParent().getWidth(), BUTTON_HEIGHT));
+                    
                     button.setFont(new Font("Arial", Font.BOLD, 13));
                     button.setMargin(new Insets(5, 15, 5, 15));
                     
@@ -121,7 +122,16 @@ public class Menu_Sidebar extends JPanel {
     }
 
     private void createSectionPanel(JSONObject config, String sectionName, Evento defaultEvent) {
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel() {
+        	@Override
+            protected void paintComponent(Graphics g) {
+                // Limpiar fondo primero
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setColor(new Color(40, 40, 40, 200));
+                g2.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
         panel.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
@@ -156,29 +166,57 @@ public class Menu_Sidebar extends JPanel {
 
     private JButton createResponsiveButton(String text, Evento event) {
         JButton button = new JButton(text) {
-            @Override
-            public Dimension getMaximumSize() {
-                return new Dimension(super.getMaximumSize().width, BUTTON_HEIGHT);
+        	@Override
+            protected void paintComponent(Graphics g) {
+                // 1. Limpiar completamente el área del botón
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setComposite(AlphaComposite.Clear);
+                g2.fillRect(0, 0, getWidth(), getHeight());
+                
+                // 2. Dibujar fondo con transparencia
+                g2.setComposite(AlphaComposite.SrcOver);
+                if (getModel().isPressed()) {
+                    g2.setColor(new Color(0, 87, 160, 200)); // Más opaco al presionar
+                } else if (getModel().isRollover()) {
+                    g2.setColor(new Color(0, 120, 215, 180)); // Hover
+                } else {
+                    g2.setColor(new Color(0, 87, 160, 150)); // Normal
+                }
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+                
+                // 3. Dibujar texto
+                g2.setColor(Color.WHITE);
+                g2.setFont(getFont());
+                FontMetrics fm = g2.getFontMetrics();
+                Rectangle2D textBounds = fm.getStringBounds(getText(), g2);
+                
+                int textX = (int) ((getWidth() - textBounds.getWidth()) / 2);
+                int textY = (int) ((getHeight() - textBounds.getHeight()) / 2 + fm.getAscent());
+                
+                g2.drawString(getText(), textX, textY);
+                g2.dispose();
             }
+            
+         
         };
         
         // Configuración responsive del botón
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-       button.setMaximumSize(new Dimension(Short.MAX_VALUE, BUTTON_HEIGHT));
-        button.setPreferredSize(new Dimension(MIN_WIDTH, BUTTON_HEIGHT));
+        button.setMaximumSize(new Dimension(200, BUTTON_HEIGHT));
+       
         
         // Estilo del botón
         button.setBackground(BUTTON_COLOR);
         button.setForeground(BUTTON_TEXT_COLOR);
         button.setFont(new Font("Arial", Font.BOLD, 13));
-        button.setFocusPainted(false);
+        /*button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(255, 255, 255, 50), 1),
             BorderFactory.createEmptyBorder(5, 15, 5, 15)
-        ));
+        ));*/
         
         // Efectos interactivos
-        setupButtonHoverEffects(button);
+        //setupButtonHoverEffects(button);
         
         // Acción del botón
         button.addActionListener((ActionEvent e) -> {
@@ -192,12 +230,14 @@ public class Menu_Sidebar extends JPanel {
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(BUTTON_HOVER_COLOR);
-                button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                button.repaint();
+                //button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 button.setBackground(BUTTON_COLOR);
-                button.setCursor(Cursor.getDefaultCursor());
+                button.repaint();
+                //button.setCursor(Cursor.getDefaultCursor());
             }
         });
     }

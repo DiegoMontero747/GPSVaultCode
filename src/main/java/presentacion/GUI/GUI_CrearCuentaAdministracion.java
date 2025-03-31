@@ -1,9 +1,12 @@
 package presentacion.GUI;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.*;
 
+import negocio.ManejoSesiones.Roles;
 import negocio.ManejoSesiones.TSesion;
 import presentacion.Controller.Context;
 import presentacion.Controller.Controller;
@@ -45,7 +48,6 @@ public class GUI_CrearCuentaAdministracion extends JFrame implements ObservadorG
 		contentPanel.setOpaque(false);
 		backgroundPanel.add(contentPanel, BorderLayout.CENTER); // Panel con componentes también añadido al centro
 		
-		
 		// Titulo del formulario
 		titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
 		titleLabel.setForeground(new Color(255, 94, 0));
@@ -61,16 +63,25 @@ public class GUI_CrearCuentaAdministracion extends JFrame implements ObservadorG
 		
 		// Se crea el formulario
 		formulario = new GeneralForm(contentPanel, 7, titleLabel, actionButton, errorLabel);
+
+		// Se obtienen los valores del combobox
+		ArrayList<String> comboBoxArray = new ArrayList<String>();
+		for(Roles item : Roles.values()) {
+			String formattedItem = item.toString().replace("_", " ").toLowerCase();
+			formattedItem = Character.toUpperCase(formattedItem.charAt(0)) + formattedItem.substring(1);
+			comboBoxArray.add(formattedItem);
+		}
 		
 		// Se ajusta el formulario
 		formulario.setPassword(1);							// el segundo campo de texto es de tipo contrasenya
 		formulario.setComboBox(6);							// el ultimo campo es un combobox
+		formulario.setComboBoxInfo(6, comboBoxArray); 		// se rellena la informacion del combo box
 		formulario.setInfoText(0, "Nombre de usuario");		// el campo de texto del usuario
 		formulario.setInfoText(1, "Contraseña");			// el campo de texto de la contrasenya
 		formulario.setInfoText(2, "Nombre");				// el campo de texto del nombre
 		formulario.setInfoText(3, "Apellidos");				// el campo de texto de los apellidos
 		formulario.setInfoText(4, "DNI");					// el campo de texto del DNI
-		formulario.setInfoText(5, "Telefono");				// el campo de texto de la contrasenya
+		formulario.setInfoText(5, "Telefono");				// el campo de texto del telefono
 		
 		this.setVisible(true);
     }

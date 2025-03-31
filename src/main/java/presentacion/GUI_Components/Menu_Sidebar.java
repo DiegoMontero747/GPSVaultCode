@@ -209,14 +209,9 @@ public class Menu_Sidebar extends JPanel {
         button.setBackground(BUTTON_COLOR);
         button.setForeground(BUTTON_TEXT_COLOR);
         button.setFont(new Font("Arial", Font.BOLD, 13));
-        /*button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(255, 255, 255, 50), 1),
-            BorderFactory.createEmptyBorder(5, 15, 5, 15)
-        ));*/
-        
-        // Efectos interactivos
-        //setupButtonHoverEffects(button);
+     
+     
+        setupButtonHoverEffects(button);
         
         // Acción del botón
         button.addActionListener((ActionEvent e) -> {

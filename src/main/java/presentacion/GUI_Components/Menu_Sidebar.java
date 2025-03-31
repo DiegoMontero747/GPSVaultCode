@@ -5,95 +5,79 @@ import javax.swing.*;
 import presentacion.Controller.Context;
 import presentacion.Controller.Controller;
 import presentacion.Controller.Evento;
+import presentacion.GUI.ObservadorGUI;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
-public class Menu_Sidebar extends JPanel {
-	private static final long serialVersionUID = 1L;
-	private Queue<JButton> colaAdmin;
-	private Queue<JButton> colaServiciosGenerales;
-	private Queue<JButton> colaPasivo;
-	private Queue<JButton> colaRiesgo;
-	private CardLayout cardLayout;
-	private JPanel contenedor;
-	private JButton crear_cuenta;
-	
-	public Menu_Sidebar() {
-		contenedor = new JPanel(cardLayout);
-		//setPreferredSize(new Dimension(100, 100));
-	}
+public class Menu_Sidebar extends JPanel implements ObservadorGUI {
+    private static final long serialVersionUID = 1L;
+    private final Map<String, Queue<JButton>> botonesPorRol;
+    private final CardLayout cardLayout;
+    private final JPanel contenedor;
 
-	public void init(String opcion) {
-		// Inicializar las colas
-		colaAdmin = new LinkedList<>();
-		colaServiciosGenerales = new LinkedList<>();
-		colaPasivo = new LinkedList<>();
-		colaRiesgo = new LinkedList<>();
-		
-		crear_cuenta = createStyledButton("Crear cuenta");
-		crear_cuenta.addActionListener(new ActionListener() {
+    public Menu_Sidebar() {
+        botonesPorRol = new HashMap<>();
+        cardLayout = new CardLayout();
+        contenedor = new JPanel(cardLayout);
+        setLayout(new BorderLayout());
+        add(contenedor, BorderLayout.CENTER);
+    }
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Controller.getInstance().handleRequest(new Context(Evento.GUI_CREAR_CUENTA_ADMINISTRACION, null));
-			}
-			
-		});
-		colaAdmin.add(crear_cuenta);
-		
-		cardLayout = new CardLayout();
-		contenedor = new JPanel(cardLayout);
-		
-		// Crear paneles para cada cola
-		contenedor.add(crearPanel(colaAdmin), "ADMIN");
-		contenedor.add(crearPanel(colaServiciosGenerales), "SERVICIOS GENERALES");
-		contenedor.add(crearPanel(colaPasivo), "PASIVO");
-		contenedor.add(crearPanel(colaRiesgo), "RIESGO");
-		
-		setLayout(new BorderLayout());
-		add(contenedor, BorderLayout.CENTER);
-		
-		// Mostrar el panel según la opción
-		switch (opcion.toUpperCase()) {
-		case "ADMIN":
-			cardLayout.show(contenedor, "ADMIN");
-			break;
-		case "SERVICIOS GENERALES":
-			cardLayout.show(contenedor, "SERVICIOS GENERALES");
-			break;
-		case "RIESGO":
-			cardLayout.show(contenedor, "RIESGO");
-			break;
-		case "PASIVO":
-			cardLayout.show(contenedor, "PASIVO");
-			break;
-		default:
-			break;
-		}
-		this.setVisible(true);
-	}
+    public void init(String opcion) {
+    	//ADMIN------------------------------------------
+        agregarBoton("ADMIN", "Crear cuenta", Evento.GUI_CREAR_CUENTA_ADMINISTRACION);
+        
+        //PASIVO-----------------------------------------
+        agregarBoton("PASIVO", "Nuevo cliente", Evento.GUI_CREAR_CUENTA_BANCARIA);
+        
+        for (Map.Entry<String, Queue<JButton>> entry : botonesPorRol.entrySet()) {
+            contenedor.add(crearPanel(entry.getValue()), entry.getKey());
+        }
 
-	private JPanel crearPanel(Queue<JButton> cola) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(cola.size(), 1));
-		for (JButton boton : cola) {
-			panel.add(boton);
-		}
-		return panel;
-	}
-	
-	private JButton createStyledButton(String text) {
-		JButton button = new JButton(text);
-		button.setBackground(new Color(0, 87, 160));
-		button.setForeground(Color.BLACK);
-		button.setFont(new Font("Arial", Font.BOLD, 14));
-		button.setFocusPainted(false);
-		button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-		button.setOpaque(true); // Asegura que el color de fondo se aplique
-		return button;
-	}
+        cardLayout.show(contenedor, opcion.toUpperCase());
+        this.setVisible(true);
+    }
+
+    public void agregarBoton(String categoria, String texto, Evento evento) {
+        botonesPorRol.putIfAbsent(categoria, new LinkedList<>());
+        JButton boton = createStyledButton(texto);
+        boton.addActionListener(e -> Controller.getInstance().handleRequest(new Context(evento, null)));
+        botonesPorRol.get(categoria).add(boton);
+    }
+
+    private JPanel crearPanel(Queue<JButton> cola) {
+    	 JPanel panel = new JPanel();
+    	 panel.setBackground(new Color(40,40,40));
+         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // Asegura que los botones se apilen verticalmente
+         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // Añade margen para evitar recortes
+         panel.setPreferredSize(new Dimension(200, cola.size() * 10)); // Ajusta tamaño dinámico según botones
+         for (JButton boton : cola) {
+             boton.setAlignmentX(Component.CENTER_ALIGNMENT); // Centra los botones
+             panel.add(Box.createVerticalStrut(10)); // Espaciado entre botones
+             panel.add(boton);
+         }
+         return panel;
+    }
+
+    private JButton createStyledButton(String text) {
+    	JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(50, 40)); // Tamaño predeterminado
+        button.setBackground(new Color(255, 94, 0)); // Color de fondo
+        button.setForeground(Color.BLACK);
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setFocusPainted(false);
+        button.setOpaque(true);
+        return button;
+    }
+
+    @Override
+    public void actualizar(Context c) {
+        // TODO Auto-generated method stub
+    }
 }

@@ -3,7 +3,11 @@ package presentacion.GUI;
 import java.awt.*;
 
 import javax.swing.*;
+
+import negocio.ManejoSesiones.TCrearCuentaAdm;
 import presentacion.Controller.Context;
+import presentacion.Controller.Controller;
+import presentacion.Controller.Evento;
 
 public class GUI_CrearCuentaAdministracion extends JPanel implements ObservadorGUI {
     private JLabel errorLabel;
@@ -129,7 +133,7 @@ public class GUI_CrearCuentaAdministracion extends JPanel implements ObservadorG
         DNIField.setCaretColor(new Color(255, 94, 0));
         gbc.gridx = 1;
         contentPanel.add(DNIField, gbc);
-        
+       
         JLabel telfLabel = new JLabel("Teléfono:");
         telfLabel.setForeground(Color.WHITE);
         gbc.gridy = 7;
@@ -142,7 +146,7 @@ public class GUI_CrearCuentaAdministracion extends JPanel implements ObservadorG
         telfField.setCaretColor(new Color(255, 94, 0));
         gbc.gridx = 1;
         contentPanel.add(telfField, gbc);
-        
+     
         JLabel rolLabel = new JLabel("Rol:");
         rolLabel.setForeground(Color.WHITE);
         gbc.gridy = 8;
@@ -160,14 +164,21 @@ public class GUI_CrearCuentaAdministracion extends JPanel implements ObservadorG
         gbc.gridx = 1;
         contentPanel.add(rolComboBox, gbc);
 
-        checkButton = new JButton("Comprobar trabajador");
+        checkButton = new JButton("Crear Cuenta");
         checkButton.setBackground(new Color(255, 94, 0));
         checkButton.setForeground(Color.BLACK);
         checkButton.setFocusPainted(false);
         checkButton.setFont(new Font("Arial", Font.BOLD, 14));
         checkButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         checkButton.addActionListener(e -> {
-        	// TODO coger toda la información y pasarla como un transfer a la funcion correcta
+        	String passd = new String( passField.getPassword());
+        	String rpassd = new String(repeatPassField.getPassword());
+        	if(passd.equals(rpassd)) {
+        	Controller.getInstance().handleRequest(new Context(Evento.CREAR_CUENTA_ADM,
+        			new TCrearCuentaAdm(nameField.getText(), surnameField.getText(),
+        					passd, DNIField.getText(), userField.getText()
+        					, (String) rolComboBox.getSelectedItem(), telfField.getText())));
+        	}
         });
 
         // Etiqueta para mostrar errores

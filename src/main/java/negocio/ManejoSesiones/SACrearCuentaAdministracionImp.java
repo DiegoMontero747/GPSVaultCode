@@ -54,9 +54,10 @@ public class SACrearCuentaAdministracionImp implements SACrearCuentaAdministraci
 				nuevoperfil.append("nombre",data.getNombre());
 				nuevoperfil.append("apellido",data.getApellido());
 				nuevoperfil.append("rol",data.getRol());
-				nuevoperfil.append("contrasenya",data.getConstrasenya());
+				nuevoperfil.append("password",data.getConstrasenya());
 				nuevoperfil.append("usuario",data.getUsuario());
 				nuevoperfil.append("dni",data.getDni());
+				nuevoperfil.append("telefono", data.getTelf());
 				db.insertDocument(Collections.PERFIL, nuevoperfil);
 				//devuelve data para devolver los datos introducidos por si hacen falta
 				return new ResultContext(Evento.CREAR_CUENTA_ADM_EXITO,data);

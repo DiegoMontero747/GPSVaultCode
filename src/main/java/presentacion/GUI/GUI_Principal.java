@@ -77,7 +77,9 @@ public class GUI_Principal extends JPanel implements ObservadorGUI {
 		case GUI_CREAR_CUENTA_ADMINISTRACION:
 			showView("CREAR_CUENTA_ADMINISTRACION");
 			break;
-		
+		case GUI_CREAR_CUENTA_BANCARIA:
+			showView("CREAR_CUENTA_CLIENTE_BANCO");
+			break;
 		
 		}
 

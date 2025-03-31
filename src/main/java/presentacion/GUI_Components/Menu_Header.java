@@ -42,9 +42,9 @@ public class Menu_Header extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if(sb.isVisible())
-					sb.setVisible(false);
+					sb.hideSidebar();
 				else
-					sb.setVisible(true);
+					sb.showSidebar();
 			}
 		});
         

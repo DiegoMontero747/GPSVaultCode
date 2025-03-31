@@ -6,7 +6,7 @@
         "event": "GUI_CREAR_CUENTA_ADMINISTRACION"
       },
 	  {
-	    "text": "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+	    "text": "Crear cuenta bancaria",
 	    "event": "GUI_CREAR_CUENTA_BANCARIA"
 	  }
     ]

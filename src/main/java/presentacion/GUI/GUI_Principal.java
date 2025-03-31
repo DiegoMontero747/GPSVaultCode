@@ -22,7 +22,7 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
     private Menu_Header header;       // Barra superior
     
     // Dimensiones
-    private static final int SIDEBAR_WIDTH = 250;
+    private static final int SIDEBAR_WIDTH = 200;
     private static final int HEADER_HEIGHT = 50;
 
     public static GUI_Principal getInstance() {
@@ -89,8 +89,9 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
         contentPanel.setBounds(0, 0, width, height);
         
         // Actualizar bounds del sidebar
-       
-        menu.setBounds(0, HEADER_HEIGHT, SIDEBAR_WIDTH, height - HEADER_HEIGHT);
+        
+//----------------------esta es la linea de código que hace que el sidebar se redimensione según el tamaño de la ventana-------------------------------
+        menu.setBounds(0, HEADER_HEIGHT, width/4 < SIDEBAR_WIDTH ? SIDEBAR_WIDTH : width/4, height - HEADER_HEIGHT);
         menu.setupResponsiveDesign();      // Forzar redibujado
         revalidate();
         repaint();
@@ -112,15 +113,6 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
     }
 
 
-    public void toggleSidebar() {
-        menu.setVisible(!menu.isVisible());
-        updateComponentBounds(getWidth(), getHeight());
-        
-        // Opcional: Animación suave
-        animateSidebar(menu.isVisible());
-        revalidate();
-        repaint();
-    }
 
 	@Override
 	public void actualizar(Context c) {
@@ -143,25 +135,6 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
 	}
 
 
-    private void animateSidebar(boolean show) {
-        // Implementación básica de animación
-        int start = show ? -SIDEBAR_WIDTH : 0;
-        int end = show ? 0 : -SIDEBAR_WIDTH;
-        
-        Timer timer = new Timer(10, null);
-        timer.addActionListener(e -> {
-            int currentX = menu.getX();
-            if ((show && currentX < end) || (!show && currentX > end)) {
-                int step = show ? 5 : -5;
-                menu.setLocation(currentX + step, HEADER_HEIGHT);
-                repaint();
-            } else {
-                menu.setLocation(end, HEADER_HEIGHT);
-                ((Timer)e.getSource()).stop();
-            }
-        });
-        timer.start();
-    }
 
    
 

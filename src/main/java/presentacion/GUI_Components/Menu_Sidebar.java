@@ -9,6 +9,7 @@ import presentacion.Controller.Evento;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.Rectangle2D;
@@ -25,16 +26,17 @@ public class Menu_Sidebar extends JPanel {
     private Map<String, JPanel> panelsMap;
     
     // Constantes para diseño responsive
-    private static final int MIN_WIDTH = 10;
-    private static final int MAX_WIDTH = 150;
-    private static final int BUTTON_HEIGHT = 40;
-    private static final int BUTTON_WIDTH = 200;
+    //EL TAMAÑO DEL SIDEBAR ENTERO SE CAMBIA EN GUI_PRINCIPAL
+    private static final int MIN_WIDTH = 100; // no funciona
+    private static final int MAX_WIDTH = 100; // no funciona
+    private static final int BUTTON_HEIGHT = 40; // TAMAÑO MAXIMO
+    private static final int BUTTON_WIDTH = 500; // TAMAÑO MAXIMO 
     
     // Colores
     private static final Color BACKGROUND_COLOR = new Color(20, 20, 20, 180); 
-    private static final Color BUTTON_COLOR = new Color(0, 87, 160, 150);
-    private static final Color BUTTON_HOVER_COLOR = new Color(0, 120, 215, 180);
-    private static final Color BUTTON_TEXT_COLOR = Color.WHITE;
+    private static final Color BUTTON_COLOR = new Color(255, 94, 0, 180);
+    private static final Color BUTTON_HOVER_COLOR = new Color(255, 120, 30, 220) ;
+    private static final Color BUTTON_TEXT_COLOR = Color.BLACK;
 
     public Menu_Sidebar() {
         initComponents();
@@ -70,7 +72,7 @@ public class Menu_Sidebar extends JPanel {
         setMaximumSize(new Dimension(newWidth, currentHeight == -1 ? getHeight():currentHeight));
         
         
-        adjustButtonStyles();
+       
         
         // Revalidar y repintar
         
@@ -87,22 +89,7 @@ public class Menu_Sidebar extends JPanel {
         
     }
 
-    private void adjustButtonStyles() {
-        for (JPanel panel : panelsMap.values()) {
-            for (Component comp : panel.getComponents()) {
-                if (comp instanceof JButton) {
-                    JButton button = (JButton) comp;
-                    
-                    // Ajustar tamaño y fuente 
-                    
-                    button.setFont(new Font("Arial", Font.BOLD, 13));
-                    button.setMargin(new Insets(5, 15, 5, 15));
-                    
-                }
-            }
-        }
-    }
-
+   
     public void init(String opcion) {
         loadConfiguration("config/config.json");
         showPanel(opcion.toUpperCase());
@@ -166,9 +153,10 @@ public class Menu_Sidebar extends JPanel {
     }
 
     private JButton createResponsiveButton(String text, Evento event) {
-        JButton button = new JButton(text) {
-        	//redibujar los botones para evitar bug al hacer el hover
-        	@Override
+    	// codigo para volver a pintar el boton y arreglar el problema del hover, si da problemas
+    	//comentar todo el override y quitar la funcion de hover
+        JButton button = new JButton(text){
+            @Override
             protected void paintComponent(Graphics g) {
                 // 1. Limpiar completamente el área del botón
                 Graphics2D g2 = (Graphics2D) g.create();
@@ -177,43 +165,36 @@ public class Menu_Sidebar extends JPanel {
                 
                 // 2. Dibujar fondo con transparencia
                 g2.setComposite(AlphaComposite.SrcOver);
-                if (getModel().isPressed()) {
-                    g2.setColor(new Color(0, 87, 160, 200)); // Más opaco al presionar
-                } else if (getModel().isRollover()) {
-                    g2.setColor(new Color(0, 120, 215, 180)); // Hover
-                } else {
-                    g2.setColor(new Color(0, 87, 160, 150)); // Normal
-                }
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+                Color bgColor = getModel().isRollover() ? 
+                              BUTTON_HOVER_COLOR: // Hover (más opaco)
+                              BUTTON_COLOR;    // Normal
                 
-                // 3. Dibujar texto
-                g2.setColor(Color.WHITE);
+                g2.setColor(bgColor);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 8, 8);
+                
+                // 3. Dibujar borde
+                g2.setColor(new Color(0, 0, 0, 60));
+                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 8, 8);
+                
+                // 4. Dibujar texto (con sombra para mejor legibilidad)
+                g2.setColor(BUTTON_TEXT_COLOR);
                 g2.setFont(getFont());
                 FontMetrics fm = g2.getFontMetrics();
-                Rectangle2D textBounds = fm.getStringBounds(getText(), g2);
                 
-                int textX = (int) ((getWidth() - textBounds.getWidth()) / 2);
-                int textY = (int) ((getHeight() - textBounds.getHeight()) / 2 + fm.getAscent());
+                // Posición centrada
+                int x = (getWidth() - fm.stringWidth(getText())) / 2;
+                int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
                 
-                g2.drawString(getText(), textX, textY);
+                g2.drawString(getText(), x, y);
                 g2.dispose();
             }
-            
-         
         };
         
         // Configuración responsive del botón
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
        
-       
-        
-        // Estilo del botón
-        button.setBackground(BUTTON_COLOR);
-        button.setForeground(BUTTON_TEXT_COLOR);
-        button.setFont(new Font("Arial", Font.BOLD, 13));
-     
-     
-        setupButtonHoverEffects(button);
+        //setupButtonHoverEffects(button);
+        setButtonStyle(button);
         
         // Acción del botón
         button.addActionListener((ActionEvent e) -> {
@@ -224,8 +205,8 @@ public class Menu_Sidebar extends JPanel {
     }
     
     private void setButtonStyle(JButton button) {
-    	button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT)); // Tamaño predeterminado
-        button.setBackground(new Color(255, 94, 0)); // Color de fondo
+    	button.setMaximumSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT)); // Tamaño predeterminado
+    	button.setBackground(new Color(255, 94, 0, 180)); // Color de fondo
         button.setForeground(Color.BLACK);
         button.setFont(new Font("Arial", Font.BOLD, 14));
         button.setFocusPainted(false);
@@ -235,15 +216,12 @@ public class Menu_Sidebar extends JPanel {
     private void setupButtonHoverEffects(JButton button) {
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(BUTTON_HOVER_COLOR);
-                button.repaint();
-                //button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            	button.repaint();
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(BUTTON_COLOR);
-                button.repaint();
-                //button.setCursor(Cursor.getDefaultCursor());
+            	button.repaint();
+               
             }
         });
     }
@@ -281,5 +259,58 @@ public class Menu_Sidebar extends JPanel {
         
         panelsMap.put("DEFAULT", defaultPanel);
         contenedor.add(defaultPanel, "DEFAULT");
+    }
+    
+    //Animaciones para la sidebar
+    
+    
+    public void showSidebar() {
+        if (isVisible()) return;
+       
+        
+        // Posición inicial (fuera de pantalla)
+        setLocation(-getWidth(),getBounds().y);
+        setVisible(true);
+        
+        Timer animationTimer = new Timer(200/15, null);
+        animationTimer.addActionListener(new ActionListener() {
+            int step = 0;
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                step++;
+                int newX = (int)(-getWidth() + (getWidth() * step / (float)15));
+                setLocation(newX, getBounds().y);
+                
+                if (step >= 15) {
+                    animationTimer.stop();
+                    setLocation(0, getBounds().y);
+                }
+            }
+        });
+        animationTimer.start();
+    }
+
+    public void hideSidebar() {
+        if (!isVisible()) return;
+        
+        
+        Timer animationTimer = new Timer(200/15, null);
+        animationTimer.addActionListener(new ActionListener() {
+            int step = 0;
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                step++;
+                int newX = (int)(-getWidth() * step / (float)15);
+                setLocation(newX,getBounds().y);
+                
+                if (step >= 15) {
+                    animationTimer.stop();
+                    setVisible(false);
+                }
+            }
+        });
+        animationTimer.start();
     }
 }

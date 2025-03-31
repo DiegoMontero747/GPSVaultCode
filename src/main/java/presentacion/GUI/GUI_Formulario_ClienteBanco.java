@@ -12,7 +12,7 @@ import presentacion.Controller.Context;
 import presentacion.GUI_Components.GeneralForm;
 import presentacion.GUI_Components.RoundedComponents.RoundedButton;
 
-public class GUI_Formulario_ClienteBanco extends JFrame implements ObservadorGUI {
+public class GUI_Formulario_ClienteBanco extends JPanel implements ObservadorGUI {
     /** TODO CAMBIAR A JPANEL Y ENLAZARLO AL BOTON CORRESPONDIENTE CUANDO ESTÉ
 	 * 
 	 */

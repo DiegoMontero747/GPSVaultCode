@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import presentacion.Controller.Context;
@@ -36,6 +37,14 @@ public class ApplicationContainer extends JFrame implements ObservadorGUI{
     }
 
     public void addView(String name, JPanel view) {
+        add(view, name); // Agrega el panel al CardLayout
+     // Registrarse como observador
+        Controller.getInstance().registerObserver(this);
+        Controller.getInstance().registerObserver((ObservadorGUI) view);
+        
+    }
+    
+    public void addView(String name, JLayeredPane view) {
         add(view, name); // Agrega el panel al CardLayout
      // Registrarse como observador
         Controller.getInstance().registerObserver(this);

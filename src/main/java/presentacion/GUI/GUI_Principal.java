@@ -2,6 +2,8 @@ package presentacion.GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import presentacion.Controller.Context;
 import presentacion.Controller.Controller;
 import presentacion.Controller.Evento;
@@ -11,14 +13,17 @@ import presentacion.GUI_Components.Menu_Sidebar;
 public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
     private static final long serialVersionUID = 1L;
     private static GUI_Principal instance;
-    private JPanel cardPanel;
-    private CardLayout cardLayout;
-    private Menu_Sidebar menu;
-    private JPanel contentPanel;
-
-    public GUI_Principal() {
-        initialize();
-    }
+    
+    // Componentes principales
+    private JPanel contentPanel;      // Panel base (DEFAULT_LAYER)
+    private JPanel cardPanel;         // Panel para CardLayout
+    private CardLayout cardLayout;    // Layout para cambiar vistas
+    private Menu_Sidebar menu;        // Sidebar (PALETTE_LAYER)
+    private Menu_Header header;       // Barra superior
+    
+    // Dimensiones
+    private static final int SIDEBAR_WIDTH = 250;
+    private static final int HEADER_HEIGHT = 50;
 
     public static GUI_Principal getInstance() {
         if (instance == null) {
@@ -27,41 +32,77 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
         return instance;
     }
 
-    private void initialize() {
-        this.setSize(800, 500);
-        this.setLayout(null); // Usamos layout absoluto para posicionamiento preciso
-        this.setBackground(new Color(50, 50, 50));
+    private GUI_Principal() {
+        initializeComponents();
+        setupLayout();
+        setupResponsiveBehavior();
+    }
 
-        // Capa de contenido (fondo)
+    private void initializeComponents() {
+        // Configuración básica del layered pane
+        setOpaque(true);
+        setBackground(new Color(50, 50, 50));
+        setLayout(null); // Usamos layout absoluto para posicionamiento manual
+
+        // Panel de contenido principal (fondo)
         contentPanel = new JPanel(new BorderLayout());
-        contentPanel.setBounds(0, 0, 800, 500);
         contentPanel.setOpaque(false);
 
-        // Header de Menu (ahora en la capa de contenido)
+        // Sidebar (menu lateral)
         menu = new Menu_Sidebar();
-        contentPanel.add(new Menu_Header(menu), BorderLayout.NORTH);
+        menu.setOpaque(false);
 
-        // Panel para CardLayout
+        
+        // Header
+        header = new Menu_Header(menu);
+        contentPanel.add(header, BorderLayout.NORTH);
+
+        // Panel para CardLayout (vistas intercambiables)
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
         cardPanel.setOpaque(false);
         contentPanel.add(cardPanel, BorderLayout.CENTER);
 
-        // Añadir el contentPanel como capa base
-        this.add(contentPanel, JLayeredPane.DEFAULT_LAYER);
+       
+        // Añadir componentes a las capas correspondientes
+        add(contentPanel, JLayeredPane.DEFAULT_LAYER);
+        add(menu, JLayeredPane.PALETTE_LAYER);
+    }
+
+    private void setupLayout() {
+        // Posicionar componentes inicialmente
+        updateComponentBounds(getWidth(), getHeight());
+    }
+
+    private void setupResponsiveBehavior() {
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+               updateComponentBounds(getWidth(), getHeight());
+               
+            }
+        });
+    }
+
+    private void updateComponentBounds(int width, int height) {
+        // Actualizar bounds del contentPanel (ocupa todo el espacio)
+        contentPanel.setBounds(0, 0, width, height);
         
-        // Configurar el sidebar como panel flotante
-        menu.setBounds(0, 50, 200, 450); // Posición y tamaño inicial
-        menu.setOpaque(false);
-        this.add(menu, JLayeredPane.PALETTE_LAYER); // Capa superior
-        
-        this.setVisible(true);
+        // Actualizar bounds del sidebar
+       
+        menu.setBounds(0, HEADER_HEIGHT, SIDEBAR_WIDTH, height - HEADER_HEIGHT);
+        menu.setupResponsiveDesign();      // Forzar redibujado
+        revalidate();
+        repaint();
     }
 
     public void addView(String name, JPanel view) {
         cardPanel.add(view, name);
         Controller.getInstance().registerObserver(this);
-        Controller.getInstance().registerObserver((ObservadorGUI) view);
+        
+        if (view instanceof ObservadorGUI) {
+            Controller.getInstance().registerObserver((ObservadorGUI) view);
+        }
     }
 
     public void showView(String name) {
@@ -70,26 +111,51 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
         repaint();
     }
 
+    public void toggleSidebar() {
+        menu.setVisible(!menu.isVisible());
+        updateComponentBounds(getWidth(), getHeight());
+        
+        // Opcional: Animación suave
+        animateSidebar(menu.isVisible());
+        revalidate();
+        repaint();
+    }
+
+    private void animateSidebar(boolean show) {
+        // Implementación básica de animación
+        int start = show ? -SIDEBAR_WIDTH : 0;
+        int end = show ? 0 : -SIDEBAR_WIDTH;
+        
+        Timer timer = new Timer(10, null);
+        timer.addActionListener(e -> {
+            int currentX = menu.getX();
+            if ((show && currentX < end) || (!show && currentX > end)) {
+                int step = show ? 5 : -5;
+                menu.setLocation(currentX + step, HEADER_HEIGHT);
+                repaint();
+            } else {
+                menu.setLocation(end, HEADER_HEIGHT);
+                ((Timer)e.getSource()).stop();
+            }
+        });
+        timer.start();
+    }
+
     @Override
     public void actualizar(Context c) {
         switch (c.getEvento()) {
             case GUI_PRINCIPAL:
-                System.out.println(c.getDato());
-                menu.init((String) c.getDato());
-                menu.setVisible(true); // Mostrar/ocultar según necesidad
-                revalidate();
-                repaint();
+            	 System.out.println(c.getDato());
+                 menu.init((String) c.getDato());
+                 menu.setVisible(true);
+                 updateComponentBounds(getWidth(), getHeight());
                 break;
             case GUI_CREAR_CUENTA_ADMINISTRACION:
                 showView("CREAR_CUENTA_ADMINISTRACION");
                 break;
+            // Añadir más casos según necesidad
         }
     }
 
-    // Método para alternar la visibilidad del sidebar
-    public void toggleSidebar() {
-        menu.setVisible(!menu.isVisible());
-        revalidate();
-        repaint();
-    }
+   
 }

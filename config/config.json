@@ -4,7 +4,11 @@
       {
         "text": "Crear cuenta",
         "event": "GUI_CREAR_CUENTA_ADMINISTRACION"
-      }
+      },
+	  {
+	    "text": "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+	    "event": "GUI_CREAR_CUENTA_BANCARIA"
+	  }
     ]
   },
   "SERVICIOS_CENTRALES": {

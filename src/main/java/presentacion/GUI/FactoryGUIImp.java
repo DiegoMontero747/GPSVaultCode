@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import presentacion.Controller.Context;
 import presentacion.Controller.Evento;
+import javax.swing.JLayeredPane;
 
 public class FactoryGUIImp extends FactoryGUI {
 
@@ -41,7 +42,7 @@ public class FactoryGUIImp extends FactoryGUI {
 		case INICIO_SESION_OK:
 			instancias.putIfAbsent(GUI_Principal.class, GUI_Principal.getInstance());
 			ApplicationContainer.getInstance().addView("VISTA_PRINCIPAL",
-					(JPanel) instancias.get(GUI_Principal.class));
+					(JLayeredPane) instancias.get(GUI_Principal.class));
 			return ApplicationContainer.class;
 		case GUI_PRINCIPAL:
 			return GUI_Principal.class;

@@ -35,12 +35,12 @@ public class GUI_CrearCuentaAdministracion extends JFrame implements ObservadorG
 		this.setMinimumSize(new Dimension(800, 600));// TODO cambiar a preferred cuando el TODO de arriba esté hecho
 		this.setLayout(new BorderLayout());
 
-        // Panel de fondo con la imagen
-        JPanel backgroundPanel = new JPanel();
-        backgroundPanel.setBackground(new Color(30, 30, 30));
-        backgroundPanel.setLayout(new BorderLayout());
-        backgroundPanel.setPreferredSize(new Dimension(800, 600)); // TODO borrar cuando el TODO de arriba esté hecho
-        this.add(backgroundPanel, BorderLayout.CENTER);
+    // Panel de fondo con la imagen
+    JPanel backgroundPanel = new JPanel();
+    backgroundPanel.setBackground(new Color(30, 30, 30));
+    backgroundPanel.setLayout(new BorderLayout());
+    backgroundPanel.setPreferredSize(new Dimension(800, 600)); // TODO borrar cuando el TODO de arriba esté hecho
+    this.add(backgroundPanel, BorderLayout.CENTER);
 
 		// Panel para los componentes (con fondo transparente)
 		JPanel contentPanel = new JPanel();

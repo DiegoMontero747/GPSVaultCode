@@ -106,33 +106,32 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
 			}
 	}
 
-	@Override
-	public void actualizar(Context c) {
-		Evento evento = (Evento) c.getEvento();
-		if (c != null) {
-			switch (evento) {
-				case INICIO_SESION_OK:
-					
-					Controller.getInstance().handleRequest(new Context(Evento.GUI_VISTAROLADMIN, c.getDato()));
-					contador = 0;
-					break;
+		@Override
+		public void actualizar(Context c) {
+			Evento evento = (Evento) c.getEvento();
+			if (c != null) {
+				switch (evento) {
+					case INICIO_SESION_OK:
+						
+						Controller.getInstance().handleRequest(new Context(Evento.GUI_PRINCIPAL, c.getDato()));
+						contador = 0;
+						break;
 
-				case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
-					formulario.mostrarMensajeError("Usuario no encontrado.");
-					break;
+					case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
+						mostrarMensajeError("Usuario no encontrado.");
+						break;
 
-				case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
-					formulario.mostrarMensajeError("Contraseña incorrecta.");
-					break;
+					case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
+						mostrarMensajeError("Contraseña incorrecta.");
+						break;
 
-				case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
-					formulario.mostrarMensajeError("Debe ingresar una contraseña.");
-					break;
+					case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
+						mostrarMensajeError("Debe ingresar una contraseña.");
+						break;
 
-				case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
-					formulario.mostrarMensajeError("Debe ingresar un usuario.");
-					break;
-
+					case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
+						mostrarMensajeError("Debe ingresar un usuario.");
+						break;
 			}
 			if (evento == Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA) {
 				contador++;

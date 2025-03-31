@@ -39,9 +39,7 @@ public class GUI_Formulario_ClienteBanco extends JFrame {
     	
     	/*
         // Configuración de la ventana
-        setTitle("Formulario Cliente Banco");
         setSize(400, 350);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         
         // Panel para el formulario
@@ -172,4 +170,10 @@ public class GUI_Formulario_ClienteBanco extends JFrame {
             }
         });
     }
+
+	@Override
+	public void actualizar(Context c) {
+		// TODO Auto-generated method stub
+		
+	}
 }

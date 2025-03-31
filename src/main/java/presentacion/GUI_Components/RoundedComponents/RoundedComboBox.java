@@ -39,7 +39,7 @@ public class RoundedComboBox<E> extends JComboBox<E> implements RoundedFields {
     private void configureAppearance() {
         // Configuración básica
         setOpaque(false);
-        setBorder(new EmptyBorder(5, 10, 5, 10));
+        setBorder(new EmptyBorder(5, 5, 5, 10)); // Cambiado de (5, 10, 5, 10) a (5, 5, 5, 10)
         setBackground(new Color(50, 50, 50));
         setForeground(Color.WHITE);
         setPreferredSize(new Dimension(300, 30));
@@ -69,11 +69,20 @@ public class RoundedComboBox<E> extends JComboBox<E> implements RoundedFields {
                 
                 setBackground(isSelected ? new Color(255, 94, 0) : new Color(50, 50, 50));
                 setForeground(Color.WHITE);
-                setBorder(new EmptyBorder(5, 10, 5, 10));
+                setBorder(new EmptyBorder(5, 5, 5, 10)); // Cambiado de (5, 10, 5, 10) a (5, 5, 5, 10)
                 
                 return this;
             }
         });
+        
+        // Configurar el editor
+        if (isEditable()) {
+            JTextField editor = (JTextField) getEditor().getEditorComponent();
+            editor.setOpaque(false);
+            editor.setBackground(new Color(50, 50, 50));
+            editor.setForeground(Color.WHITE);
+            editor.setBorder(new EmptyBorder(0, 5, 0, 0)); // Cambiado de (0, 0, 0, 0) a (0, 5, 0, 0)
+        }
 
         // Configurar el botón desplegable con UI personalizada
         setUI(new javax.swing.plaf.basic.BasicComboBoxUI() {

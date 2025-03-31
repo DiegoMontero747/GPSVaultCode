@@ -11,6 +11,7 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -148,6 +149,7 @@ public class GeneralForm {
 		contentPanel.add(rpf, gbc);
 	}
 	
+	// transforma el textfield normal a uno de tipo combobox
 	public void setComboBox(int row) {
 		// se actualiza el componente
 		contentPanel.remove((JComponent) textFields.get(row));
@@ -161,8 +163,21 @@ public class GeneralForm {
 		contentPanel.add(rcb, gbc);
 	}
 	
+	// anyade la informacion de tipo cadena al combobox especificado
+	@SuppressWarnings("unchecked")
+	public void setComboBoxInfo(int row, List<String> list) {
+		if (textFields.get(row) instanceof JComboBox) {
+			for(String item : list) {
+				((JComboBox<String>)textFields.get(row)).addItem(item);
+			}
+		}
+	}
+	
 	// metodos getters
+	@SuppressWarnings("unchecked")
 	public String getText(int row) {
-		return ((JTextField) textFields.get(row)).getText();
+		if(textFields.get(row) instanceof JTextField) return ((JTextField) textFields.get(row)).getText();
+		else if (textFields.get(row) instanceof JComboBox) return ((JComboBox<String>) textFields.get(row)).getSelectedItem().toString();
+		return null;
 	}
 }

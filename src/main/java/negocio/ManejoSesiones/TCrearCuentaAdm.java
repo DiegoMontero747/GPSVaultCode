@@ -21,6 +21,9 @@ public class TCrearCuentaAdm {
 		this.telf = telf;
 	}
 	
+	// Constructor vacio para poder hacer mockito
+	public TCrearCuentaAdm() {}
+	
 	public String getNombre() {
 		return nombre;
 	}

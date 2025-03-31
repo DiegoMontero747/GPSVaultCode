@@ -50,16 +50,18 @@ public class SACrearCuentaAdministracionImpTest {
 			datos_crearCuenta.setDni("12345678P");
 			datos_crearCuenta.setRol("administracion");
 			datos_crearCuenta.setUsuario("Champinyon");
-			datos_crearCuenta.setConstrasenya("mario64");
+			datos_crearCuenta.setConstrasenya("mario643222");
+			datos_crearCuenta.setTelf("123456789");
 			
 			//perfil que vamos a insertar
 			Document nuevoperfil = new Document();
 			nuevoperfil.append("nombre",datos_crearCuenta.getNombre());
 			nuevoperfil.append("apellido",datos_crearCuenta.getApellido());
 			nuevoperfil.append("rol",datos_crearCuenta.getRol());
-			nuevoperfil.append("contrasenya",datos_crearCuenta.getConstrasenya());
+			nuevoperfil.append("password",datos_crearCuenta.getConstrasenya());
 			nuevoperfil.append("usuario",datos_crearCuenta.getUsuario());
 			nuevoperfil.append("dni",datos_crearCuenta.getDni());
+			nuevoperfil.append("telefono",datos_crearCuenta.getTelf());
 			
 			
 			
@@ -69,9 +71,10 @@ public class SACrearCuentaAdministracionImpTest {
 			usuario1.append("nombre","usuario1_nombre");
 			usuario1.append("apellido","usuario1apellido");
 			usuario1.append("rol","pasivo");
-			usuario1.append("contrasenya","usuario1_contrasenya");
+			usuario1.append("password","usuario1_password");
 			usuario1.append("usuario","usuario1");
 			usuario1.append("dni","02423121U");
+			usuario1.append("telefono","919999999");
 			
 			ArrayList<Document> lista_mock = new ArrayList<>();
 			lista_mock.add(usuario1);
@@ -89,16 +92,18 @@ public class SACrearCuentaAdministracionImpTest {
 			datos_crearCuenta.setDni("1234567P");
 			datos_crearCuenta.setRol("administracion");
 			datos_crearCuenta.setUsuario("Champinyon");
-			datos_crearCuenta.setConstrasenya("mario64");
+			datos_crearCuenta.setConstrasenya("mario643222");
+			datos_crearCuenta.setTelf("123456789");
 			
 			//perfil que vamos a insertar
 			Document nuevoperfil = new Document();
 			nuevoperfil.append("nombre",datos_crearCuenta.getNombre());
 			nuevoperfil.append("apellido",datos_crearCuenta.getApellido());
 			nuevoperfil.append("rol",datos_crearCuenta.getRol());
-			nuevoperfil.append("contrasenya",datos_crearCuenta.getConstrasenya());
+			nuevoperfil.append("password",datos_crearCuenta.getConstrasenya());
 			nuevoperfil.append("usuario",datos_crearCuenta.getUsuario());
 			nuevoperfil.append("dni",datos_crearCuenta.getDni());
+			nuevoperfil.append("telefono",datos_crearCuenta.getTelf());
 			
 			//usuario aleatorio que se va a devolver en la lista al leer de la BD, no coincide con el usuario que vamos
 			//a introducir
@@ -106,9 +111,10 @@ public class SACrearCuentaAdministracionImpTest {
 			usuario1.append("nombre","usuario1_nombre");
 			usuario1.append("apellido","usuario1apellido");
 			usuario1.append("rol","pasivo");
-			usuario1.append("contrasenya","usuario1_contrasenya");
+			usuario1.append("password","usuario1_password");
 			usuario1.append("usuario","usuario1");
 			usuario1.append("dni","02423121U");
+			usuario1.append("telefono","919999999");
 			
 			ArrayList<Document> lista_mock = new ArrayList<>();
 			lista_mock.add(usuario1);
@@ -127,16 +133,18 @@ public class SACrearCuentaAdministracionImpTest {
 			datos_crearCuenta.setDni("12345678P");
 			datos_crearCuenta.setRol("administracion");
 			datos_crearCuenta.setUsuario("Champinyon");
-			datos_crearCuenta.setConstrasenya("mario64");
+			datos_crearCuenta.setConstrasenya("mario643222");
+			datos_crearCuenta.setTelf("123456789");
 			
 			//perfil que vamos a insertar
 			Document nuevoperfil = new Document();
 			nuevoperfil.append("nombre",datos_crearCuenta.getNombre());
 			nuevoperfil.append("apellido",datos_crearCuenta.getApellido());
 			nuevoperfil.append("rol",datos_crearCuenta.getRol());
-			nuevoperfil.append("contrasenya",datos_crearCuenta.getConstrasenya());
+			nuevoperfil.append("password",datos_crearCuenta.getConstrasenya());
 			nuevoperfil.append("usuario",datos_crearCuenta.getUsuario());
 			nuevoperfil.append("dni",datos_crearCuenta.getDni());
+			nuevoperfil.append("telefono",datos_crearCuenta.getTelf());
 			
 			//usuario que se va a devolver en la lista al leer de la BD, en este caso coincide con el usuario que 
 			//vamos a introducir
@@ -144,9 +152,10 @@ public class SACrearCuentaAdministracionImpTest {
 			usuario1.append("nombre","usuario1_nombre");
 			usuario1.append("apellido","usuario1apellido");
 			usuario1.append("rol","pasivo");
-			usuario1.append("contrasenya","usuario1_contrasenya");
+			usuario1.append("password","usuario1_password");
 			usuario1.append("usuario","usuario1");
 			usuario1.append("dni","12345678P");
+			usuario1.append("telefono","919999999");
 			
 			ArrayList<Document> lista_mock = new ArrayList<>();
 			lista_mock.add(usuario1);
@@ -157,38 +166,37 @@ public class SACrearCuentaAdministracionImpTest {
 			assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_DNI_ENCONTRADO, resultado.getEvento());
 		}
 		
+		
 		@Test
-		public void crearCuentaAdm_ROL_Incorrecto() {
-			//creamos el personal primero
-			 
-			
-			
-			
+		public void crearCuentaAdm_Telef_Erroneo() {
 			datos_crearCuenta.setNombre("Mario");
 			datos_crearCuenta.setApellido("Bros");
 			datos_crearCuenta.setDni("12345678P");
-			datos_crearCuenta.setRol("lider");
+			datos_crearCuenta.setRol("administracion");
 			datos_crearCuenta.setUsuario("Champinyon");
-			datos_crearCuenta.setConstrasenya("mario64");
+			datos_crearCuenta.setConstrasenya("mario643222");
+			datos_crearCuenta.setTelf("12345678");// faltan 1 digitos
 			
 			//perfil que vamos a insertar
 			Document nuevoperfil = new Document();
 			nuevoperfil.append("nombre",datos_crearCuenta.getNombre());
 			nuevoperfil.append("apellido",datos_crearCuenta.getApellido());
 			nuevoperfil.append("rol",datos_crearCuenta.getRol());
-			nuevoperfil.append("contrasenya",datos_crearCuenta.getConstrasenya());
+			nuevoperfil.append("password",datos_crearCuenta.getConstrasenya());
 			nuevoperfil.append("usuario",datos_crearCuenta.getUsuario());
 			nuevoperfil.append("dni",datos_crearCuenta.getDni());
+			nuevoperfil.append("telefono",datos_crearCuenta.getTelf());	
 			
-			//usuario que se va a devolver en la lista al leer de la BD, en este caso coincide con el usuario que 
-			//vamos a introducir
+			//usuario aleatorio que se va a devolver en la lista al leer de la BD, no coincide con el usuario que vamos
+			//a introducir
 			Document usuario1 = new Document();
 			usuario1.append("nombre","usuario1_nombre");
 			usuario1.append("apellido","usuario1apellido");
 			usuario1.append("rol","pasivo");
-			usuario1.append("contrasenya","usuario1_contrasenya");
+			usuario1.append("password","usuario1_password");
 			usuario1.append("usuario","usuario1");
-			usuario1.append("dni","49382323C");
+			usuario1.append("dni","02423121U");
+			usuario1.append("telefono","919999999");
 			
 			ArrayList<Document> lista_mock = new ArrayList<>();
 			lista_mock.add(usuario1);
@@ -196,6 +204,8 @@ public class SACrearCuentaAdministracionImpTest {
 			doNothing().when(db).insertDocument(Collections.PERFIL, nuevoperfil);
 			
 			ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
-			assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_ROL_INCORRECTO, resultado.getEvento());
+			
+			assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_TEL_INCORRECTO, resultado.getEvento());
 		}
+		
 }

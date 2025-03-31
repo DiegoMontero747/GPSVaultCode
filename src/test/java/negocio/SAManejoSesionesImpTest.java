@@ -33,21 +33,22 @@ public class SAManejoSesionesImpTest {
         // Inicializar los mocks
         MockitoAnnotations.openMocks(this);
         sesion = new TSesion();
+       
     }
     
     @Test
     public void testInicioSesion_Ok() {
         // Configurar el mock
     	ArrayList<Document> doc = new ArrayList<Document>();
-        doc.add(new  Document("nombre", "usuario_existente")
-                .append("password", "password_correcta")
+        doc.add(new  Document("usuario", "usuarioexistente")
+                .append("password", "passwordcorrecta")
                 .append("rol", "admin"));
 
-        when(db.readDocument((new Document()).append("nombre", "usuario_existente"), Collections.PERFIL)).thenReturn(doc);
+        when(db.readDocument((new Document()).append("usuario", "usuarioexistente"), Collections.PERFIL)).thenReturn(doc);
 
         // Configurar la sesión
-        sesion.setUsername("usuario_existente");
-        sesion.setPsswd("password_correcta");
+        sesion.setUsername("usuarioexistente");
+        sesion.setPsswd("passwordcorrecta");
 
         // Ejecutar el método bajo prueba
         ResultContext result = saManejoSesiones.inicioSesion(sesion);
@@ -61,7 +62,7 @@ public class SAManejoSesionesImpTest {
     public void testInicioSesion_UsuarioNoExiste() {
         // Configurar el mock
     	ArrayList<Document> doc = new ArrayList<Document>();
-        when(db.readDocument((new Document()).append("nombre", "usuario_inexistente"), Collections.PERFIL)).thenReturn(doc);
+        when(db.readDocument((new Document()).append("usuario", "usuario_inexistente"), Collections.PERFIL)).thenReturn(doc);
 
         // Configurar la sesión
         sesion.setUsername("usuario_inexistente");
@@ -78,11 +79,11 @@ public class SAManejoSesionesImpTest {
     public void testInicioSesion_ContrasenyaIncorrecta() {
         // Configurar el mock
         ArrayList<Document> doc = new ArrayList<Document>();
-        doc.add(new  Document("nombre", "usuario_existente")
+        doc.add(new  Document("usuario", "usuario_existente")
                 .append("password", "password_correcta")
                 .append("rol", "admin"));
        
-        when(db.readDocument((new Document()).append("nombre", "usuario_existente"), Collections.PERFIL)).thenReturn(doc);
+        when(db.readDocument((new Document()).append("usuario", "usuario_existente"), Collections.PERFIL)).thenReturn(doc);
 
         // Configurar la sesión
         sesion.setUsername("usuario_existente");

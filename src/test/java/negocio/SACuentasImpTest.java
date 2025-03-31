@@ -39,14 +39,22 @@ public class SACuentasImpTest {
     public void testCrearCuentaBancaria_OK() {
         // Simulamos la cuenta bancaria a insertar
         cuenta.setNombre("Juan");
-        cuenta.setApellidos("Pérez");
+        cuenta.setApellidos("Perez");
         cuenta.setTipoDoc("12345678A");
         cuenta.setDireccion("Calle Falsa 123");
         cuenta.setTelefono("600123456");
+        
+        Document cuentaDoc = new Document()
+        		.append("nombreCompleto", cuenta.getNombre() + " " + cuenta.getApellidos())
+				.append("dni", cuenta.getTipoDoc())
+				.append("direccion", cuenta.getDireccion())
+				.append("telefono", cuenta.getTelefono());
+        ArrayList<Document> cuentaList = new ArrayList<>();
+        cuentaList.add(cuentaDoc);
 
-        // Simulamos que la base de datos tiene espacio para insertar la cuenta
-        when(db.readDocument(new Document().append("tipoDoc", cuenta.getTipoDoc()), Collections.CUENTABANC))
-                .thenReturn(new ArrayList<>());
+        // Devuelve la lista con el documento por lo que se ha insertado correctamente
+        when(db.readDocument(new Document().append("dni", cuenta.getTipoDoc()), Collections.CUENTABANC))
+                .thenReturn(cuentaList); 
 
         ResultContext result = saCuentasImp.crearCuentaBancaria(cuenta);
 
@@ -89,30 +97,30 @@ public class SACuentasImpTest {
     public void testCrearCuentaBancaria_CadenaNoAlfabetica() {
         cuenta.setNombre("Juan1");
         cuenta.setApellidos("Pérez");
-        cuenta.setDni("12345678A");
+        cuenta.setTipoDoc("12345678A");
         cuenta.setDireccion("Calle Falsa 123");
         cuenta.setTelefono("600123456");
 
         ResultContext result = saCuentasImp.crearCuentaBancaria(cuenta);
-        assertEquals(Evento.CREAR_CUENTA_BANCARIA_ERROR_CADENA_NO_ALFABETICA, result.getEvento());
+        assertEquals(Evento.ERROR_CADENA_NO_ALFABETICA, result.getEvento());
 
         cuenta.setNombre("Juan");
         cuenta.setApellidos("Pérez1");
 
         result = saCuentasImp.crearCuentaBancaria(cuenta);
-        assertEquals(Evento.CREAR_CUENTA_BANCARIA_ERROR_CADENA_NO_ALFABETICA, result.getEvento());
+        assertEquals(Evento.ERROR_CADENA_NO_ALFABETICA, result.getEvento());
     }
 
     @Test
     public void testCrearCuentaBancaria_TipoDocumentoInvalido() {
         cuenta.setNombre("Juan");
-        cuenta.setApellidos("Pérez");
-        cuenta.setDni("12345"); // DNI no válido
+        cuenta.setApellidos("Perez");
+        cuenta.setTipoDoc("12345"); // DNI no válido
         cuenta.setDireccion("Calle Falsa 123");
         cuenta.setTelefono("600123456");
 
         ResultContext result = saCuentasImp.crearCuentaBancaria(cuenta);
-        assertEquals(Evento.CREAR_CUENTA_BANCARIA_ERROR_TIPO_DOCUMENTO_INVALIDO, result.getEvento());
+        assertEquals(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, result.getEvento());
     }
 
     @Test
@@ -120,11 +128,13 @@ public class SACuentasImpTest {
         // Simulamos un fallo en la base de datos (la cuenta no se inserta correctamente)
         cuenta.setNombre("Juan");
         cuenta.setApellidos("Pérez");
-        cuenta.setDni("12345678A");
+        cuenta.setTipoDoc("12345678A");
         cuenta.setDireccion("Calle Falsa 123");
         cuenta.setTelefono("600123456");
 
-        when(db.readDocument(new Document().append("dni", cuenta.getDni()), Collections.CUENTABANC))
+        when(db.readDocument(new Document().append("dni", cuenta.getTipoDoc()), Collections.CUENTABANC))
                 .thenReturn(new ArrayList<>()); // Cuenta no existe
 
         // Simulamos que el insert
+    }
+}

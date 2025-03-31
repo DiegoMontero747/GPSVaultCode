@@ -49,6 +49,7 @@ public enum Evento {
     CREAR_TARJETA_ERROR_MAX_TARJETAS, // Error cuando el cliente tiene 5 tarjetas activas
     CREAR_TARJETA_ERROR_CUENTA_INEXISTENTE, // La cuenta IBAN no existe en la base de datos
     CREAR_TARJETA_ERROR_DB, // Error al insertar la tarjeta en la base de datos
+    CREAR_TARJETA_ERROR_TARJETA_EXISTENTE, // Error al insertar la tarjeta en la base de datos
 
     // Tarjeta creada con éxito
     CREAR_TARJETA_OK,

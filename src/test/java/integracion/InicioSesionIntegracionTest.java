@@ -3,6 +3,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 import org.bson.Document;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -30,16 +31,22 @@ public class InicioSesionIntegracionTest {
     	saManejoSesiones = new SAManejoSesionesImp();
         db = MongoDBManager.getInstance();
         //tenemos que eliminar los usuarios de la bd que vayamos a crear si existen y luego volver a crearlos
-        db.deleteDocument(Collections.PERFIL, new Document("nombre", "usuarioexistente")
+        db.deleteDocument(Collections.PERFIL, new Document("usuario", "usuarioexistente")
                 .append("password", "passwordCorrecta")
                 .append("rol", "admin"));
         
-        db.insertDocument(Collections.PERFIL, new Document("nombre", "usuarioexistente")
+        db.insertDocument(Collections.PERFIL, new Document("usuario", "usuarioexistente")
                 .append("password", "passwordCorrecta")
                 .append("rol", "admin"));
         sesion = new TSesion();
     }
-
+    
+    @After
+    public void clean_up() {
+		db.deleteDocument(Collections.PERFIL, new Document("usuario", "usuarioexistente")
+				.append("password", "passwordCorrecta")
+				.append("rol", "admin"));
+	}
     @Test
     public void testInicioSesion_Ok() {
         // Configurar la sesión

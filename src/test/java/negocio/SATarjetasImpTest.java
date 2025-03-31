@@ -48,10 +48,14 @@ public class SATarjetasImpTest {
         when(db.readDocument(new Document().append("numeroCuenta", "ES1234567890123456789012"), Collections.CUENTABANC))
                 .thenReturn(listaCuentas);
 
-        tarjeta.setNombre("Juan Pérez");
+        tarjeta.setNombre("Juan");
+        tarjeta.setApellidos("Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345678A");
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
+        tarjeta.setFechaNacimiento("01-01-1990");
+        tarjeta.setTelefono("600123456");
+        tarjeta.setDireccion("Calle Falsa 123");
 
         ArrayList<Document> listaTarjetas = new ArrayList<>();
         Document tarjetaInsertada = new Document()
@@ -60,11 +64,15 @@ public class SATarjetasImpTest {
                 .append("numeroDocumento", "12345678A")
                 .append("numeroCuenta", "ES1234567890123456789012")
                 .append("tipoTarjeta", "Debito")
-                .append("estado", "Activa");
+                .append("estado", "Activa")
+                .append("fechaNacimiento", "01-01-1990")
+                .append("telefono", "600123456")
+                .append("direccion", "Calle Falsa 123");
+        
         listaTarjetas.add(tarjetaInsertada);
-
+        //primero devuelvo una lista vacia para simular que no existe la tarjeta y luego la lista con la tarjeta insertada
         when(db.readDocument(new Document().append("numeroDocumento", "12345678A"), Collections.TARJETA))
-                .thenReturn(listaTarjetas);
+                .thenReturn(new ArrayList<Document>()).thenReturn(listaTarjetas);
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
@@ -76,10 +84,14 @@ public class SATarjetasImpTest {
     public void testCrearTarjetaDebito_CuentaNoExiste() {
         
         when(db.readDocument(new Document().append("numeroDocumento", "12345678A"),Collections.CUENTABANC)).thenReturn(null);
-        tarjeta.setNombre("Juan Pérez");
+        tarjeta.setNombre("Juan");
+        tarjeta.setApellidos("Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345678A");
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
+        tarjeta.setFechaNacimiento("01-01-1990");
+        tarjeta.setTelefono("600123456");
+        tarjeta.setDireccion("Calle Falsa 123");
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
@@ -92,6 +104,10 @@ public class SATarjetasImpTest {
         tarjeta.setTipoDocumento("");
         tarjeta.setNumeroDocumento("");
         tarjeta.setNumeroCuenta("");
+        tarjeta.setFechaNacimiento("");
+        tarjeta.setTelefono("");
+        tarjeta.setDireccion("");
+        tarjeta.setApellidos("");
         
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
@@ -110,10 +126,14 @@ public class SATarjetasImpTest {
 
     @Test
     public void testCrearTarjetaDebito_TipoDocumentoInvalido() {
-        tarjeta.setNombre("Juan Pérez");
+        tarjeta.setNombre("Juan");
+        tarjeta.setApellidos("Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345"); //dni no valido
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
+        tarjeta.setFechaNacimiento("01-01-1990");
+        tarjeta.setTelefono("600123456");
+        tarjeta.setDireccion("Calle Falsa 123");
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
         assertEquals(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, result.getEvento());
@@ -144,10 +164,14 @@ public class SATarjetasImpTest {
        //devuelve una lista vacia cuando deberia devolver una lista con la tarjeta insertada
         when(db.readDocument(new Document().append("numeroDocumento", "12345678A"),Collections.TARJETA)).thenReturn(new ArrayList<Document>());
 
-        tarjeta.setNombre("Juan Pérez");
+        tarjeta.setNombre("Juan");
+        tarjeta.setApellidos("Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345678A");
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
+        tarjeta.setFechaNacimiento("01-01-1990");
+        tarjeta.setTelefono("600123456");
+        tarjeta.setDireccion("Calle Falsa 123");
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
@@ -172,13 +196,86 @@ public class SATarjetasImpTest {
     	 when(db.readDocument(new Document().append("numeroDocumento", "12345678A"),Collections.TARJETA)).thenReturn(new ArrayList<Document>());
        // Simulamos que no se encuentra el documento después de la inserción
 
-        tarjeta.setNombre("Juan Pérez");
+        tarjeta.setNombre("Juan");
+        tarjeta.setApellidos("Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345678A");
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
+        tarjeta.setFechaNacimiento("01-01-1990");
+        tarjeta.setTelefono("600123456");
+        tarjeta.setDireccion("Calle Falsa 123");
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
         assertEquals(Evento.CREAR_TARJETA_ERROR_DB, result.getEvento());
     }
+    @Test
+    public void testCrearTarjetaDebito_MaximoTarjetasAlcanzado() {
+		// Simular cuenta bancaria existente en la BBDD
+		ArrayList<Document> listaCuentas = new ArrayList<>();
+		Document doc = new Document("nombreCompleto", "Juan Pérez")
+				.append("tipoDocumento", "DNI")
+				.append("numeroDocumento", "12345678A")
+				.append("numeroCuenta", "ES1234567890123456789012")
+				.append("numTarjetas", 5); // Simulamos que ya tiene 5 tarjetas
+
+		listaCuentas.add(doc);
+
+		when(db.readDocument(new Document().append("numeroCuenta", "ES1234567890123456789012"), Collections.CUENTABANC))
+				.thenReturn(listaCuentas);
+
+		tarjeta.setNombre("Juan");
+		tarjeta.setApellidos("Pérez");
+		tarjeta.setTipoDocumento("DNI");
+		tarjeta.setNumeroDocumento("12345678A");
+		tarjeta.setNumeroCuenta("ES1234567890123456789012");
+		tarjeta.setFechaNacimiento("01-01-1990");
+		tarjeta.setTelefono("600123456");
+		tarjeta.setDireccion("Calle Falsa 123");
+
+		ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
+
+		assertEquals(Evento.CREAR_TARJETA_ERROR_MAX_TARJETAS, result.getEvento());
+	}
+    @Test
+    public void testCrearTarjetaDebito_TarjetaYaExistente() {
+		// Simular cuenta bancaria existente en la BBDD
+		ArrayList<Document> listaCuentas = new ArrayList<>();
+		Document doc = new Document("nombreCompleto", "Juan Pérez")
+				.append("tipoDocumento", "DNI")
+				.append("numeroDocumento", "12345678A")
+				.append("numeroCuenta", "ES1234567890123456789012");
+		listaCuentas.add(doc);
+
+		when(db.readDocument(new Document().append("numeroCuenta", "ES1234567890123456789012"), Collections.CUENTABANC))
+				.thenReturn(listaCuentas);
+
+		// Simular tarjeta ya existente
+		ArrayList<Document> listaTarjetas = new ArrayList<>();
+		Document tarjetaExistente = new Document()
+				.append("nombreCompleto", "Juan Pérez")
+				.append("tipoDocumento", "DNI")
+				.append("numeroDocumento", "12345678A")
+				.append("numeroCuenta", "ES1234567890123456789012")
+				.append("tipoTarjeta", "Debito")
+				.append("estado", "Activa");
+		
+		listaTarjetas.add(tarjetaExistente);
+
+		when(db.readDocument(new Document().append("numeroDocumento", "12345678A"), Collections.TARJETA))
+				.thenReturn(listaTarjetas);
+
+		tarjeta.setNombre("Juan");
+		tarjeta.setApellidos("Pérez");
+		tarjeta.setTipoDocumento("DNI");
+		tarjeta.setNumeroDocumento("12345678A");
+		tarjeta.setNumeroCuenta("ES1234567890123456789012");
+		tarjeta.setFechaNacimiento("01-01-1990");
+		tarjeta.setTelefono("600123456");
+		tarjeta.setDireccion("Calle Falsa 123");
+
+		ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
+
+		assertEquals(Evento.CREAR_TARJETA_ERROR_TARJETA_EXISTENTE, result.getEvento());
+	}
 }

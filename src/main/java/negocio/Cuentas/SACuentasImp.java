@@ -56,13 +56,10 @@ public class SACuentasImp implements SACuentas {
             return new ResultContext(Evento.ERROR_CADENA_NO_ALFABETICA, null);
         }
 
-        if (!validarDNI(tipoDoc)) {
+        if (!validarDNI(tipoDoc) && !validarNIE(tipoDoc)) {
             return new ResultContext(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, null);
         }
         
-        if (!validarNIE(tipoDoc)) {
-            return new ResultContext(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, null);
-        }
 
         Document nuevaCuenta = new Document()
             .append("nombreCompleto", nombre + " " + apellidos)
@@ -70,12 +67,12 @@ public class SACuentasImp implements SACuentas {
             .append("direccion", direccion)
             .append("telefono", telefono)
             .append("estado", "Activa");
-
+        
         db.insertDocument(Collections.CUENTABANC, nuevaCuenta);
 
         // verificamos que la cuenta fue insertada correctamente
         Document docLeerCuenta = new Document()
-        		.append("tipoDoc", nuevaCuenta.getString("tipoDoc"));
+        		.append("dni", nuevaCuenta.getString("dni"));
         List<Document> cuentas = db.readDocument(docLeerCuenta, Collections.CUENTABANC);
         if (cuentas.isEmpty()) {
             return new ResultContext(Evento.CREAR_CUENTA_BANCARIA_ERROR_DB, null); // si no encontramos la cuenta ha fallado la insercion en la bbdd

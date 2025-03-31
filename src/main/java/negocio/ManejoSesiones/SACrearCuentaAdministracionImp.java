@@ -46,7 +46,7 @@ public class SACrearCuentaAdministracionImp implements SACrearCuentaAdministraci
 			}
 			// comprobamos que el rol introducido es el correcto
 
-			if(validarTLF(data.getTelf()) ) {
+			if(!validarTLF(data.getTelf().trim()) ) {
 				return new ResultContext(Evento.CREAR_CUENTA_ADM_ERROR_TEL_INCORRECTO, null);
 			}
 			
@@ -87,7 +87,7 @@ public class SACrearCuentaAdministracionImp implements SACrearCuentaAdministraci
 
 	// Validar TEL:
 	private boolean validarTLF(String tlf) {
-		String tlfRegex = "^[0-9]$";
+		String tlfRegex = "^[0-9]{9}$";
 		return tlf.matches(tlfRegex);
 	}
 

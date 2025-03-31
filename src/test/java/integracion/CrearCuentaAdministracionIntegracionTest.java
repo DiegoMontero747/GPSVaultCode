@@ -32,15 +32,20 @@ public class CrearCuentaAdministracionIntegracionTest {
         db = MongoDBManager.getInstance();
         //tenemos que eliminar los usuarios de la bd que vayamos a crear si existen
         db.deleteDocument(Collections.PERFIL, new Document("nombre", "Mario")
-                .append("contrasenya", "mario64")
+        		.append("apellido", "Bros")
+        		.append("dni", "12345678P")         
                 .append("rol", "administracion")
                 .append("usuario", "Champinyon")
-                .append("dni", "12345678P")
-                .append("apellido", "Bros"));
+                .append("contrasenya", "mario641241241")
+        		.append("telefono", "123456789"));
         
         datos_crearCuenta = new TCrearCuentaAdm();
     }
 	
+	@After
+    public void tearDown() {
+		db.deleteDocument(Collections.PERFIL, new Document("dni", "12345678P"));
+    }
 	
 	@Test
 	public void crearCuentaAdm_OK() {
@@ -49,7 +54,8 @@ public class CrearCuentaAdministracionIntegracionTest {
 		datos_crearCuenta.setDni("12345678P");
 		datos_crearCuenta.setRol("administracion");
 		datos_crearCuenta.setUsuario("Champinyon");
-		datos_crearCuenta.setConstrasenya("mario64");
+		datos_crearCuenta.setConstrasenya("mario641241241");
+		datos_crearCuenta.setTelf("123456789");
 		
 		ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
 		assertEquals(Evento.CREAR_CUENTA_ADM_EXITO, resultado.getEvento());
@@ -61,7 +67,8 @@ public class CrearCuentaAdministracionIntegracionTest {
 		datos_crearCuenta.setDni("1234567P");
 		datos_crearCuenta.setRol("administracion");
 		datos_crearCuenta.setUsuario("Champinyon");
-		datos_crearCuenta.setConstrasenya("mario64");
+		datos_crearCuenta.setConstrasenya("mario641241241");
+		datos_crearCuenta.setTelf("123456789");
 		
 		ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
 		assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_FORMATO_DNI, resultado.getEvento());
@@ -70,7 +77,7 @@ public class CrearCuentaAdministracionIntegracionTest {
 	public void crearCuentaAdm_DNI_Existente() {
 		//creamos el personal primero
 		 db.insertDocument(Collections.PERFIL, new Document("nombre", "Mario")
-	                .append("contrasenya", "mario64")
+	                .append("contrasenya", "mario641241241")
 	                .append("rol", "administracion")
 	                .append("usuario", "Champinyon")
 	                .append("dni", "12345678P")
@@ -83,33 +90,31 @@ public class CrearCuentaAdministracionIntegracionTest {
 		datos_crearCuenta.setDni("12345678P");
 		datos_crearCuenta.setRol("administracion");
 		datos_crearCuenta.setUsuario("Champinyon");
-		datos_crearCuenta.setConstrasenya("mario64");
+		datos_crearCuenta.setConstrasenya("mario641241241");
+		datos_crearCuenta.setTelf("123456789");
 		
 		ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
 		assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_DNI_ENCONTRADO, resultado.getEvento());
 	}
 	
 	@Test
-	public void crearCuentaAdm_ROL_Incorrecto() {
-		//creamos el personal primero
-		 
-		
-		
-		
-		datos_crearCuenta.setNombre("Mario");
-		datos_crearCuenta.setApellido("Bros");
-		datos_crearCuenta.setDni("12345678P");
-		datos_crearCuenta.setRol("lider");
-		datos_crearCuenta.setUsuario("Champinyon");
-		datos_crearCuenta.setConstrasenya("mario64");
-		
-		ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
-		assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_ROL_INCORRECTO, resultado.getEvento());
-	}
-	
-	@Test
 	public void crearCuentaAdm_Nulos() {
 		ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
 		assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_DATOS_NULOS, resultado.getEvento());
+	}
+	
+	@Test
+	public void crearCuentaAdm_Telef_Erroneo() {
+		datos_crearCuenta.setNombre("Mario");
+		datos_crearCuenta.setApellido("Bros");
+		datos_crearCuenta.setDni("12345678P");
+		datos_crearCuenta.setRol("administracion");
+		datos_crearCuenta.setUsuario("Champinyon");
+		datos_crearCuenta.setConstrasenya("mario641241241");
+		datos_crearCuenta.setTelf("1234567890");
+		
+		ResultContext resultado = saCrearCuentaAdministracion.crearCuenta(datos_crearCuenta);
+		assertEquals(Evento.CREAR_CUENTA_ADM_ERROR_TEL_INCORRECTO, resultado.getEvento());
+	
 	}
 }

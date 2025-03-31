@@ -15,7 +15,7 @@ public class TSesion {
 	}
 	
 	public TSesion() {
-		// TODO Auto-generated constructor stub
+		// Constructor vacio para poder hacer mockito
 	}
 
 	public String getUsername() {

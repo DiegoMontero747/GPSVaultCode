@@ -83,7 +83,8 @@ public class SATarjetasImp implements SATarjetas {
 	    if (numTarjetas >= 5) {
 	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_MAX_TARJETAS, null);
 	    }
-
+	    
+	    //TODO comprobar que la tarjeta no existe ya en la base de datos
 	    Document nuevaTarjeta = new Document()
 	        .append("nombreCompleto", nombre + " " + apellidos)
 	        .append("tipoDocumento", tipoDocumento)
@@ -95,10 +96,15 @@ public class SATarjetasImp implements SATarjetas {
 	        .append("tipoTarjeta", "Debito")
 	        .append("estado", "Activa");
 	    
+	    Document docLeerTarjeta = new Document().append("numeroDocumento", nuevaTarjeta.getString("numeroDocumento"));
+	    List<Document> listaTarjetasExistentes = db.readDocument(docLeerTarjeta, Collections.TARJETA);
+	    if (!listaTarjetasExistentes.isEmpty()) {
+	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_TARJETA_EXISTENTE, null);
+	    }
+	    
 	    db.insertDocument(Collections.TARJETA, nuevaTarjeta);
 
 	    // verificamos que la tarjeta ha sido introducida, PK: DNI/NIE
-	    Document docLeerTarjeta = new Document().append("numeroDocumento", nuevaTarjeta.getString("numeroDocumento"));
 	   List<Document> listaTarjetas = db.readDocument(docLeerTarjeta,Collections.TARJETA);
 	    if (listaTarjetas.isEmpty()) {
 	        return new ResultContext(Evento.CREAR_TARJETA_ERROR_DB, null); // si no encontramos el documento ha fallado la insercion en la bbdd

@@ -60,7 +60,7 @@ public class CrearTarjetaDebitoIntegracionTest {
         
         db.insertDocument(Collections.CUENTABANC, doc);
 
-        tarjeta.setNombreCompleto("Juan Pérez");
+        tarjeta.setNombre("Juan Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345678A");
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
@@ -74,7 +74,7 @@ public class CrearTarjetaDebitoIntegracionTest {
     public void testCrearTarjetaDebito_CuentaNoExiste() {
         
 
-        tarjeta.setNombreCompleto("Juan Pérez");
+        tarjeta.setNombre("Juan Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345678A");
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
@@ -86,7 +86,7 @@ public class CrearTarjetaDebitoIntegracionTest {
 
     @Test
     public void testCrearTarjetaDebito_DatosIncompletos() {
-        tarjeta.setNombreCompleto("");
+        tarjeta.setNombre("");
         tarjeta.setTipoDocumento("");
         tarjeta.setNumeroDocumento("");
         tarjeta.setNumeroCuenta("");
@@ -95,7 +95,7 @@ public class CrearTarjetaDebitoIntegracionTest {
 
         assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS, result.getEvento());
 
-        tarjeta.setNombreCompleto(null);
+        tarjeta.setNombre(null);
         tarjeta.setNumeroDocumento(null);
         tarjeta.setNumeroCuenta(null);
 
@@ -107,7 +107,7 @@ public class CrearTarjetaDebitoIntegracionTest {
 
     @Test
     public void testCrearTarjetaDebito_NombreNulo() {
-        tarjeta.setNombreCompleto(null);
+        tarjeta.setNombre(null);
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345678A");
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
@@ -119,20 +119,20 @@ public class CrearTarjetaDebitoIntegracionTest {
 
     @Test
     public void testCrearTarjetaDebito_TipoDocumentoInvalido() {
-        tarjeta.setNombreCompleto("Juan Pérez");
+        tarjeta.setNombre("Juan Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345"); //dni no valido
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
-        assertEquals(Evento.CREAR_TARJETA_ERROR_TIPO_DOCUMENTO_INVALIDO, result.getEvento());
+        assertEquals(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, result.getEvento());
 
         tarjeta.setTipoDocumento("NIE");
         tarjeta.setNumeroDocumento("X12345");  // nie no valido
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
 
         result = saTarjetasImp.crearTarjetaDebito(tarjeta);
-        assertEquals(Evento.CREAR_TARJETA_ERROR_TIPO_DOCUMENTO_INVALIDO, result.getEvento());
+        assertEquals(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, result.getEvento());
     }
 
 

@@ -48,7 +48,7 @@ public class SATarjetasImpTest {
         when(db.readDocument(new Document().append("numeroCuenta", "ES1234567890123456789012"), Collections.CUENTABANC))
                 .thenReturn(listaCuentas);
 
-        tarjeta.setNombreCompleto("Juan Pérez");
+        tarjeta.setNombre("Juan Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345678A");
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
@@ -76,7 +76,7 @@ public class SATarjetasImpTest {
     public void testCrearTarjetaDebito_CuentaNoExiste() {
         
         when(db.readDocument(new Document().append("numeroDocumento", "12345678A"),Collections.CUENTABANC)).thenReturn(null);
-        tarjeta.setNombreCompleto("Juan Pérez");
+        tarjeta.setNombre("Juan Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345678A");
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
@@ -88,7 +88,7 @@ public class SATarjetasImpTest {
 
     @Test
     public void testCrearTarjetaDebito_DatosIncompletos() {
-        tarjeta.setNombreCompleto("");
+        tarjeta.setNombre("");
         tarjeta.setTipoDocumento("");
         tarjeta.setNumeroDocumento("");
         tarjeta.setNumeroCuenta("");
@@ -98,7 +98,7 @@ public class SATarjetasImpTest {
 
         assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS, result.getEvento());
 
-        tarjeta.setNombreCompleto(null);
+        tarjeta.setNombre(null);
         tarjeta.setTipoDocumento(null);
         tarjeta.setNumeroDocumento(null);
         tarjeta.setNumeroCuenta(null);
@@ -110,7 +110,7 @@ public class SATarjetasImpTest {
 
     @Test
     public void testCrearTarjetaDebito_TipoDocumentoInvalido() {
-        tarjeta.setNombreCompleto("Juan Pérez");
+        tarjeta.setNombre("Juan Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345"); //dni no valido
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
@@ -144,7 +144,7 @@ public class SATarjetasImpTest {
        //devuelve una lista vacia cuando deberia devolver una lista con la tarjeta insertada
         when(db.readDocument(new Document().append("numeroDocumento", "12345678A"),Collections.TARJETA)).thenReturn(new ArrayList<Document>());
 
-        tarjeta.setNombreCompleto("Juan Pérez");
+        tarjeta.setNombre("Juan Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345678A");
         tarjeta.setNumeroCuenta("ES1234567890123456789012");
@@ -172,7 +172,7 @@ public class SATarjetasImpTest {
     	 when(db.readDocument(new Document().append("numeroDocumento", "12345678A"),Collections.TARJETA)).thenReturn(new ArrayList<Document>());
        // Simulamos que no se encuentra el documento después de la inserción
 
-        tarjeta.setNombreCompleto("Juan Pérez");
+        tarjeta.setNombre("Juan Pérez");
         tarjeta.setTipoDocumento("DNI");
         tarjeta.setNumeroDocumento("12345678A");
         tarjeta.setNumeroCuenta("ES1234567890123456789012");

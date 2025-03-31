@@ -1,0 +1,42 @@
+{
+  "ADMIN": {
+    "buttons": [
+      {
+        "text": "Crear cuenta",
+        "event": "GUI_CREAR_CUENTA_ADMINISTRACION"
+      }
+    ]
+  },
+  "SERVICIOS_CENTRALES": {
+    "buttons": [
+      {
+        "text": "Servicio 1",
+        "event": "GUI_SERVICIO_1"
+      },
+      {
+        "text": "Servicio 2",
+        "event": "GUI_SERVICIO_2"
+      }
+    ]
+  },
+  "PASIVO": {
+    "buttons": [
+      {
+        "text": "Opciones pasivo",
+        "event": "GUI_PASIVO_OPCIONES"
+      }
+    ]
+  },
+  "RIESGO": {
+    "buttons": [
+      {
+        "text": "Análisis de riesgo",
+        "event": "GUI_RIESGO_ANALISIS"
+      },
+      {
+        "text": "Reportes",
+        "event": "GUI_RIESGO_REPORTES"
+      }
+    ]
+  }
+}

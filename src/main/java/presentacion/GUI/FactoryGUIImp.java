@@ -46,7 +46,7 @@ public class FactoryGUIImp extends FactoryGUI {
 			return ApplicationContainer.class;
 		case GUI_PRINCIPAL:
 			return GUI_Principal.class;
-
+            
 		case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA,
              INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA,
              INICIO_SESION_ERROR_USUARIO_INCOMPLETO,
@@ -59,6 +59,11 @@ public class FactoryGUIImp extends FactoryGUI {
         	instancias.putIfAbsent(GUI_CrearCuentaAdministracion.class, new GUI_CrearCuentaAdministracion());
         	GUI_Principal.getInstance().addView("CREAR_CUENTA_ADMINISTRACION",
         			(JPanel) instancias.get(GUI_CrearCuentaAdministracion.class));
+        	return GUI_Principal.class;
+        case GUI_CREAR_CUENTA_BANCARIA:
+        	instancias.putIfAbsent(GUI_Formulario_ClienteBanco.class, new GUI_Formulario_ClienteBanco());
+        	GUI_Principal.getInstance().addView("CREAR_CUENTA_CLIENTE_BANCO",
+        			(JPanel) instancias.get(GUI_Formulario_ClienteBanco.class));
         	return GUI_Principal.class;
 
             // Agregar más casos según se necesiten

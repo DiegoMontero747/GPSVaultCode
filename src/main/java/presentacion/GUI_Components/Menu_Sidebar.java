@@ -28,6 +28,7 @@ public class Menu_Sidebar extends JPanel {
     private static final int MIN_WIDTH = 10;
     private static final int MAX_WIDTH = 150;
     private static final int BUTTON_HEIGHT = 40;
+    private static final int BUTTON_WIDTH = 200;
     
     // Colores
     private static final Color BACKGROUND_COLOR = new Color(20, 20, 20, 180); 
@@ -166,6 +167,7 @@ public class Menu_Sidebar extends JPanel {
 
     private JButton createResponsiveButton(String text, Evento event) {
         JButton button = new JButton(text) {
+        	//redibujar los botones para evitar bug al hacer el hover
         	@Override
             protected void paintComponent(Graphics g) {
                 // 1. Limpiar completamente el área del botón
@@ -202,7 +204,7 @@ public class Menu_Sidebar extends JPanel {
         
         // Configuración responsive del botón
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMaximumSize(new Dimension(200, BUTTON_HEIGHT));
+       
        
         
         // Estilo del botón
@@ -220,6 +222,15 @@ public class Menu_Sidebar extends JPanel {
         
         return button;
     }
+    
+    private void setButtonStyle(JButton button) {
+    	button.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT)); // Tamaño predeterminado
+        button.setBackground(new Color(255, 94, 0)); // Color de fondo
+        button.setForeground(Color.BLACK);
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setFocusPainted(false);
+        button.setOpaque(true);
+	}
 
     private void setupButtonHoverEffects(JButton button) {
         button.addMouseListener(new java.awt.event.MouseAdapter() {

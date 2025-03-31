@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -28,6 +29,7 @@ public class Menu_Header extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS)); // Layout horizontal
         setPreferredSize(new Dimension(800, 50)); // Ajustado para mejor proporción
         setBackground(new Color(40, 40, 40));
+        setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 
         //boton menu
         JButton btnMenu = new JButton();

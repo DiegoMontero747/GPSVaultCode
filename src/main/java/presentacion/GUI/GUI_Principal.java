@@ -111,6 +111,7 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
         repaint();
     }
 
+
     public void toggleSidebar() {
         menu.setVisible(!menu.isVisible());
         updateComponentBounds(getWidth(), getHeight());
@@ -120,6 +121,27 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
         revalidate();
         repaint();
     }
+
+	@Override
+	public void actualizar(Context c) {
+		// TODO Auto-generated method stub
+		switch (c.getEvento()) {
+		case GUI_PRINCIPAL:
+			System.out.println(c.getDato());
+			menu.init((String) c.getDato());
+			menu.setVisible(true);
+            updateComponentBounds(getWidth(), getHeight());
+			break;
+		case GUI_CREAR_CUENTA_ADMINISTRACION:
+			showView("CREAR_CUENTA_ADMINISTRACION");
+			break;
+		case GUI_CREAR_CUENTA_BANCARIA:
+			showView("CREAR_CUENTA_CLIENTE_BANCO");
+			break;
+		}
+		
+	}
+
 
     private void animateSidebar(boolean show) {
         // Implementación básica de animación
@@ -141,21 +163,7 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
         timer.start();
     }
 
-    @Override
-    public void actualizar(Context c) {
-        switch (c.getEvento()) {
-            case GUI_PRINCIPAL:
-            	 System.out.println(c.getDato());
-                 menu.init((String) c.getDato());
-                 menu.setVisible(true);
-                 updateComponentBounds(getWidth(), getHeight());
-                break;
-            case GUI_CREAR_CUENTA_ADMINISTRACION:
-                showView("CREAR_CUENTA_ADMINISTRACION");
-                break;
-            // Añadir más casos según necesidad
-        }
-    }
+   
 
    
 }

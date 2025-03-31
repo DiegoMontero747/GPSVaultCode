@@ -2,21 +2,19 @@ package presentacion.GUI;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.*;
 
 import negocio.ManejoSesiones.Roles;
-import negocio.ManejoSesiones.TSesion;
+import negocio.ManejoSesiones.TCrearCuentaAdm;
 import presentacion.Controller.Context;
 import presentacion.Controller.Controller;
 import presentacion.Controller.Evento;
 import presentacion.GUI_Components.GeneralForm;
 import presentacion.GUI_Components.RoundedComponents.RoundedButton;
-import presentacion.GUI_Components.RoundedComponents.RoundedComboBox;
 
-public class GUI_CrearCuentaAdministracion extends JFrame implements ObservadorGUI {
-    /** TODO CAMBIAR A JPANEL Y ENLAZARLO AL BOTON CORRESPONDIENTE CUANDO ESTÉ
+public class GUI_CrearCuentaAdministracion extends JPanel implements ObservadorGUI {
+    /** 
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
@@ -32,15 +30,16 @@ public class GUI_CrearCuentaAdministracion extends JFrame implements ObservadorG
     }
 
     private void initialize() {
-		this.setMinimumSize(new Dimension(800, 600));// TODO cambiar a preferred cuando el TODO de arriba esté hecho
-		this.setLayout(new BorderLayout());
+		// en caso de necesitar que la clase sea jpanel this.setMinimumSize(new Dimension(800, 600));
+    	this.setMinimumSize(new Dimension(800, 600));
+    	this.setLayout(new BorderLayout());
 
-    // Panel de fondo con la imagen
-    JPanel backgroundPanel = new JPanel();
-    backgroundPanel.setBackground(new Color(30, 30, 30));
-    backgroundPanel.setLayout(new BorderLayout());
-    backgroundPanel.setPreferredSize(new Dimension(800, 600)); // TODO borrar cuando el TODO de arriba esté hecho
-    this.add(backgroundPanel, BorderLayout.CENTER);
+	    // Panel de fondo con la imagen
+	    JPanel backgroundPanel = new JPanel();
+	    backgroundPanel.setBackground(new Color(30, 30, 30));
+	    backgroundPanel.setLayout(new BorderLayout());
+	    // en caso de necesitar que la clase sea jpanel, anyadir backgroundPanel.setPreferredSize(new Dimension(800, 600)); 
+	    this.add(backgroundPanel, BorderLayout.CENTER);
 
 		// Panel para los componentes (con fondo transparente)
 		JPanel contentPanel = new JPanel();
@@ -51,11 +50,6 @@ public class GUI_CrearCuentaAdministracion extends JFrame implements ObservadorG
 		// Titulo del formulario
 		titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
 		titleLabel.setForeground(new Color(255, 94, 0));
-		
-		// Boton del formulario
-		actionButton.addActionListener(e -> {
-			//TODO
-		});
 		
 		// Etiqueta de error del formulario
 		errorLabel.setFont(new Font("Arial", Font.BOLD, 14));
@@ -83,12 +77,51 @@ public class GUI_CrearCuentaAdministracion extends JFrame implements ObservadorG
 		formulario.setInfoText(4, "DNI");					// el campo de texto del DNI
 		formulario.setInfoText(5, "Telefono");				// el campo de texto del telefono
 		
+		// Boton del formulario
+		actionButton.addActionListener(e -> {
+			String nombre = formulario.getText(2);
+			String apellidos = formulario.getText(3);
+			String password = new String(formulario.getText(1)); // Convertir password a String
+			String DNI = formulario.getText(4);
+			String usuario = formulario.getText(0);
+			String rol = formulario.getText(6);
+			String telf = formulario.getText(5);
+			Controller.getInstance()
+					.handleRequest(new Context(Evento.CREAR_CUENTA_ADM, 
+							new TCrearCuentaAdm(nombre, apellidos, password, DNI, usuario, rol, telf)));
+		});
+		
 		this.setVisible(true);
     }
     
 	@Override
 	public void actualizar(Context c) {
-		// TODO Auto-generated method stub
+		Evento evento = (Evento) c.getEvento();
+		if (c != null) {
+			switch (evento) {
+				case CREAR_CUENTA_ADM_EXITO:
+					formulario.mostrarMensaje("Cuenta creada correctamente.", false);
+					break;
+
+				case CREAR_CUENTA_ADM_ERROR_DATOS_NULOS:
+				case CREAR_CUENTA_ADM_ERROR_DATOS_VACIOS:
+					formulario.mostrarMensaje("Rellene todos los campos.", true);
+					break;
+
+				case CREAR_CUENTA_ADM_ERROR_DNI_ENCONTRADO:
+					formulario.mostrarMensaje("Trabajador ya existente.", true);
+					break;
+
+				case CREAR_CUENTA_ADM_ERROR_FORMATO_DNI:
+					formulario.mostrarMensaje("Formato de DNI incorrecto.", true);
+					break;
+
+					/*
+				case CREAR_CUENTA_ADM_ERROR_FORMATO_TELEFONO:
+					formulario.mostrarMensaje("Formato de teléfono incorrecto.", true);
+					break;TODO*/
+			}
+		}
 		
 	}
 	

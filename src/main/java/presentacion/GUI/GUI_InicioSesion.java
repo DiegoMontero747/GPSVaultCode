@@ -1,19 +1,10 @@
 package presentacion.GUI;
 
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.*;
-import javax.imageio.*;
-import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.metadata.IIOMetadataNode;
-import javax.imageio.stream.ImageInputStream;
 
 import presentacion.Controller.Controller;
 import negocio.ManejoSesiones.TSesion;
@@ -92,46 +83,44 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
 		private Image backgroundImage;
 
 		// Panel personalizado para el fondo con imagen
-
-			public ImagePanel(String imagePath) {
-				backgroundImage = new ImageIcon(imagePath).getImage();
-			}
-
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				if (backgroundImage != null) {
-					g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-				}
-			}
-	}
+		public ImagePanel(String imagePath) {
+			backgroundImage = new ImageIcon(imagePath).getImage();
+		}
 
 		@Override
-		public void actualizar(Context c) {
-			Evento evento = (Evento) c.getEvento();
-			if (c != null) {
-				switch (evento) {
-					case INICIO_SESION_OK:
-						
-						Controller.getInstance().handleRequest(new Context(Evento.GUI_PRINCIPAL, c.getDato()));
-						contador = 0;
-						break;
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			if (backgroundImage != null) {
+				g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+			}
+		}
+	}
 
-					case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
-						formulario.mostrarMensajeError("Usuario no encontrado.");
-						break;
+	@Override
+	public void actualizar(Context c) {
+		Evento evento = (Evento) c.getEvento();
+		if (c != null) {
+			switch (evento) {
+				case INICIO_SESION_OK:
+					Controller.getInstance().handleRequest(new Context(Evento.GUI_PRINCIPAL, c.getDato()));
+					contador = 0;
+					break;
 
-					case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
-						formulario.mostrarMensajeError("Contraseña incorrecta.");
-						break;
+				case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
+					formulario.mostrarMensaje("Usuario no encontrado.", true);
+					break;
 
-					case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
-						formulario.mostrarMensajeError("Debe ingresar una contraseña.");
-						break;
+				case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
+					formulario.mostrarMensaje("Contraseña incorrecta.", true);
+					break;
 
-					case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
-						formulario.mostrarMensajeError("Debe ingresar un usuario.");
-						break;
+				case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
+					formulario.mostrarMensaje("Debe ingresar una contraseña.", true);
+					break;
+
+				case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
+					formulario.mostrarMensaje("Debe ingresar un usuario.", true);
+					break;
 			}
 			if (evento == Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA) {
 				contador++;
@@ -140,88 +129,6 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
 				bloquearSesion();
 			}
 		}
-	}
-	
-	private class GUI_Bienvenida extends JFrame {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public GUI_Bienvenida() {
-			init();
-		}
-
-		private void init() {
-			try {
-				File file = new File("/media/gif-ventana-bienvenida");
-				ImageInputStream inputStream = ImageIO.createImageInputStream(file);
-				Iterator<ImageReader> readers = ImageIO.getImageReadersBySuffix("gif");
-
-				if (!readers.hasNext()) {
-					throw new IOException("No se encontró un lector para GIF.");
-				}
-
-				ImageReader reader = readers.next();
-				reader.setInput(inputStream, false);
-
-				// Calcular la duración total del GIF
-				int numFrames = reader.getNumImages(true);
-				int duracionTotal = 0;
-
-				for (int i = 0; i < numFrames; i++) {
-					IIOMetadata metadata = reader.getImageMetadata(i);
-					String metaFormat = metadata.getNativeMetadataFormatName();
-					IIOMetadataNode root = (IIOMetadataNode) metadata.getAsTree(metaFormat);
-
-					IIOMetadataNode graphicsControlExtensionNode = getNode(root, "GraphicControlExtension");
-
-					if (graphicsControlExtensionNode != null) {
-						String delayTime = graphicsControlExtensionNode.getAttribute("delayTime");
-						duracionTotal += Integer.parseInt(delayTime); // Está en centésimas de segundo
-					}
-				}
-
-				// Convertir a milisegundos
-				duracionTotal *= 10;
-
-				// Mostrar el GIF en un JLabel
-				ImageIcon gif = new ImageIcon("tu_gif.gif");
-				JLabel label = new JLabel(gif);
-				add(label);
-
-				// Configurar JFrame
-				setSize(gif.getIconWidth(), gif.getIconHeight());
-				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				setLocationRelativeTo(null);
-				setVisible(true);
-
-				// Cerrar la ventana automáticamente después de la duración total del GIF
-				Timer timer = new Timer();
-				timer.schedule(new TimerTask() {
-					@Override
-					public void run() {
-						dispose(); // Cierra la ventana
-						timer.cancel(); // Cancela la tarea
-					}
-				}, duracionTotal);
-
-			} catch (Exception e) {
-				formulario.mostrarMensajeError("No se pudo cargar la pantalla de bienvenida");
-
-			}
-		}
-
-		private static IIOMetadataNode getNode(IIOMetadataNode root, String nodeName) {
-			for (int i = 0; i < root.getLength(); i++) {
-				if (root.item(i).getNodeName().equalsIgnoreCase(nodeName)) {
-					return (IIOMetadataNode) root.item(i);
-				}
-			}
-			return null;
-		}
-
 	}
 	
 	private void bloquearSesion() {

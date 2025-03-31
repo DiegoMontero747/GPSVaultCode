@@ -45,7 +45,7 @@ public class FactoryGUIImp extends FactoryGUI {
 			return ApplicationContainer.class;
 		case GUI_PRINCIPAL:
 			return GUI_Principal.class;
-
+            
 		case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA,
              INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA,
              INICIO_SESION_ERROR_USUARIO_INCOMPLETO,

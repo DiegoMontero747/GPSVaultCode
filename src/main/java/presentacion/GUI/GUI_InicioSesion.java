@@ -118,19 +118,19 @@ public class GUI_InicioSesion extends JPanel implements ObservadorGUI {
 						break;
 
 					case INICIO_SESION_ERROR_USUARIO_INEXISTENTE:
-						mostrarMensajeError("Usuario no encontrado.");
+						formulario.mostrarMensajeError("Usuario no encontrado.");
 						break;
 
 					case INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA:
-						mostrarMensajeError("Contraseña incorrecta.");
+						formulario.mostrarMensajeError("Contraseña incorrecta.");
 						break;
 
 					case INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA:
-						mostrarMensajeError("Debe ingresar una contraseña.");
+						formulario.mostrarMensajeError("Debe ingresar una contraseña.");
 						break;
 
 					case INICIO_SESION_ERROR_USUARIO_INCOMPLETO:
-						mostrarMensajeError("Debe ingresar un usuario.");
+						formulario.mostrarMensajeError("Debe ingresar un usuario.");
 						break;
 			}
 			if (evento == Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA) {

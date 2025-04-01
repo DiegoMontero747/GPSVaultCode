@@ -16,7 +16,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import presentacion.GUI_Components.RoundedComponents.RoundedButton;
 import presentacion.GUI_Components.RoundedComponents.RoundedComboBox;

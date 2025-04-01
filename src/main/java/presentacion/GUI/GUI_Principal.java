@@ -130,6 +130,9 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
 		case GUI_CREAR_CUENTA_BANCARIA:
 			showView("CREAR_CUENTA_CLIENTE_BANCO");
 			break;
+		case GUI_CREAR_TARJETA_DEBITO:
+			showView("CREAR_TARJETA_DEBITO");
+			break;
 		}
 		
 	}

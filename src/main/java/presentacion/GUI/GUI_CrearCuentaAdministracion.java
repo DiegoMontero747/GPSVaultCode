@@ -121,7 +121,7 @@ public class GUI_CrearCuentaAdministracion extends JPanel implements ObservadorG
 				formulario.mostrarMensaje("Formato de teléfono incorrecto.", true);
 				break;
 			case CREAR_CUENTA_ADM_ERROR_PASSWD_INCORRECTA:
-				formulario.mostrarMensaje("Incorrect password format", true);
+				formulario.mostrarMensaje("Formato contrasenya incorrecto.", true);
 				break;
 			}
 		}

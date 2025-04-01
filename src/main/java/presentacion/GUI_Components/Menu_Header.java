@@ -77,6 +77,6 @@ public class Menu_Header extends JPanel {
         // Agregar componentes con espacio flexible
         add(btnMenu);
         add(Box.createHorizontalGlue());
-        add(btnOpt);
+        //add(btnOpt);
 	}
 }

@@ -31,7 +31,7 @@ public class SACuentasImp implements SACuentas {
 
         String nombre = cuenta.getNombre();
         String apellidos = cuenta.getApellidos();
-        String tipoDoc = cuenta.getTipoDoc();
+        String tipoDoc = cuenta.getDNI();
         String direccion = cuenta.getDireccion();
         String telefono = cuenta.getTelefono();
 

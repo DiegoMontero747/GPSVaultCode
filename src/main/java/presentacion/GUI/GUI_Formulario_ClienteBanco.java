@@ -4,11 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
+import negocio.Cuentas.TCuenta;
 import negocio.ManejoSesiones.Roles;
 import presentacion.Controller.Context;
+import presentacion.Controller.Controller;
+import presentacion.Controller.Evento;
 import presentacion.GUI_Components.GeneralForm;
 import presentacion.GUI_Components.RoundedComponents.RoundedButton;
 
@@ -24,99 +28,10 @@ public class GUI_Formulario_ClienteBanco extends JPanel implements ObservadorGUI
 	private RoundedButton actionButton = new RoundedButton("Ingresar");
 	private JLabel errorLabel = new JLabel("");
 	
-	/*
-    // Componentes de la interfaz
-    private JTextField txtDni, txtNombre, txtApellidos, txtDireccion, txtTelefono;
-    private JButton btnAgregar, btnCerrar;
-    private JTable table;
-    private DefaultTableModel tableModel;
-*/
-	
     public GUI_Formulario_ClienteBanco() {
     	
         initialize();
     	
-
-    	
-    	/*
-        // Configuración de la ventana
-        setSize(400, 350);
-        setLayout(new BorderLayout());
-        
-        // Panel para el formulario
-        JPanel panelFormulario = new JPanel();
-        panelFormulario.setLayout(new GridLayout(6, 2, 10, 10)); // Fila por columna
-
-        // Etiquetas y campos de texto
-        panelFormulario.add(new JLabel("DNI:"));
-        txtDni = new JTextField();
-        panelFormulario.add(txtDni);
-        
-        panelFormulario.add(new JLabel("Nombre:"));
-        txtNombre = new JTextField();
-        panelFormulario.add(txtNombre);
-        
-        panelFormulario.add(new JLabel("Apellidos:"));
-        txtApellidos = new JTextField();
-        panelFormulario.add(txtApellidos);
-        
-        panelFormulario.add(new JLabel("Dirección Postal:"));
-        txtDireccion = new JTextField();
-        panelFormulario.add(txtDireccion);
-        
-        panelFormulario.add(new JLabel("Teléfono:"));
-        txtTelefono = new JTextField();
-        panelFormulario.add(txtTelefono);
-        
-        // Botones
-        btnAgregar = new JButton("Agregar");
-        btnCerrar = new JButton("Cerrar");
-        
-        panelFormulario.add(btnAgregar);
-        panelFormulario.add(btnCerrar);
-
-        // Tabla para mostrar los datos
-        tableModel = new DefaultTableModel();
-        tableModel.setColumnIdentifiers(new String[]{"DNI", "Nombre", "Apellidos", "Dirección", "Teléfono"});
-        table = new JTable(tableModel);
-        
-        // Agregar los componentes a la ventana
-        add(panelFormulario, BorderLayout.NORTH);
-        add(new JScrollPane(table), BorderLayout.CENTER);
-        
-        // Acciones de los botones
-        btnAgregar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Validar que los campos no estén vacíos
-                if(txtDni.getText().isEmpty() || txtNombre.getText().isEmpty() || txtApellidos.getText().isEmpty() || 
-                   txtDireccion.getText().isEmpty() || txtTelefono.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
-                } else {
-                    // Agregar datos a la tabla
-                    Object[] row = {
-                        txtDni.getText(),
-                        txtNombre.getText(),
-                        txtApellidos.getText(),
-                        txtDireccion.getText(),
-                        txtTelefono.getText()
-                    };
-                    tableModel.addRow(row);
-                    
-                    // Limpiar los campos de texto
-                    txtDni.setText("");
-                    txtNombre.setText("");
-                    txtApellidos.setText("");
-                    txtDireccion.setText("");
-                    txtTelefono.setText("");
-                }
-            }
-        });
-
-        btnCerrar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });*/
     }
     
     private void initialize() {
@@ -142,7 +57,10 @@ public class GUI_Formulario_ClienteBanco extends JPanel implements ObservadorGUI
 		
 		// Boton del formulario
 		actionButton.addActionListener(e -> {
-			//TODO
+			 //TCuenta(String tipoDoc, String nombre, String apellidos, String direccion, String telefono, int numTarjetas)
+			TCuenta c = new TCuenta(formulario.getText(0), formulario.getText(1), formulario.getText(2)
+					, formulario.getText(3), formulario.getText(4), formulario.getText(5));
+			Controller.getInstance().handleRequest(new Context(Evento.CREAR_CUENTA_BANCARIA, c));
 		});
 		
 		// Etiqueta de error del formulario
@@ -150,30 +68,44 @@ public class GUI_Formulario_ClienteBanco extends JPanel implements ObservadorGUI
 		errorLabel.setPreferredSize(new Dimension(300, 40));
 		
 		// Se crea el formulario
-		formulario = new GeneralForm(contentPanel, 5, titleLabel, actionButton, errorLabel);
-		
+		formulario = new GeneralForm(contentPanel, 6, titleLabel, actionButton, errorLabel);
+		List<String> l = new ArrayList<String>();
+		l.add("DNI");
+		l.add("NIE");
 		// Se ajusta el formulario
 		formulario.setInfoText(0, "Nombre");				// el campo de texto del nombre
-		formulario.setInfoText(1, "Apellidos");				// el campo de texto de los apellidos
-		formulario.setInfoText(2, "DNI");					// el campo de texto del DNI
-		formulario.setInfoText(3, "Direccion");				// el campo de texto del usuario
-		formulario.setInfoText(4, "Telefono");				// el campo de texto de la contrasenya
+		formulario.setInfoText(1, "Apellidos");	// el campo de texto de los apellidos
+		formulario.setComboBox(2);
+		formulario.setComboBoxInfo(2, l); // el campo de texto de los apellidos
+		formulario.setInfoText(3, "DNI / NIE");					// el campo de texto del DNI
+		formulario.setInfoText(4, "Direccion");				// el campo de texto del usuario
+		formulario.setInfoText(5, "Telefono");				// el campo de texto de la contrasenya
 		
 		this.setVisible(true);
     	
     }
 
-    public static void main(String[] args) {
-        // Crear y mostrar la interfaz
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new GUI_Formulario_ClienteBanco().setVisible(true);
-            }
-        });
-    }
-
 	public void actualizar(Context c) {
-		// TODO Auto-generated method stub
+		switch(c.getEvento()) {
+		case CREAR_CUENTA_BANCARIA_ERROR_DATOS_NULOS:
+			formulario.mostrarMensaje("Inserta datos" , true);
+			break;
+		case CREAR_CUENTA_BANCARIA_ERROR_DATOS_INCOMPLETOS:
+			formulario.mostrarMensaje("Faltan datos por insertar", true);
+			break;
+		case ERROR_CADENA_NO_ALFABETICA:
+			formulario.mostrarMensaje("Nombre y apellidos solo letras", true);
+			break;
+		case ERROR_TIPO_DOCUMENTO_INVALIDO:
+			formulario.mostrarMensaje("Formato DNI/NIE invalido", true);
+			break;
+		case CREAR_CUENTA_BANCARIA_ERROR_DB:
+			formulario.mostrarMensaje("ERROR intente mas tarde", true);
+			break;
+		case CREAR_CUENTA_BANCARIA_OK:
+			formulario.mostrarMensaje("insertado correctamente", false);
+			break;
 		
+		}
 	}
 }

@@ -40,20 +40,20 @@ public class SACuentasImpTest {
         // Simulamos la cuenta bancaria a insertar
         cuenta.setNombre("Juan");
         cuenta.setApellidos("Perez");
-        cuenta.setTipoDoc("12345678A");
+        cuenta.setDNI("12345678A");
         cuenta.setDireccion("Calle Falsa 123");
         cuenta.setTelefono("600123456");
         
         Document cuentaDoc = new Document()
         		.append("nombreCompleto", cuenta.getNombre() + " " + cuenta.getApellidos())
-				.append("dni", cuenta.getTipoDoc())
+				.append("dni", cuenta.getDNI())
 				.append("direccion", cuenta.getDireccion())
 				.append("telefono", cuenta.getTelefono());
         ArrayList<Document> cuentaList = new ArrayList<>();
         cuentaList.add(cuentaDoc);
 
         // Devuelve la lista con el documento por lo que se ha insertado correctamente
-        when(db.readDocument(new Document().append("dni", cuenta.getTipoDoc()), Collections.CUENTABANC))
+        when(db.readDocument(new Document().append("dni", cuenta.getDNI()), Collections.CUENTABANC))
                 .thenReturn(cuentaList); 
 
         ResultContext result = saCuentasImp.crearCuentaBancaria(cuenta);
@@ -71,7 +71,7 @@ public class SACuentasImpTest {
     public void testCrearCuentaBancaria_DatosNulos() {
         cuenta.setNombre(null);
         cuenta.setApellidos(null);
-        cuenta.setTipoDoc(null);
+        cuenta.setDNI(null);
         cuenta.setDireccion(null);
         cuenta.setTelefono(null);
 
@@ -84,7 +84,7 @@ public class SACuentasImpTest {
     public void testCrearCuentaBancaria_DatosIncompletos() {
         cuenta.setNombre("");
         cuenta.setApellidos("");
-        cuenta.setTipoDoc("");
+        cuenta.setDNI("");
         cuenta.setDireccion("");
         cuenta.setTelefono("");
 
@@ -97,7 +97,7 @@ public class SACuentasImpTest {
     public void testCrearCuentaBancaria_CadenaNoAlfabetica() {
         cuenta.setNombre("Juan1");
         cuenta.setApellidos("Pérez");
-        cuenta.setTipoDoc("12345678A");
+        cuenta.setDNI("12345678A");
         cuenta.setDireccion("Calle Falsa 123");
         cuenta.setTelefono("600123456");
 
@@ -115,7 +115,7 @@ public class SACuentasImpTest {
     public void testCrearCuentaBancaria_TipoDocumentoInvalido() {
         cuenta.setNombre("Juan");
         cuenta.setApellidos("Perez");
-        cuenta.setTipoDoc("12345"); // DNI no válido
+        cuenta.setDNI("12345"); // DNI no válido
         cuenta.setDireccion("Calle Falsa 123");
         cuenta.setTelefono("600123456");
 
@@ -128,7 +128,7 @@ public class SACuentasImpTest {
         // Simulamos un fallo en la base de datos (la cuenta no se inserta correctamente)
         cuenta.setNombre("Juan");
         cuenta.setApellidos("Pérez");
-        cuenta.setTipoDoc("12345678A");
+        cuenta.setDNI("12345678A");
         cuenta.setDireccion("Calle Falsa 123");
         cuenta.setTelefono("600123456");
 

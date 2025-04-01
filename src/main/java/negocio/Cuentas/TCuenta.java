@@ -6,15 +6,15 @@ public class TCuenta {
     private String apellidos;
     private String direccion;
     private String telefono;
-    private int numTarjetas;
+    private String dni;
 
-    public TCuenta(String tipoDoc, String nombre, String apellidos, String direccion, String telefono, int numTarjetas) {
+    public TCuenta(String tipoDoc, String nombre, String apellidos, String DNI, String direccion, String telefono) {
         this.tipoDoc = tipoDoc;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.direccion = direccion;
         this.telefono = telefono;
-        this.numTarjetas = numTarjetas;
+        this.dni = DNI;
     }
 
     public TCuenta() {}
@@ -28,12 +28,15 @@ public class TCuenta {
     public String getApellidos() { return apellidos; }
     public void setApellidos(String apellidos) { this.apellidos = apellidos; }
     
-    public int getNumTarjetas() { return numTarjetas; }
-    public void setNumTarjetas(int numTarjetas) { this.numTarjetas = numTarjetas; }
+    public String getNumTarjetas() { return dni; }
+    public void setNumTarjetas(String dni) { this.dni = dni; }
 
     public String getDireccion() { return direccion; }
     public void setDireccion(String direccion) { this.direccion = direccion; }
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
+    
+    public String getDNI() { return dni; }
+    public void setDNI(String dni) { this.dni = dni; }
 }

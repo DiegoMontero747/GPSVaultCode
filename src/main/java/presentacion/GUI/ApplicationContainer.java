@@ -44,6 +44,7 @@ public class ApplicationContainer extends JFrame implements ObservadorGUI{
         
     }
     
+    //esto es para el GUI_Principal que es un JLayeredPane 
     public void addView(String name, JLayeredPane view) {
         add(view, name); // Agrega el panel al CardLayout
      // Registrarse como observador

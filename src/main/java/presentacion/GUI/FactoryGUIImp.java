@@ -54,6 +54,8 @@ public class FactoryGUIImp extends FactoryGUI {
              return GUI_InicioSesion.class;
 
         case GUI_CREAR_TARJETA_DEBITO:
+        	instancias.putIfAbsent(GUI_CrearTarjetaDebito.class, new GUI_CrearTarjetaDebito());
+        	GUI_Principal.getInstance().addView("CREAR_TARJETA_DEBITO", (JPanel) instancias.get(GUI_CrearTarjetaDebito.class));
              return GUI_CrearTarjetaDebito.class;
         case GUI_CREAR_CUENTA_ADMINISTRACION:
         	instancias.putIfAbsent(GUI_CrearCuentaAdministracion.class, new GUI_CrearCuentaAdministracion());

@@ -22,7 +22,7 @@
   "PASIVO": {
     "buttons": [
       {
-        "text": "Crear Tarjeda de Debito",
+        "text": "Crear Tarjeta de Debito",
         "event": "GUI_CREAR_TARJETA_DEBITO"
       }
     ]

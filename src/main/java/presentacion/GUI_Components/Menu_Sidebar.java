@@ -32,6 +32,10 @@ public class Menu_Sidebar extends JPanel {
     private static final int BUTTON_HEIGHT = 40; // TAMAÑO MAXIMO
     private static final int BUTTON_WIDTH = 500; // TAMAÑO MAXIMO 
     
+    //Animaciones de la sidebar configurar aqui el tiempo y los pasos de la animacion
+    private static final int TIME_ANIMATION = 200; // Tiempo total de la animación en milisegundos
+    private static final int STEPS_ANIMATION = 15; // Número de pasos en la animación
+    
     // Colores
     private static final Color BACKGROUND_COLOR = new Color(20, 20, 20, 180); 
     private static final Color BUTTON_COLOR = new Color(255, 94, 0, 180);
@@ -101,8 +105,8 @@ public class Menu_Sidebar extends JPanel {
             String jsonContent = new String(Files.readAllBytes(Paths.get(configPath)));
             JSONObject config = new JSONObject(jsonContent);
             
+            //El segundo evento es el que se ejecuta por defecto si no se encuentra el evento
             createSectionPanel(config, "ADMIN", Evento.GUI_CREAR_CUENTA_ADMINISTRACION);
-            // Agregar otras secciones según sea necesario
             createSectionPanel(config, "PASIVO", Evento.GUI_PRINCIPAL);
             createSectionPanel(config, "ACTIVO", Evento.GUI_PRINCIPAL);
             createSectionPanel(config, "SERVICIOS_CENTRALES", Evento.GUI_PRINCIPAL);
@@ -275,7 +279,7 @@ public class Menu_Sidebar extends JPanel {
         setLocation(-getWidth(),getBounds().y);
         setVisible(true);
         
-        Timer animationTimer = new Timer(200/15, null);
+        Timer animationTimer = new Timer(TIME_ANIMATION/STEPS_ANIMATION, null);
         animationTimer.addActionListener(new ActionListener() {
             int step = 0;
             
@@ -293,12 +297,12 @@ public class Menu_Sidebar extends JPanel {
         });
         animationTimer.start();
     }
-
+    
     public void hideSidebar() {
         if (!isVisible()) return;
         
         
-        Timer animationTimer = new Timer(200/15, null);
+        Timer animationTimer = new Timer(TIME_ANIMATION/STEPS_ANIMATION, null);
         animationTimer.addActionListener(new ActionListener() {
             int step = 0;
             

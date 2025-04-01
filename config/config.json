@@ -4,42 +4,38 @@
       {
         "text": "Crear cuenta",
         "event": "GUI_CREAR_CUENTA_ADMINISTRACION"
-      },
-	  {
-	    "text": "Crear cuenta bancaria",
-	    "event": "GUI_CREAR_CUENTA_BANCARIA"
-	  }
+      }
     ]
   },
   "SERVICIOS_CENTRALES": {
     "buttons": [
       {
-        "text": "Servicio 1",
-        "event": "GUI_SERVICIO_1"
+        "text": "Placeholder 1",
+        "event": "GUI_PRINCIPAL"
       },
       {
-        "text": "Servicio 2",
-        "event": "GUI_SERVICIO_2"
+        "text": "Placeholder 2",
+        "event": "GUI_PRINCIPAL"
       }
     ]
   },
   "PASIVO": {
     "buttons": [
       {
-        "text": "Opciones pasivo",
-        "event": "GUI_PASIVO_OPCIONES"
+        "text": "Crear Tarjeda de Debito",
+        "event": "GUI_CREAR_TARJETA_DEBITO"
       }
     ]
   },
-  "RIESGO": {
+  "ACTIVO": {
     "buttons": [
       {
-        "text": "Análisis de riesgo",
-        "event": "GUI_RIESGO_ANALISIS"
+        "text": "Placeholder 1",
+        "event": "GUI_PRINCIPAL"
       },
       {
-        "text": "Reportes",
-        "event": "GUI_RIESGO_REPORTES"
+        "text": "Placeholder 2",
+        "event": "GUI_PRINCIPAL"
       }
     ]
   }

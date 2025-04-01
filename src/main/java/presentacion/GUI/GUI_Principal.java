@@ -121,7 +121,7 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
 		case GUI_PRINCIPAL:
 			System.out.println(c.getDato());
 			menu.init((String) c.getDato());
-			menu.setVisible(true);
+			menu.setVisible(false);
             updateComponentBounds(getWidth(), getHeight());
 			break;
 		case GUI_CREAR_CUENTA_ADMINISTRACION:

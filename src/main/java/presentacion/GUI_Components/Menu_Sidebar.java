@@ -103,6 +103,9 @@ public class Menu_Sidebar extends JPanel {
             
             createSectionPanel(config, "ADMIN", Evento.GUI_CREAR_CUENTA_ADMINISTRACION);
             // Agregar otras secciones según sea necesario
+            createSectionPanel(config, "PASIVO", Evento.GUI_PRINCIPAL);
+            createSectionPanel(config, "ACTIVO", Evento.GUI_PRINCIPAL);
+            createSectionPanel(config, "SERVICIOS_CENTRALES", Evento.GUI_PRINCIPAL);
             
         } catch (IOException e) {
             handleConfigError(e);

@@ -60,8 +60,8 @@ public class GUI_CrearTarjetaDebito extends JPanel implements ObservadorGUI {
 		formulario.setInfoText(0, "Nombre");
 		formulario.setInfoText(1, "Apellidos");
 		formulario.setInfoText(2, "DNI");
-		formulario.setInfoText(3, "IBAN");
-		formulario.setInfoText(4, "numeroCuenta");
+		formulario.setInfoText(3, "Numero de tarjeta");
+		formulario.setInfoText(4, "IBAN");
 		formulario.setInfoText(5, "Fecha de nacimiento");
 		formulario.setInfoText(6, "Direccion");
 		formulario.setInfoText(7, "Telefono");
@@ -71,13 +71,13 @@ public class GUI_CrearTarjetaDebito extends JPanel implements ObservadorGUI {
 			String nombre = formulario.getText(0);
 			String apellidos = formulario.getText(1);
 			String DNI = formulario.getText(2);
-			String IBAN = formulario.getText(3);
+			String numeroTarjeta = formulario.getText(3);
 			String numeroCuenta = formulario.getText(4);
 			String fecha = formulario.getText(5);
 			String dir = formulario.getText(6);
 			String tlfn = formulario.getText(7);
 			// Llamamos al SA para crear la tarjeta
-			TTarjeta tarjeta = new TTarjeta(nombre, apellidos, DNI, IBAN, dir, tlfn, fecha);
+			TTarjeta tarjeta = new TTarjeta(nombre, apellidos, DNI, numeroTarjeta, dir, tlfn, fecha);
 			tarjeta.setNumeroCuenta(numeroCuenta);
 			Controller.getInstance().handleRequest(new Context(Evento.CREAR_TARJETA_DEBITO, tarjeta));
 			

@@ -9,14 +9,7 @@
   },
   "SERVICIOS_CENTRALES": {
     "buttons": [
-      {
-        "text": "Placeholder 1",
-        "event": "GUI_PRINCIPAL"
-      },
-      {
-        "text": "Placeholder 2",
-        "event": "GUI_PRINCIPAL"
-      }
+     
     ]
   },
   "PASIVO": {
@@ -33,14 +26,7 @@
   },
   "ACTIVO": {
     "buttons": [
-      {
-        "text": "Placeholder 1",
-        "event": "GUI_PRINCIPAL"
-      },
-      {
-        "text": "Placeholder 2",
-        "event": "GUI_PRINCIPAL"
-      }
+      
     ]
   }
 }

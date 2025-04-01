@@ -24,6 +24,10 @@
       {
         "text": "Crear Tarjeta de Debito",
         "event": "GUI_CREAR_TARJETA_DEBITO"
+      },
+	  {
+		"text": "Crear Cuenta Cliente",
+		"event": "GUI_CREAR_CUENTA_BANCARIA"
       }
     ]
   },

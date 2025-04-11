@@ -103,7 +103,7 @@ public class GUI_Formulario_ClienteBanco extends JPanel implements ObservadorGUI
 			formulario.mostrarMensaje("ERROR intente mas tarde", true);
 			break;
 		case CREAR_CUENTA_BANCARIA_OK:
-			formulario.mostrarMensaje("insertado correctamente", false);
+			formulario.mostrarMensaje("Cuenta creada con IBAN:", false);
 			break;
 		
 		}

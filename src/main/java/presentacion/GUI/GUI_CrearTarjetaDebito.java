@@ -20,7 +20,7 @@ public class GUI_CrearTarjetaDebito extends JPanel implements ObservadorGUI {
     private JLabel titleLabel = new JLabel("Ingresar datos de la tarjeta", SwingConstants.CENTER);
     private RoundedButton actionButton = new RoundedButton("Ingresar");
     private JLabel errorLabel = new JLabel("");
-    private String numeroTarjeta; // Variable de instancia para almacenar el número de tarjeta
+    private String numeroTarjeta;
 
     public GUI_CrearTarjetaDebito() {
         initialize();

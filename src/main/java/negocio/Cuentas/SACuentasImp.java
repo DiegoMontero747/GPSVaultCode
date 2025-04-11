@@ -59,14 +59,16 @@ public class SACuentasImp implements SACuentas {
         if (!validarDNI(tipoDoc) && !validarNIE(tipoDoc)) {
             return new ResultContext(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, null);
         }
-        
+
+        String numeroCuenta = generarIBANUnico();
 
         Document nuevaCuenta = new Document()
             .append("nombreCompleto", nombre + " " + apellidos)
             .append("dni", tipoDoc)
             .append("direccion", direccion)
             .append("telefono", telefono)
-            .append("estado", "Activa");
+            .append("estado", "Activa")
+            .append("numeroCuenta", numeroCuenta);
         
         db.insertDocument(Collections.CUENTABANC, nuevaCuenta);
 
@@ -93,5 +95,22 @@ public class SACuentasImp implements SACuentas {
     private boolean validarSoloAlfabeticos(String cadena) {
         String regex = "^[A-Za-z]+$";
         return cadena.matches(regex);
+    }
+    
+    // -------- GENERADOR DE IBAN --------
+    private String generarIBANUnico() {
+        String numeroIBAN;
+        do {
+            numeroIBAN = generarIBANAleatorio();
+        } while (!db.readDocument(new Document("numeroCuenta", numeroIBAN), Collections.CUENTABANC).isEmpty());
+        return numeroIBAN;
+    }
+
+    private String generarIBANAleatorio() {
+        StringBuilder sb = new StringBuilder("ES");
+        for (int i = 0; i < 22; i++) {
+            sb.append((int) (Math.random() * 10));
+        }
+        return sb.toString();
     }
 }

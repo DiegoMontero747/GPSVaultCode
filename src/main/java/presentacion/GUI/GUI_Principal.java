@@ -13,15 +13,12 @@ import presentacion.GUI_Components.Menu_Sidebar;
 public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
     private static final long serialVersionUID = 1L;
     private static GUI_Principal instance;
-    
-    // Componentes principales
-    private JPanel contentPanel;      // Panel base (DEFAULT_LAYER)
-    private JPanel cardPanel;         // Panel para CardLayout
-    private CardLayout cardLayout;    // Layout para cambiar vistas
-    private Menu_Sidebar menu;        // Sidebar (PALETTE_LAYER)
-    private Menu_Header header;       // Barra superior
-    
-    // Dimensiones
+
+    private JPanel cardPanel;
+    private CardLayout cardLayout;
+    private Menu_Sidebar menu;
+    private Menu_Header header;
+
     private static final int SIDEBAR_WIDTH = 200;
     private static final int HEADER_HEIGHT = 50;
 
@@ -39,38 +36,34 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
     }
 
     private void initializeComponents() {
-        // Configuración básica del layered pane
         setOpaque(true);
-        setBackground(new Color(50, 50, 50));
-        setLayout(null); // Usamos layout absoluto para posicionamiento manual
+        setBackground(Color.BLACK);
+        setLayout(null);
 
-        // Panel de contenido principal (fondo)
-        contentPanel = new JPanel(new BorderLayout());
-        contentPanel.setOpaque(false);
+        // Panel de fondo con imagen y overlay
+        BackgroundPanel backgroundPanel = new BackgroundPanel("media/background2.png");
+        backgroundPanel.setLayout(new BorderLayout());
 
-        // Sidebar (menu lateral)
+        // Sidebar
         menu = new Menu_Sidebar();
         menu.setOpaque(false);
 
-        
         // Header
         header = new Menu_Header(menu);
-        contentPanel.add(header, BorderLayout.NORTH);
+        backgroundPanel.add(header, BorderLayout.NORTH);
 
-        // Panel para CardLayout (vistas intercambiables)
+        // Panel de vistas
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
         cardPanel.setOpaque(false);
-        contentPanel.add(cardPanel, BorderLayout.CENTER);
+        backgroundPanel.add(cardPanel, BorderLayout.CENTER);
 
-       
-        // Añadir componentes a las capas correspondientes
-        add(contentPanel, JLayeredPane.DEFAULT_LAYER);
+        // Añadir al layered pane
+        add(backgroundPanel, JLayeredPane.DEFAULT_LAYER);
         add(menu, JLayeredPane.PALETTE_LAYER);
     }
 
     private void setupLayout() {
-        // Posicionar componentes inicialmente
         updateComponentBounds(getWidth(), getHeight());
     }
 
@@ -78,21 +71,19 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-               updateComponentBounds(getWidth(), getHeight());
-               
+                updateComponentBounds(getWidth(), getHeight());
             }
         });
     }
 
     private void updateComponentBounds(int width, int height) {
-        // Actualizar bounds del contentPanel (ocupa todo el espacio)
-        contentPanel.setBounds(0, 0, width, height);
-        
-        // Actualizar bounds del sidebar
-        
-//----------------------esta es la linea de código que hace que el sidebar se redimensione según el tamaño de la ventana-------------------------------
-        menu.setBounds(0, HEADER_HEIGHT, width/4 < SIDEBAR_WIDTH ? SIDEBAR_WIDTH : width/4, height - HEADER_HEIGHT);
-        menu.setupResponsiveDesign();      // Forzar redibujado
+        for (Component comp : getComponentsInLayer(JLayeredPane.DEFAULT_LAYER)) {
+            comp.setBounds(0, 0, width, height);
+        }
+
+        menu.setBounds(0, HEADER_HEIGHT, width / 4 < SIDEBAR_WIDTH ? SIDEBAR_WIDTH : width / 4, height - HEADER_HEIGHT);
+        menu.setupResponsiveDesign();
+
         revalidate();
         repaint();
     }
@@ -100,7 +91,7 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
     public void addView(String name, JPanel view) {
         cardPanel.add(view, name);
         Controller.getInstance().registerObserver(this);
-        
+
         if (view instanceof ObservadorGUI) {
             Controller.getInstance().registerObserver((ObservadorGUI) view);
         }
@@ -112,34 +103,61 @@ public class GUI_Principal extends JLayeredPane implements ObservadorGUI {
         repaint();
     }
 
+    @Override
+    public void actualizar(Context c) {
+        switch (c.getEvento()) {
+            case GUI_PRINCIPAL:
+                System.out.println(c.getDato());
+                menu.init((String) c.getDato());
+                menu.setVisible(false);
+                updateComponentBounds(getWidth(), getHeight());
+                break;
+            case GUI_CREAR_CUENTA_ADMINISTRACION:
+                showView("CREAR_CUENTA_ADMINISTRACION");
+                break;
+            case GUI_CREAR_CUENTA_BANCARIA:
+                showView("CREAR_CUENTA_CLIENTE_BANCO");
+                break;
+            case GUI_CREAR_TARJETA_DEBITO:
+                showView("CREAR_TARJETA_DEBITO");
+                break;
+        }
+    }
 
+    // Clase interna para pintar la imagen con opacidad + overlay oscuro
+    private static class BackgroundPanel extends JPanel {
+        private static final long serialVersionUID = 1L;
+        private final Image image;
+        private final float imageOpacity = 0.8f;   // Fade a la imagen (0 = invisible, 1 = opaca)
+        private final float overlayOpacity = 0.2f; // Oscurecer fondo (0 = transparente, 1 = negro total)
 
-	@Override
-	public void actualizar(Context c) {
-		// TODO Auto-generated method stub
-		switch (c.getEvento()) {
-		case GUI_PRINCIPAL:
-			System.out.println(c.getDato());
-			menu.init((String) c.getDato());
-			menu.setVisible(false);
-            updateComponentBounds(getWidth(), getHeight());
-			break;
-		case GUI_CREAR_CUENTA_ADMINISTRACION:
-			showView("CREAR_CUENTA_ADMINISTRACION");
-			break;
-		case GUI_CREAR_CUENTA_BANCARIA:
-			showView("CREAR_CUENTA_CLIENTE_BANCO");
-			break;
-		case GUI_CREAR_TARJETA_DEBITO:
-			showView("CREAR_TARJETA_DEBITO");
-			break;
-		}
-		
-	}
+        public BackgroundPanel(String path) {
+            Image img = null;
+            try {
+                img = new ImageIcon(path).getImage();
+            } catch (Exception e) {
+                System.err.println("No se pudo cargar la imagen: " + path);
+            }
+            this.image = img;
+            setOpaque(false);
+        }
 
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g.create();
 
+            if (image != null) {
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, imageOpacity));
+                g2d.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            }
 
-   
+            // Dibujar overlay oscuro
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, overlayOpacity));
+            g2d.setColor(Color.BLACK);
+            g2d.fillRect(0, 0, getWidth(), getHeight());
 
-   
+            g2d.dispose();
+        }
+    }
 }

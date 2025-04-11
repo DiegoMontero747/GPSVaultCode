@@ -123,16 +123,43 @@ public class MongoDBManager {
 	}
 
 	// CRUD operations
+	/*
+	 *Comprueba que el documento sigue el esquema de la base de datos
+	 */
 	public void insertDocument(String collectionName, Document d) {
-		database.getCollection(collectionName).insertOne(d);
+		try {
+			
+			MongoValidator.validateDocument(collectionName, d);
+			database.getCollection(collectionName).insertOne(d);
+		} catch (IllegalArgumentException e) {
+			System.out.println("Error: " + e.getMessage());
+			return;
+		}
+		
 	}
 
 	public void insertManyDocument(String CollectionName, List<Document> dList) {
-		database.getCollection(CollectionName).insertMany(dList);
+		try {
+			for (Document d : dList) {
+				MongoValidator.validateDocument(CollectionName, d);
+				database.getCollection(CollectionName).insertMany(dList);
+			}
+		} catch (IllegalArgumentException e) {
+			System.out.println("Error: " + e.getMessage());
+			return;
+		}
+		
 	}
 
 	public void deleteDocument(String collectionName, Document d) {
-		database.getCollection(collectionName).deleteOne(d);
+		try {
+			MongoValidator.validateDocument(collectionName, d);
+			database.getCollection(collectionName).deleteOne(d);
+		} catch (IllegalArgumentException e) {
+			System.out.println("Error: " + e.getMessage());
+			return;
+		}
+		
 	}
 
 	/*

@@ -33,14 +33,14 @@ public class SAManejoSesionesImp implements SAManejoSesiones {
         	return new ResultContext(Evento.INICIO_SESION_ERROR_CONTRASENYA_INCOMPLETA, null); // Contrasenya incompletos
         }
        
-        ArrayList<Document> docList = db.readDocument(new Document().append("usuario", username), Collections.PERFIL);
+        ArrayList<Document> docList = db.readDocument(new Document().append("Nombre_usuario", username), Collections.PERFIL);
         if (docList.isEmpty()) {
             return new ResultContext(Evento.INICIO_SESION_ERROR_USUARIO_INEXISTENTE, null);
         }else {
         
         Document doc = docList.get(0); // Tomamos el primer documento encontrado
 
-        if (!password.equals(doc.getString("password"))) {
+        if (!password.equals(doc.getString("Contrasenya"))) {
             return new ResultContext(Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA, null);
         }
         

@@ -62,13 +62,14 @@ public class SACuentasImp implements SACuentas {
 
         String numeroCuenta = generarIBANUnico();
 
+        //TODO adaptar los campos del SA al esquema de la BD de MongoValidator
         Document nuevaCuenta = new Document()
             .append("nombreCompleto", nombre + " " + apellidos)
             .append("dni", tipoDoc)
             .append("direccion", direccion)
             .append("telefono", telefono)
             .append("estado", "Activa")
-            .append("numeroCuenta", numeroCuenta);
+            .append("IBAN", numeroCuenta);
         
         db.insertDocument(Collections.CUENTABANC, nuevaCuenta);
 

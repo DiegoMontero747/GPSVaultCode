@@ -2,6 +2,8 @@ package MongoDB;
 
 import static org.junit.Assert.*;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
@@ -19,6 +21,19 @@ public class MongoDBTest {
         mongo = MongoDBManager.getInstance();
     }
 
+    @After
+    public void tearDown() {
+		// Limpiar la colección de prueba después de cada prueba
+		Document d1 = new Document("nombre", "Juan").append("peso", 28)
+				.append("altura", 145).append("edad", 48);
+		Document d2 = new Document("nombre", "Marcos").append("peso", 34)
+				.append("altura", 145).append("edad", 48);
+		Document d3 = new Document("nombre", "Juan").append("peso", 28)
+				.append("altura", 145).append("edad", 37);
+		mongo.deleteDocument(Collections.TEST_BD, d1);
+		mongo.deleteDocument(Collections.TEST_BD, d2);
+		mongo.deleteDocument(Collections.TEST_BD, d3);
+	}
     @Test
     public void testConnection() {
 //        assertNotNull("MongoDBManager instance should not be null", mongo);

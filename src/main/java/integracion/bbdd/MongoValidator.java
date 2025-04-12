@@ -1,5 +1,7 @@
 package integracion.bbdd;
 import org.bson.Document;
+import org.bson.types.ObjectId;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -15,13 +17,20 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 public class MongoValidator {
-    
+    /*
+     * Esta clase valida los documentos que se insertan en las colecciones de MongoDB según un esquema predefinido.
+     * Cada colección tiene un esquema que define los campos y sus tipos.
+     * Esta clase se puede utilizar como guía de el esquema de la base de datos para los SA.
+     */
+	
+	
     // Esquema definido para cada colección (campos y tipos)
     private static final Map<String, Map<String, Class<?>>> COLLECTION_SCHEMAS = new HashMap<>();
     
     static {
         // Esquema para CLIENTE
         Map<String, Class<?>> clienteSchema = new HashMap<>();
+        clienteSchema.put("_id", ObjectId.class); // ID único generado por MongoDB
         clienteSchema.put("DNI", String.class);
         clienteSchema.put("Nombre", String.class);
         clienteSchema.put("Apellidos", String.class);
@@ -32,6 +41,7 @@ public class MongoValidator {
         
         // Esquema para CUENTABANC
         Map<String, Class<?>> cuentaBancSchema = new HashMap<>();
+        cuentaBancSchema.put("_id", ObjectId.class); // ID único generado por MongoDB
         cuentaBancSchema.put("IBAN", String.class);
         cuentaBancSchema.put("Titular", String.class);
         cuentaBancSchema.put("Fondos",Float.class);
@@ -39,6 +49,7 @@ public class MongoValidator {
         
         // Esquema para TARJETA
         Map<String, Class<?>> tarjetaSchema = new HashMap<>();
+        tarjetaSchema.put("_id", ObjectId.class); // ID único generado por MongoDB
         tarjetaSchema.put("Nombre_tarjeta", String.class);
         tarjetaSchema.put("CVV", Integer.class);
         tarjetaSchema.put("Caducidad", String.class);
@@ -47,6 +58,7 @@ public class MongoValidator {
         
         // Esquema para PERFIL
         Map<String, Class<?>> perfilSchema = new HashMap<>();
+        perfilSchema.put("_id", ObjectId.class); // ID único generado por MongoDB
         perfilSchema.put("DNI", String.class);
         perfilSchema.put("Nombre", String.class);
         perfilSchema.put("Apellidos", String.class);
@@ -54,10 +66,12 @@ public class MongoValidator {
         perfilSchema.put("Contrasenya", String.class);
         perfilSchema.put("Nombre_usuario", String.class); // Referencia a cuenta bancaria
         perfilSchema.put("Telefono", Integer.class);
-        COLLECTION_SCHEMAS.put("PERFIL", tarjetaSchema);
+        COLLECTION_SCHEMAS.put("PERFIL", perfilSchema);
         
         //ESQUEMA PARA TEST_BD
+        // Este esquema es necesario para las pruebas de la BD de MongoDB NO CORRESPONDE A NINGUN SA
         Map<String, Class<?>> testSchema = new HashMap<>();
+        testSchema.put("_id", ObjectId.class); // ID único generado por MongoDB
         testSchema.put("nombre", String.class);
         testSchema.put("peso", Integer.class);
         testSchema.put("altura", Integer.class);

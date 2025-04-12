@@ -44,7 +44,7 @@ public class SAManejoSesionesImp implements SAManejoSesiones {
             return new ResultContext(Evento.INICIO_SESION_ERROR_CONTRASENYA_INCORRECTA, null);
         }
         
-        return new ResultContext(Evento.INICIO_SESION_OK, doc.getString("rol"));
+        return new ResultContext(Evento.INICIO_SESION_OK, doc.getString("Rol"));
         }
     }
     

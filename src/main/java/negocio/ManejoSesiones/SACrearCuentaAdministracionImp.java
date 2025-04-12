@@ -58,7 +58,8 @@ public class SACrearCuentaAdministracionImp implements SACrearCuentaAdministraci
 				nuevoperfil.append("Contrasenya", data.getConstrasenya());
 				nuevoperfil.append("Nombre_usuario", data.getUsuario());
 				nuevoperfil.append("DNI", data.getDni());
-				nuevoperfil.append("Telefono", data.getTelf());
+				//el telefono llega en string pero la bd lo acepta como int
+				nuevoperfil.append("Telefono", Integer.valueOf(data.getTelf()));
 				db.insertDocument(Collections.PERFIL, nuevoperfil);
 				// devuelve data para devolver los datos introducidos por si hacen falta
 				return new ResultContext(Evento.CREAR_CUENTA_ADM_EXITO, data);

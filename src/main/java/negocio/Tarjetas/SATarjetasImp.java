@@ -91,12 +91,14 @@ public class SATarjetasImp implements SATarjetas {
         // Generar número de tarjeta único
         String numeroTarjeta = generarNumeroTarjetaUnico();
         
+        //TODO cambiar los campos de la tarjeta para que se adapten tanto al validator como al esquema de la BD
+        //PD Comentado por Hugo
         Document nuevaTarjeta = new Document()
-                .append("numeroTarjeta", numeroTarjeta)
+                .append("Num_tarjeta", numeroTarjeta)
                 .append("nombreCompleto", nombre + " " + apellidos)
                 .append("tipoDocumento", tipoDocumento)
                 .append("numeroDocumento", numeroDocumento)
-                .append("numeroCuenta", iban)
+                .append("IBAN", iban)
                 .append("fechaNacimiento", fechaNacimiento)
                 .append("direccion", direccion)
                 .append("telefono", telefono)

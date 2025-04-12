@@ -106,7 +106,7 @@ public class Menu_Sidebar extends JPanel {
             JSONObject config = new JSONObject(jsonContent);
             
             //El segundo evento es el que se ejecuta por defecto si no se encuentra el evento
-            createSectionPanel(config, "ADMIN", Evento.GUI_CREAR_CUENTA_ADMINISTRACION);
+            createSectionPanel(config, "ADMINISTRACION", Evento.GUI_CREAR_CUENTA_ADMINISTRACION);
             createSectionPanel(config, "PASIVO", Evento.GUI_PRINCIPAL);
             createSectionPanel(config, "ACTIVO", Evento.GUI_PRINCIPAL);
             createSectionPanel(config, "SERVICIOS_CENTRALES", Evento.GUI_PRINCIPAL);

@@ -31,20 +31,20 @@ public class CrearCuentaAdministracionIntegracionTest {
 		saCrearCuentaAdministracion = new SACrearCuentaAdministracionImp();
         db = MongoDBManager.getInstance();
         //tenemos que eliminar los usuarios de la bd que vayamos a crear si existen
-        db.deleteDocument(Collections.PERFIL, new Document("nombre", "Mario")
-        		.append("apellido", "Bros")
-        		.append("dni", "12345678P")         
-                .append("rol", "administracion")
-                .append("usuario", "Champinyon")
-                .append("contrasenya", "mario641241241")
-        		.append("telefono", "123456789"));
+        db.deleteDocument(Collections.PERFIL, new Document("Nombre", "Mario")
+        		.append("Apellidos", "Bros")
+        		.append("DNI", "12345678P")         
+                .append("Rol", "administracion")
+                .append("Nombre_usuario", "Champinyon")
+                .append("Contrasenya", "mario641241241")
+        		.append("Telefono", 123456789));
         
         datos_crearCuenta = new TCrearCuentaAdm();
     }
 	
 	@After
     public void tearDown() {
-		db.deleteDocument(Collections.PERFIL, new Document("dni", "12345678P"));
+		db.deleteDocument(Collections.PERFIL, new Document("DNI", "12345678P"));
     }
 	
 	@Test
@@ -76,12 +76,12 @@ public class CrearCuentaAdministracionIntegracionTest {
 	@Test
 	public void crearCuentaAdm_DNI_Existente() {
 		//creamos el personal primero
-		 db.insertDocument(Collections.PERFIL, new Document("nombre", "Mario")
-	                .append("contrasenya", "mario641241241")
-	                .append("rol", "administracion")
-	                .append("usuario", "Champinyon")
-	                .append("dni", "12345678P")
-	                .append("apellido", "Bros"));
+		 db.insertDocument(Collections.PERFIL, new Document("Nombre", "Mario")
+	                .append("Contrasenya", "mario641241241")
+	                .append("Rol", "administracion")
+	                .append("Nombre_usuario", "Champinyon")
+	                .append("DNI", "12345678P")
+	                .append("Apellidos", "Bros"));
 		
 		
 		

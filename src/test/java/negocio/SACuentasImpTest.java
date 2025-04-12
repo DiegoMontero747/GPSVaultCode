@@ -45,9 +45,10 @@ public class SACuentasImpTest {
         cuenta.setTelefono("600123456");
         
         Document cuentaDoc = new Document()
-        		.append("nombreCompleto", cuenta.getNombre() + " " + cuenta.getApellidos())
-				.append("dni", cuenta.getDNI())
-				.append("direccion", cuenta.getDireccion())
+        		.append("Nombre", cuenta.getNombre())
+        		.append("Apellidos", cuenta.getApellidos())
+				.append("DNI", cuenta.getDNI())
+				.append("Dir", cuenta.getDireccion())
 				.append("telefono", cuenta.getTelefono());
         ArrayList<Document> cuentaList = new ArrayList<>();
         cuentaList.add(cuentaDoc);

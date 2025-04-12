@@ -67,6 +67,7 @@ public enum Evento {
     CREAR_CUENTA_BANCARIA_ERROR_DATOS_INCOMPLETOS,
     CREAR_CUENTA_BANCARIA_ERROR_DATOS_NULOS,
     CREAR_CUENTA_BANCARIA_ERROR_DB, // Error al insertar la cuenta en la base de datos
+    CREAR_CUENTA_BANCARIA_ERROR_TEL_INCORRECTO,
 
     // Cuenta bancaria creada con éxito
     CREAR_CUENTA_BANCARIA_OK;

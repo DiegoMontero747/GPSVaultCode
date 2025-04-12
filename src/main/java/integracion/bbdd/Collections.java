@@ -7,4 +7,5 @@ public class Collections {
 	public static final String CUENTABANC = "CUENTABANC";
 	public static final String TARJETA = "TARJETA";
 	public static final String TEST_BD = "TEST_BD";
+	public static final String CLIENTE = "CLIENTE";
 }

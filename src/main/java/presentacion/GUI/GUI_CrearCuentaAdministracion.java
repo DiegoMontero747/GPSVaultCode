@@ -110,7 +110,7 @@ public class GUI_CrearCuentaAdministracion extends JPanel implements ObservadorG
 				break;
 
 			case CREAR_CUENTA_ADM_ERROR_DNI_ENCONTRADO:
-				formulario.mostrarMensaje("Trabajador ya existente.", true);
+				formulario.mostrarMensaje("DNI ya existe.", true);
 				break;
 
 			case CREAR_CUENTA_ADM_ERROR_FORMATO_DNI:

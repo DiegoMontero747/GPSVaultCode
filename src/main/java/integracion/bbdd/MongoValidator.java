@@ -125,6 +125,20 @@ public class MongoValidator {
             
            
         }
+
+	// Validación adicional para el campo "Nombre" en PERFIL
+        if (collectionName.equals("PERFIL")) {
+            Object nombreValue = document.get("Nombre");
+            if (nombreValue != null) {
+                String nombre = (String) nombreValue;
+                // Expresión regular: solo letras y espacios
+                if (!Pattern.matches("^[a-zA-Z\\s]+$", nombre)) {
+                    throw new IllegalArgumentException(
+                        "Formato de nombre inválido. Solo se permiten letras y espacios."
+                    );
+                }
+            }
+        }
         
         return true;
     }

@@ -58,7 +58,7 @@ public class GUI_Formulario_ClienteBanco extends JPanel implements ObservadorGUI
 		// Boton del formulario
 		actionButton.addActionListener(e -> {
 			 //TCuenta(String tipoDoc, String nombre, String apellidos, String direccion, String telefono, int numTarjetas)
-			TCuenta c = new TCuenta(formulario.getText(0), formulario.getText(1), formulario.getText(2)
+			TCuenta c = new TCuenta(formulario.getText(2), formulario.getText(0), formulario.getText(1)
 					, formulario.getText(3), formulario.getText(4), formulario.getText(5));
 			Controller.getInstance().handleRequest(new Context(Evento.CREAR_CUENTA_BANCARIA, c));
 		});

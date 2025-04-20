@@ -35,6 +35,7 @@ public class CrearCuentasIntegracionTest {
         cuenta.setDNI("12345678A");
         cuenta.setDireccion("Calle Falsa 123");
         cuenta.setTelefono("600123456");
+        cuenta.setTipoDoc("DNI");
     }
 
     @After
@@ -69,10 +70,25 @@ public class CrearCuentasIntegracionTest {
         ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
         assertEquals(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, resultado.getEvento());
     }
+    
+    @Test
+    public void testCrearCuentaBancaria_NIEIncorrecto() {
+        cuenta.setTipoDoc("NIE");
+        cuenta.setDNI("12345"); // NIE no válido
+        ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
+        assertEquals(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, resultado.getEvento());
+    }
 
     @Test
-    public void testCrearCuentaBancaria_CadenaNoAlfabetica() {
+    public void testCrearCuentaBancaria_NombreNoAlfabetica() {
         cuenta.setNombre("Juan1"); // Nombre con número
+        ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
+        assertEquals(Evento.ERROR_CADENA_NO_ALFABETICA, resultado.getEvento());
+    }
+    
+    @Test
+    public void testCrearCuentaBancaria_ApellidoNoAlfabetico() {
+        cuenta.setNombre("Pérez1"); // Nombre con número
         ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
         assertEquals(Evento.ERROR_CADENA_NO_ALFABETICA, resultado.getEvento());
     }

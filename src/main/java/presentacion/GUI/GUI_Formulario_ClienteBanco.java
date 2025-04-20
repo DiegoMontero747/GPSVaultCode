@@ -69,7 +69,7 @@ public class GUI_Formulario_ClienteBanco extends JPanel implements ObservadorGUI
 		errorLabel.setPreferredSize(new Dimension(300, 40));
 		
 		// Se crea el formulario
-		formulario = new GeneralForm(contentPanel, 6, titleLabel, actionButton, errorLabel);
+		formulario = new GeneralForm(contentPanel, 7, titleLabel, actionButton, errorLabel);
 		List<String> l = new ArrayList<String>();
 		l.add("DNI");
 		l.add("NIE");
@@ -106,6 +106,9 @@ public class GUI_Formulario_ClienteBanco extends JPanel implements ObservadorGUI
 			break;
 		case CREAR_CUENTA_BANCARIA_OK:
 			formulario.mostrarMensaje("Cuenta creada con IBAN:", false);
+			break;
+		case ERROR_NUMERO_TELEFONO_INVALIDO:
+			formulario.mostrarMensaje("Formato de telefono invalido", true);
 			break;
 		
 		}

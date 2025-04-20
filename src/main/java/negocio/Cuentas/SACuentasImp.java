@@ -58,6 +58,10 @@ public class SACuentasImp implements SACuentas {
 		if (!validarSoloAlfabeticos(apellidos)) {
 			return new ResultContext(Evento.ERROR_CADENA_NO_ALFABETICA, null);
 		}
+		
+		if (!validarNumTelefono(telefono)) {
+			return new ResultContext(Evento.ERROR_FORMATO_NUMERO_TELEFONO, null);
+		}
 
 		if (!validarDNI(tipoDoc) && !validarNIE(tipoDoc)) {
 			return new ResultContext(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, null);
@@ -67,14 +71,15 @@ public class SACuentasImp implements SACuentas {
 
 		// TODO adaptar los campos del SA al esquema de la BD de MongoValidator
 		Document cliente = new Document().append("DNI/NIE", tipoDoc).append("Nombre", nombre)
-				.append("Apellidos", apellidos).append("Telefono", telefono).append("Dir", direccion)
-				.append("Cod-postal", cod_postal);// Hay que modificar TCuenta para que lleve el codigo postal
+				.append("Apellidos", apellidos).append("Telefono", Integer.valueOf(telefono)).append("Dir", direccion)
+				.append("Cod-postal", Integer.valueOf(cod_postal));// Hay que modificar TCuenta para que lleve el codigo postal
 
-		Document nuevaCuenta = new Document().append("IBAN", numeroCuenta).append("Titual", nombre).append("Fondos", 0);
+		Document nuevaCuenta = new Document().append("IBAN", numeroCuenta).append("Titular", nombre).append("Fondos", Float.valueOf(0))
+				.append("DNI/NIE", tipoDoc);
 
 		// Esto debería comprobar si existe ya el cliente. Si existe, no hace nada, si
 		// no, lo crea
-		Document docLeerCliente = new Document().append("DNI", cliente.getString("dni"));
+		Document docLeerCliente = new Document().append("DNI/NIE", cliente.getString("DNI/NIE"));
 		List<Document> comprobaciones = db.readDocument(docLeerCliente, Collections.CLIENTE);
 
 		if (comprobaciones.isEmpty()) { //Si no existe el cliente, se inserta en la BD
@@ -87,7 +92,7 @@ public class SACuentasImp implements SACuentas {
 			db.insertDocument(Collections.CUENTABANC, nuevaCuenta);
 
 			// verificamos que la cuenta fue insertada correctamente
-			Document docLeerCuenta = new Document().append("dni", nuevaCuenta.getString("dni"));
+			Document docLeerCuenta = new Document().append("DNI/NIE", nuevaCuenta.getString("DNI/NIE"));
 			comprobaciones = db.readDocument(docLeerCuenta, Collections.CUENTABANC);
 			if (comprobaciones.isEmpty()) {
 				return new ResultContext(Evento.CREAR_CUENTA_BANCARIA_ERROR_DB, null); // si no encontramos la cuenta ha
@@ -112,8 +117,13 @@ public class SACuentasImp implements SACuentas {
 	}
 
 	private boolean validarSoloAlfabeticos(String cadena) {
-		String regex = "^[A-Za-z]+$";
+		String regex = "^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]+$";
 		return cadena.matches(regex);
+	}
+	
+	private boolean validarNumTelefono(String telefono) {
+		String regex = "^[0-9]{9}$";
+		return telefono.matches(regex);
 	}
 
 	// -------- GENERADOR DE IBAN --------

@@ -45,6 +45,7 @@ public class MongoValidator {
         cuentaBancSchema.put("IBAN", String.class);
         cuentaBancSchema.put("Titular", String.class);
         cuentaBancSchema.put("Fondos",Float.class);
+        cuentaBancSchema.put("DNI/NIE", String.class); // Referencia a cliente
         COLLECTION_SCHEMAS.put("CUENTABANC", cuentaBancSchema);
         
         // Esquema para TARJETA

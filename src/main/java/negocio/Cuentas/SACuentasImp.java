@@ -64,7 +64,8 @@ public class SACuentasImp implements SACuentas {
 
         //TODO adaptar los campos del SA al esquema de la BD de MongoValidator
         Document nuevaCuenta = new Document()
-            .append("nombreCompleto", nombre + " " + apellidos)
+            .append("nombre", nombre)
+            .append("apellidos", apellidos)
             .append("dni", tipoDoc)
             .append("direccion", direccion)
             .append("telefono", telefono)

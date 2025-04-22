@@ -72,6 +72,13 @@ public class CrearCuentasIntegracionTest {
         ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
         assertEquals(Evento.ERROR_FORMATO_NUMERO_TELEFONO, resultado.getEvento());
     }
+    
+    @Test
+    public void testCrearCuentaBancaria_CodigoPostalIncorrecto() {
+        cuenta.setCodPostal("427112"); // Código postal con demasiados dígitos
+        ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
+        assertEquals(Evento.ERROR_FORMATO_CODIGO_POSTAL, resultado.getEvento());
+    }
 
     @Test
     public void testCrearCuentaBancaria_DNIIncorrecto() {

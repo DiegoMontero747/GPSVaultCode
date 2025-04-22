@@ -99,18 +99,19 @@ public class GUI_Formulario_ClienteBanco extends JPanel implements ObservadorGUI
 			formulario.mostrarMensaje("Nombre y apellidos solo letras", true);
 			break;
 		case ERROR_TIPO_DOCUMENTO_INVALIDO:
-			formulario.mostrarMensaje("Formato DNI/NIE invalido", true);
+			formulario.mostrarMensaje("Formato DNI/NIE inválido", true);
 			break;
 		case CREAR_CUENTA_BANCARIA_ERROR_DB:
-			formulario.mostrarMensaje("ERROR intente mas tarde", true);
+			formulario.mostrarMensaje("ERROR intente más tarde", true);
 			break;
 		case CREAR_CUENTA_BANCARIA_OK:
 			formulario.mostrarMensaje("Cuenta creada con IBAN:", false);
 			break;
-		case ERROR_NUMERO_TELEFONO_INVALIDO:
-			formulario.mostrarMensaje("Formato de telefono invalido", true);
+		case ERROR_FORMATO_NUMERO_TELEFONO:
+			formulario.mostrarMensaje("Formato de teléfono inválido", true);
 			break;
-		
+		case ERROR_FORMATO_CODIGO_POSTAL:
+			formulario.mostrarMensaje("Formato de código postal inválido", true);
 		}
 	}
 }

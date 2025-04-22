@@ -70,5 +70,6 @@ public enum Evento {
     CREAR_CUENTA_BANCARIA_ERROR_TEL_INCORRECTO,
 
     // Cuenta bancaria creada con éxito
-    CREAR_CUENTA_BANCARIA_OK;
+    CREAR_CUENTA_BANCARIA_OK, 
+    ERROR_FORMATO_NUMERO_TELEFONO;
 }

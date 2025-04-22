@@ -58,8 +58,9 @@ public class GUI_Formulario_ClienteBanco extends JPanel implements ObservadorGUI
 		// Boton del formulario
 		actionButton.addActionListener(e -> {
 			 //TCuenta(String tipoDoc, String nombre, String apellidos, String direccion, String telefono, int numTarjetas)
-			TCuenta c = new TCuenta(formulario.getText(0), formulario.getText(1), formulario.getText(2)
-					, formulario.getText(3), formulario.getText(4), formulario.getText(5));
+			TCuenta c = new TCuenta(formulario.getText(2), formulario.getText(0), formulario.getText(1)
+					, formulario.getText(3), formulario.getText(4), formulario.getText(6));
+			c.setCodPostal(formulario.getText(5));
 			Controller.getInstance().handleRequest(new Context(Evento.CREAR_CUENTA_BANCARIA, c));
 		});
 		
@@ -68,7 +69,7 @@ public class GUI_Formulario_ClienteBanco extends JPanel implements ObservadorGUI
 		errorLabel.setPreferredSize(new Dimension(300, 40));
 		
 		// Se crea el formulario
-		formulario = new GeneralForm(contentPanel, 6, titleLabel, actionButton, errorLabel);
+		formulario = new GeneralForm(contentPanel, 7, titleLabel, actionButton, errorLabel);
 		List<String> l = new ArrayList<String>();
 		l.add("DNI");
 		l.add("NIE");
@@ -76,10 +77,11 @@ public class GUI_Formulario_ClienteBanco extends JPanel implements ObservadorGUI
 		formulario.setInfoText(0, "Nombre");				// el campo de texto del nombre
 		formulario.setInfoText(1, "Apellidos");	// el campo de texto de los apellidos
 		formulario.setComboBox(2);
-		formulario.setComboBoxInfo(2, l); // el campo de texto de los apellidos
-		formulario.setInfoText(3, "DNI / NIE");					// el campo de texto del DNI
-		formulario.setInfoText(4, "Direccion");				// el campo de texto del usuario
-		formulario.setInfoText(5, "Telefono");				// el campo de texto de la contrasenya
+		formulario.setComboBoxInfo(2, l); //combobox del tipo de documento
+		formulario.setInfoText(3, "DNI / NIE");					// el campo de texto del DNI/NIE
+		formulario.setInfoText(4, "Direccion");				// el campo de texto de la direccion
+		formulario.setInfoText(5, "Codigo Postal");	//el campo de texto del codigo postal
+		formulario.setInfoText(6, "Telefono");				// el campo de texto del telefono
 		
 		this.setVisible(true);
     	
@@ -104,6 +106,9 @@ public class GUI_Formulario_ClienteBanco extends JPanel implements ObservadorGUI
 			break;
 		case CREAR_CUENTA_BANCARIA_OK:
 			formulario.mostrarMensaje("Cuenta creada con IBAN:", false);
+			break;
+		case ERROR_NUMERO_TELEFONO_INVALIDO:
+			formulario.mostrarMensaje("Formato de telefono invalido", true);
 			break;
 		
 		}

@@ -7,6 +7,7 @@ public class TCuenta {
     private String direccion;
     private String telefono;
     private String dni;
+    private String cod_postal;
 
     public TCuenta(String tipoDoc, String nombre, String apellidos, String DNI, String direccion, String telefono) {
         this.tipoDoc = tipoDoc;
@@ -39,4 +40,7 @@ public class TCuenta {
     
     public String getDNI() { return dni; }
     public void setDNI(String dni) { this.dni = dni; }
-}
+    
+    public String getCodPostal() { return cod_postal; }
+    public void setCodPostal(String cod) { this.cod_postal = cod; }
+    }

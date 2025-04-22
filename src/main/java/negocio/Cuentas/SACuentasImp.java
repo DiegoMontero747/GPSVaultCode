@@ -62,6 +62,11 @@ public class SACuentasImp implements SACuentas {
 		if (!validarNumTelefono(telefono)) {
 			return new ResultContext(Evento.ERROR_FORMATO_NUMERO_TELEFONO, null);
 		}
+		
+		if (!validarCodPostal(cod_postal)) {
+			return new ResultContext(Evento.ERROR_FORMATO_CODIGO_POSTAL, null);
+		}
+
 
 		if (!validarDNI(tipoDoc) && !validarNIE(tipoDoc)) {
 			return new ResultContext(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, null);
@@ -126,6 +131,11 @@ public class SACuentasImp implements SACuentas {
 	private boolean validarNumTelefono(String telefono) {
 		String regex = "^[0-9]{9}$";
 		return telefono.matches(regex);
+	}
+	
+	private boolean validarCodPostal(String cod_postal) {
+		String regex = "^[0-9]{5}$";
+		return cod_postal.matches(regex);
 	}
 
 	// -------- GENERADOR DE IBAN --------

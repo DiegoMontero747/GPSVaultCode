@@ -6,6 +6,8 @@ public enum Evento {
     ERROR_CADENA_NO_ALFABETICA, // La cadena no contiene SOLO caracteres alfabéticos
     ERROR_TIPO_DOCUMENTO_INVALIDO,
     ERROR_NUMERO_TELEFONO_INVALIDO,
+    ERROR_FORMATO_NUMERO_TELEFONO,
+    ERROR_FORMATO_CODIGO_POSTAL,
 
     // ----------------- INICIO DE SESIÓN -----------------
     GUI_INICIO_SESION,
@@ -70,6 +72,5 @@ public enum Evento {
     CREAR_CUENTA_BANCARIA_ERROR_TEL_INCORRECTO,
 
     // Cuenta bancaria creada con éxito
-    CREAR_CUENTA_BANCARIA_OK, 
-    ERROR_FORMATO_NUMERO_TELEFONO;
+    CREAR_CUENTA_BANCARIA_OK;
 }

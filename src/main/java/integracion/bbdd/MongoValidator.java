@@ -31,7 +31,7 @@ public class MongoValidator {
         // Esquema para CLIENTE
         Map<String, Class<?>> clienteSchema = new HashMap<>();
         clienteSchema.put("_id", ObjectId.class); // ID único generado por MongoDB
-        clienteSchema.put("DNI", String.class);
+        clienteSchema.put("DNI/NIE", String.class);
         clienteSchema.put("Nombre", String.class);
         clienteSchema.put("Apellidos", String.class);
         clienteSchema.put("Telefono", Integer.class);
@@ -45,6 +45,7 @@ public class MongoValidator {
         cuentaBancSchema.put("IBAN", String.class);
         cuentaBancSchema.put("Titular", String.class);
         cuentaBancSchema.put("Fondos",Float.class);
+        cuentaBancSchema.put("DNI/NIE", String.class); // Referencia a cliente
         COLLECTION_SCHEMAS.put("CUENTABANC", cuentaBancSchema);
         
         // Esquema para TARJETA

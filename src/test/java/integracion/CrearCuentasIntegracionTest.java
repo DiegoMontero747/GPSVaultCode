@@ -32,8 +32,10 @@ public class CrearCuentasIntegracionTest {
         cuenta = new TCuenta();
         cuenta.setNombre("Juan");
         cuenta.setApellidos("Pérez");
+        cuenta.setTipoDoc("DNI");
         cuenta.setDNI("12345678A");
         cuenta.setDireccion("Calle Falsa 123");
+        cuenta.setCodPostal("28031");        
         cuenta.setTelefono("600123456");
     }
 
@@ -55,12 +57,20 @@ public class CrearCuentasIntegracionTest {
         ResultContext resultado = saCuentas.crearCuentaBancaria(cuentaNula);
         assertEquals(Evento.CREAR_CUENTA_BANCARIA_ERROR_DATOS_NULOS, resultado.getEvento());
     }
+    
+    @Test
+    public void testCrearCuentaBancaria_DatosFaltantes() {
+        cuenta.setTelefono(null);
+        cuenta.setCodPostal(null);
+        ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
+        assertEquals(Evento.CREAR_CUENTA_BANCARIA_ERROR_DATOS_NULOS, resultado.getEvento());
+    }
 
     @Test
     public void testCrearCuentaBancaria_TelefonoIncorrecto() {
         cuenta.setTelefono("60012345678"); // Teléfono con demasiados dígitos
         ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
-        assertEquals(Evento.CREAR_CUENTA_BANCARIA_ERROR_TEL_INCORRECTO, resultado.getEvento());
+        assertEquals(Evento.ERROR_FORMATO_NUMERO_TELEFONO, resultado.getEvento());
     }
 
     @Test
@@ -69,10 +79,25 @@ public class CrearCuentasIntegracionTest {
         ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
         assertEquals(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, resultado.getEvento());
     }
+    
+    @Test
+    public void testCrearCuentaBancaria_NIEIncorrecto() {
+        cuenta.setTipoDoc("NIE");
+        cuenta.setDNI("12345"); // NIE no válido
+        ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
+        assertEquals(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, resultado.getEvento());
+    }
 
     @Test
-    public void testCrearCuentaBancaria_CadenaNoAlfabetica() {
+    public void testCrearCuentaBancaria_NombreNoAlfabetica() {
         cuenta.setNombre("Juan1"); // Nombre con número
+        ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
+        assertEquals(Evento.ERROR_CADENA_NO_ALFABETICA, resultado.getEvento());
+    }
+    
+    @Test
+    public void testCrearCuentaBancaria_ApellidoNoAlfabetico() {
+        cuenta.setNombre("Pérez1"); // Nombre con número
         ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
         assertEquals(Evento.ERROR_CADENA_NO_ALFABETICA, resultado.getEvento());
     }

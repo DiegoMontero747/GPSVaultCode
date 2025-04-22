@@ -32,10 +32,11 @@ public class CrearCuentasIntegracionTest {
         cuenta = new TCuenta();
         cuenta.setNombre("Juan");
         cuenta.setApellidos("Pérez");
+        cuenta.setTipoDoc("DNI");
         cuenta.setDNI("12345678A");
         cuenta.setDireccion("Calle Falsa 123");
+        cuenta.setCodPostal("28031");        
         cuenta.setTelefono("600123456");
-        cuenta.setTipoDoc("DNI");
     }
 
     @After
@@ -56,12 +57,20 @@ public class CrearCuentasIntegracionTest {
         ResultContext resultado = saCuentas.crearCuentaBancaria(cuentaNula);
         assertEquals(Evento.CREAR_CUENTA_BANCARIA_ERROR_DATOS_NULOS, resultado.getEvento());
     }
+    
+    @Test
+    public void testCrearCuentaBancaria_DatosFaltantes() {
+        cuenta.setTelefono(null);
+        cuenta.setCodPostal(null);
+        ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
+        assertEquals(Evento.CREAR_CUENTA_BANCARIA_ERROR_DATOS_NULOS, resultado.getEvento());
+    }
 
     @Test
     public void testCrearCuentaBancaria_TelefonoIncorrecto() {
         cuenta.setTelefono("60012345678"); // Teléfono con demasiados dígitos
         ResultContext resultado = saCuentas.crearCuentaBancaria(cuenta);
-        assertEquals(Evento.CREAR_CUENTA_BANCARIA_ERROR_TEL_INCORRECTO, resultado.getEvento());
+        assertEquals(Evento.ERROR_FORMATO_NUMERO_TELEFONO, resultado.getEvento());
     }
 
     @Test

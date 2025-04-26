@@ -1,91 +1,92 @@
 package negocio.Tarjetas;
 
 public class TTarjeta {
-    private String numTarjeta;
-    private String iban;
-    private int cvv;
-    private String caducidad;
-    private String tipoTarjeta; // Siempre "Debito"
-    private String estado;      // Siempre "Activa"
-    private String numeroDocumento;
+	private String documentoCliente;// del formulario
+	private String numTarjeta;// vacio en inicio
+	private String iban;// del formulario
+	private int cvv;// -1 en inicio
+	private String caducidad;// vacio en inicio
+	private String tipoTarjeta;// de la GUI de CrearTarjetadebito
+	private String estado;// Siempre "Activa"
 
-    // Constructor completo
-    public TTarjeta(String numTarjeta, String iban, int cvv, String caducidad, String numeroDocumento) {
-        this.numTarjeta = numTarjeta;
-        this.iban = iban;
-        this.cvv = cvv;
-        this.caducidad = caducidad;
-        this.tipoTarjeta = "Debito";
-        this.estado = "Activa";
-        this.numeroDocumento = numeroDocumento;
-    }
+	// Constructor completo
+	public TTarjeta(String documentoCliente, String iban, String tipoTarjeta) {
+		this.documentoCliente = documentoCliente;
+		this.numTarjeta = "";
+		this.iban = iban;
+		this.cvv = -1;
+		this.caducidad = "";
+		this.tipoTarjeta = tipoTarjeta;
+		this.estado = "Activa";
+	}
 
-    // Constructor vacío
-    public TTarjeta() {
-        this.tipoTarjeta = "Debito";
-        this.estado = "Activa";
-    }
+	// Constructor vacío
+	public TTarjeta() {
+		this.tipoTarjeta = "Debito";
+		this.estado = "Activa";
+	}
 
-    // Getters
-    public String getNumTarjeta() {
-        return numTarjeta;
-    }
+	// Getters
+	public String getDocCliente() {
+		return documentoCliente;
+	}
 
-    public String getIban() {
-        return iban;
-    }
+	public String getNumTarjeta() {
+		return numTarjeta;
+	}
 
-    public int getCvv() {
-        return cvv;
-    }
+	public String getIban() {
+		return iban;
+	}
 
-    public String getCaducidad() {
-        return caducidad;
-    }
+	public int getCvv() {
+		return cvv;
+	}
 
-    public String getTipoTarjeta() {
-        return tipoTarjeta;
-    }
+	public String getCaducidad() {
+		return caducidad;
+	}
 
-    public String getEstado() {
-        return estado;
-    }
+	public String getTipoTarjeta() {
+		return tipoTarjeta;
+	}
 
-    public String getNumeroDocumento() {
-        return numeroDocumento;
-    }
+	public String getEstado() {
+		return estado;
+	}
 
-    // Setters
-    public void setNumTarjeta(String numTarjeta) {
-        this.numTarjeta = numTarjeta;
-    }
+	// Setters
+	public void setDocCliente(String docCliente) {
+		this.documentoCliente = docCliente;
+	}
 
-    public void setIban(String iban) {
-        this.iban = iban;
-    }
+	public void setNumTarjeta(String numTarjeta) {
+		this.numTarjeta = numTarjeta;
+	}
 
-    public void setCvv(int cvv) {
-        this.cvv = cvv;
-    }
+	public void setIban(String iban) {
+		this.iban = iban;
+	}
 
-    public void setCaducidad(String caducidad) {
-        this.caducidad = caducidad;
-    }
+	public void setCvv(int cvv) {
+		this.cvv = cvv;
+	}
 
-    public void setNumeroDocumento(String numeroDocumento) {
-        this.numeroDocumento = numeroDocumento;
-    }
+	public void setCaducidad(String caducidad) {
+		this.caducidad = caducidad;
+	}
 
-    @Override
-    public String toString() {
-        return "TTarjeta{" +
-                "numTarjeta='" + numTarjeta + '\'' +
-                ", iban='" + iban + '\'' +
-                ", cvv=" + cvv +
-                ", caducidad='" + caducidad + '\'' +
-                ", tipoTarjeta='" + tipoTarjeta + '\'' +
-                ", estado='" + estado + '\'' +
-                ", numeroDocumento='" + numeroDocumento + '\'' +
-                '}';
-    }
+	public void setTipoTarjeta(String tipoTarjeta) {
+		this.tipoTarjeta = tipoTarjeta;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	@Override
+	public String toString() {
+		return "TTarjeta{" + "numTarjeta='" + numTarjeta + "', iban='" + iban + "', cvv='" + cvv + "', caducidad='"
+				+ caducidad + "', tipoTarjeta='" + tipoTarjeta + "', estado='" + estado + "'}";
+	}
 }

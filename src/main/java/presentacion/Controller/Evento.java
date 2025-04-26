@@ -52,6 +52,7 @@ public enum Evento {
     CREAR_TARJETA_ERROR_CUENTA_INEXISTENTE, // La cuenta IBAN no existe en la base de datos
     CREAR_TARJETA_ERROR_DB, // Error al insertar la tarjeta en la base de datos
     CREAR_TARJETA_ERROR_TARJETA_EXISTENTE, // Error al insertar la tarjeta en la base de datos
+    CREAR_TARJETA_ERROR_IBANDNI_NOASOCIADOS, //La cuenta IBAN no corresponde al cliente con DNI ingresado
 
     // Tarjeta creada con éxito
     CREAR_TARJETA_OK,

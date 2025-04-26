@@ -38,18 +38,24 @@ public class SACuentasImpTest {
     @Test
     public void testCrearCuentaBancaria_OK() {
         // Simulamos la cuenta bancaria a insertar
+    	cuenta.setTipoDoc("DNI");
         cuenta.setNombre("Juan");
         cuenta.setApellidos("Perez");
         cuenta.setDNI("12345678A");
         cuenta.setDireccion("Calle Falsa 123");
         cuenta.setTelefono("600123456");
+        cuenta.setCodPostal("28908");
+        
+        Document cliente = new Document().append("DNI/NIE", cuenta.getDNI()).append("Nombre", cuenta.getNombre())
+				.append("Apellidos", cuenta.getApellidos()).append("Telefono", Integer.valueOf(cuenta.getTelefono())).append("Dir", cuenta.getDireccion())
+				.append("Cod-postal", Integer.valueOf(cuenta.getCodPostal()));// Hay que modificar TCuenta para que lleve el codigo postal
+
         
         Document cuentaDoc = new Document()
-        		.append("Nombre", cuenta.getNombre())
-        		.append("Apellidos", cuenta.getApellidos())
-				.append("DNI", cuenta.getDNI())
-				.append("Dir", cuenta.getDireccion())
-				.append("telefono", cuenta.getTelefono());
+        		.append("IBAN", generarIBANAleatorio())
+        		.append("Titular", cuenta.getNombre())
+				.append("Fondos", Float.valueOf(0))
+				.append("DNI/NIE", cuenta.getDNI());
         ArrayList<Document> cuentaList = new ArrayList<>();
         cuentaList.add(cuentaDoc);
 
@@ -138,4 +144,13 @@ public class SACuentasImpTest {
 
         // Simulamos que el insert
     }
+    
+    private String generarIBANAleatorio() {
+		StringBuilder sb = new StringBuilder("ES");
+		for (int i = 0; i < 22; i++) {
+			sb.append((int) (Math.random() * 10));
+		}
+		return sb.toString();
+	}
+    
 }

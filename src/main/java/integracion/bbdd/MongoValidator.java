@@ -51,10 +51,12 @@ public class MongoValidator {
         // Esquema para TARJETA
         Map<String, Class<?>> tarjetaSchema = new HashMap<>();
         tarjetaSchema.put("_id", ObjectId.class); // ID único generado por MongoDB
-        tarjetaSchema.put("Nombre_tarjeta", String.class);
+        tarjetaSchema.put("Num_tarjeta", String.class);
         tarjetaSchema.put("CVV", Integer.class);
         tarjetaSchema.put("Caducidad", String.class);
         tarjetaSchema.put("IBAN", String.class); // Referencia a cuenta bancaria
+        tarjetaSchema.put("Tipo_tarjeta", String.class);
+        tarjetaSchema.put("Estado", String.class);
         COLLECTION_SCHEMAS.put("TARJETA", tarjetaSchema);
         
         // Esquema para PERFIL

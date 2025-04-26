@@ -58,16 +58,7 @@ public class GUI_CrearTarjetaDebito extends JPanel implements ObservadorGUI {
 			String DNI = formulario.getText(0);
 			String numeroCuenta = formulario.getText(1);
 
-			/*
-			 * esto debería estar en la SA if (DNI.isEmpty() || numeroCuenta.isEmpty()) {
-			 * formulario.mostrarMensaje("Rellene todos los campos.", true); return; }
-			 */
-
-			// esto deberia estar en la SA
-			// numeroTarjeta = generarNumeroTarjetaUnico();
-
 			TTarjeta tarjeta = new TTarjeta(DNI, numeroCuenta, "Debito");
-			// tarjeta.setNumeroCuenta(numeroCuenta);
 
 			Controller.getInstance().handleRequest(new Context(Evento.CREAR_TARJETA_DEBITO, tarjeta));
 		});

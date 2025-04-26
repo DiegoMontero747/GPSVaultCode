@@ -76,9 +76,11 @@ public class SATarjetasImp implements SATarjetas {
 		 */
 		List<Document> listaTarjetasXcuenta = db.readDocument(docIban, Collections.TARJETA);
 		int nTarjetasActivas = 0;
-		for (Document d : listaTarjetasXcuenta) {
-			if (d.getString("estado").equalsIgnoreCase("Activa")) {
-				nTarjetasActivas++;
+		if(!listaTarjetasXcuenta.isEmpty()) {
+			for (Document d : listaTarjetasXcuenta) {
+				if (d.getString("estado").equalsIgnoreCase("Activa")) {
+					nTarjetasActivas++;
+				}
 			}
 		}
 		if (nTarjetasActivas >= 5) {
@@ -101,8 +103,8 @@ public class SATarjetasImp implements SATarjetas {
 
 		// Crear el documento de la nueva tarjeta
 		Document nuevaTarjeta = new Document().append("Num_tarjeta", numeroTarjeta).append("IBAN", iban)
-				.append("cvv", cvv).append("caducidad", caducidad).append("tipoTarjeta", tipoTarjeta)
-				.append("estado", "Activa");
+				.append("CVV", cvv).append("Caducidad", caducidad).append("Tipo_tarjeta", tipoTarjeta)
+				.append("Estado", "Activa");
 
 		db.insertDocument(Collections.TARJETA, nuevaTarjeta);
 

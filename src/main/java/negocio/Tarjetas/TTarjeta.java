@@ -1,150 +1,91 @@
 package negocio.Tarjetas;
 
 public class TTarjeta {
-	private String nombre;
-	private String apellidos;
-	private String tipoDocumento; // DNI o NIE
-	private String numeroDocumento;
-	private String numeroCuenta;
-	private String tipoTarjeta; // Debito o Credito
-	private String estado; // Activa, Bloqueada, etc.
-	private double limiteCredito; // Solo para crédito
-	private String direccion;
-	private String telefono;
-	private String fechaNacimiento;
+    private String numTarjeta;
+    private String iban;
+    private int cvv;
+    private String caducidad;
+    private String tipoTarjeta; // Siempre "Debito"
+    private String estado;      // Siempre "Activa"
+    private String numeroDocumento;
 
-	// Constructor para tarjeta de débito
-	// Eliminar String tipoCuenta porque no se pone desde el formulario
-	public TTarjeta(String nombre, String apellidos, String tipoDocumento, String numeroDocumento, String direccion,
-			String telefono, String fechaNacimiento) {
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.tipoDocumento = tipoDocumento;
-		this.numeroDocumento = numeroDocumento;
-		this.tipoTarjeta = "Debito";
-		this.estado = "Activa";
-		this.limiteCredito = 0.0; // No aplica en débito
-		this.direccion = direccion;
-		this.telefono = telefono;
-		this.fechaNacimiento = fechaNacimiento;
-	}
+    // Constructor completo
+    public TTarjeta(String numTarjeta, String iban, int cvv, String caducidad, String numeroDocumento) {
+        this.numTarjeta = numTarjeta;
+        this.iban = iban;
+        this.cvv = cvv;
+        this.caducidad = caducidad;
+        this.tipoTarjeta = "Debito";
+        this.estado = "Activa";
+        this.numeroDocumento = numeroDocumento;
+    }
 
-	// Constructor para tarjeta de crédito
-	public TTarjeta(String nombre, String apellidos, String tipoDocumento, String numeroDocumento, String numeroCuenta,
-			double limiteCredito, String direccion, String telefono, String fechaNacimiento) {
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.tipoDocumento = tipoDocumento;
-		this.numeroDocumento = numeroDocumento;
-		this.numeroCuenta = numeroCuenta;
-		this.tipoTarjeta = "Credito";
-		this.estado = "Activa";
-		this.limiteCredito = limiteCredito;
-		this.direccion = direccion;
-		this.telefono = telefono;
-		this.fechaNacimiento = fechaNacimiento;
-	}
+    // Constructor vacío
+    public TTarjeta() {
+        this.tipoTarjeta = "Debito";
+        this.estado = "Activa";
+    }
 
-	// Constructor vacío
-	public TTarjeta() {
-	}
+    // Getters
+    public String getNumTarjeta() {
+        return numTarjeta;
+    }
 
-	// Getters
-	public String getNombre() {
-		return nombre;
-	}
+    public String getIban() {
+        return iban;
+    }
 
-	public String getApellidos() {
-		return apellidos;
-	}
+    public int getCvv() {
+        return cvv;
+    }
 
-	public String getTipoDocumento() {
-		return tipoDocumento;
-	}
+    public String getCaducidad() {
+        return caducidad;
+    }
 
-	public String getNumeroDocumento() {
-		return numeroDocumento;
-	}
+    public String getTipoTarjeta() {
+        return tipoTarjeta;
+    }
 
-	public String getNumeroCuenta() {
-		return numeroCuenta;
-	}
+    public String getEstado() {
+        return estado;
+    }
 
-	public String getTipoTarjeta() {
-		return tipoTarjeta;
-	}
+    public String getNumeroDocumento() {
+        return numeroDocumento;
+    }
 
-	public String getEstado() {
-		return estado;
-	}
+    // Setters
+    public void setNumTarjeta(String numTarjeta) {
+        this.numTarjeta = numTarjeta;
+    }
 
-	public double getLimiteCredito() {
-		return limiteCredito;
-	}
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
 
-	public String getDireccion() {
-		return direccion;
-	}
+    public void setCvv(int cvv) {
+        this.cvv = cvv;
+    }
 
-	public String getTelefono() {
-		return telefono;
-	}
+    public void setCaducidad(String caducidad) {
+        this.caducidad = caducidad;
+    }
 
-	public String getFechaNacimiento() {
-		return fechaNacimiento;
-	}
+    public void setNumeroDocumento(String numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
+    }
 
-	// Setters
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
-
-	public void setTipoDocumento(String tipoDocumento) {
-		this.tipoDocumento = tipoDocumento;
-	}
-
-	public void setNumeroDocumento(String numeroDocumento) {
-		this.numeroDocumento = numeroDocumento;
-	}
-
-	public void setNumeroCuenta(String numeroCuenta) {
-		this.numeroCuenta = numeroCuenta;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public void setTipoTarjeta(String tipoTarjeta) {
-		this.tipoTarjeta = tipoTarjeta;
-	}
-
-	public void setLimiteCredito(double limiteCredito) {
-		this.limiteCredito = limiteCredito;
-	}
-
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
-
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
-
-	public void setFechaNacimiento(String fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
-	}
-
-	@Override
-	public String toString() {
-		return "TTarjeta{" + "nombre='" + nombre + "apellidos=" + apellidos + '\'' + ", tipoDocumento='" + tipoDocumento
-				+ '\'' + ", numeroDocumento='" + numeroDocumento + '\'' + ", numeroCuenta='" + numeroCuenta + '\''
-				+ ", tipoTarjeta='" + tipoTarjeta + '\'' + ", estado='" + estado + '\'' + ", limiteCredito="
-				+ limiteCredito + ", direccion='" + direccion + '\'' + ", telefono='" + telefono + '\''
-				+ ", fechaNacimiento='" + fechaNacimiento + '\'' + '}';
-	}
+    @Override
+    public String toString() {
+        return "TTarjeta{" +
+                "numTarjeta='" + numTarjeta + '\'' +
+                ", iban='" + iban + '\'' +
+                ", cvv=" + cvv +
+                ", caducidad='" + caducidad + '\'' +
+                ", tipoTarjeta='" + tipoTarjeta + '\'' +
+                ", estado='" + estado + '\'' +
+                ", numeroDocumento='" + numeroDocumento + '\'' +
+                '}';
+    }
 }

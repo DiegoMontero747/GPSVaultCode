@@ -26,52 +26,29 @@ public class SATarjetasImp implements SATarjetas {
             return new ResultContext(Evento.CREAR_TARJETA_ERROR_TARJETA_NULL, null);
         }
 
-        String nombre = tarjeta.getNombre();
-        String apellidos = tarjeta.getApellidos();
-        String tipoDocumento = tarjeta.getTipoDocumento();
         String numeroDocumento = tarjeta.getNumeroDocumento();
-        String iban = tarjeta.getNumeroCuenta();
-        String fechaNacimiento = tarjeta.getFechaNacimiento();
-        String direccion = tarjeta.getDireccion();
-        String telefono = tarjeta.getTelefono();
+        String iban = tarjeta.getIban();
 
-        if (nombre == null || apellidos == null || numeroDocumento == null || iban == null ||
-                fechaNacimiento == null || direccion == null || telefono == null) {
+        if (numeroDocumento == null || iban == null) {
             return new ResultContext(Evento.CREAR_TARJETA_ERROR_DATOS_NULOS, null);
         }
 
-        nombre = nombre.trim();
-        apellidos = apellidos.trim();
         numeroDocumento = numeroDocumento.trim();
         iban = iban.trim();
-        fechaNacimiento = fechaNacimiento.trim();
-        telefono = telefono.trim();
 
-        if (nombre.isBlank() || apellidos.isBlank() || numeroDocumento.isBlank() || iban.isBlank() ||
-                fechaNacimiento.isBlank() || direccion.isBlank() || telefono.isBlank()) {
+        if (numeroDocumento.isBlank() || iban.isBlank()) {
             return new ResultContext(Evento.CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS, null);
         }
 
-        if (!validarSoloAlfabeticos(nombre)) {
-            return new ResultContext(Evento.ERROR_CADENA_NO_ALFABETICA, null);
+
+        if (!validarIBAN(iban)) {
+            return new ResultContext(Evento.CREAR_TARJETA_ERROR_CUENTA_INEXISTENTE, null);
         }
 
-        if (!validarTelefono(telefono)) {
-            return new ResultContext(Evento.ERROR_NUMERO_TELEFONO_INVALIDO, null);
-        }
-
-        if ("DNI".equalsIgnoreCase(tipoDocumento)) {
-            if (!validarDNI(numeroDocumento))
-                return new ResultContext(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, null);
-        } else if ("NIE".equalsIgnoreCase(tipoDocumento)) {
-            if (!validarNIE(numeroDocumento))
-                return new ResultContext(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, null);
-        }
-
-        // Validar IBAN
+        // Validar que el IBAN exista en la colección de cuentas
         Document docIban = new Document().append("numeroCuenta", iban);
         List<Document> listaCuentas = db.readDocument(docIban, Collections.CUENTABANC);
-        if (listaCuentas.isEmpty() || !validarIBAN(iban)) {
+        if (listaCuentas.isEmpty()) {
             return new ResultContext(Evento.CREAR_TARJETA_ERROR_CUENTA_INEXISTENTE, null);
         }
 
@@ -81,50 +58,36 @@ public class SATarjetasImp implements SATarjetas {
             return new ResultContext(Evento.CREAR_TARJETA_ERROR_MAX_TARJETAS, null);
         }
 
-        // Comprobar si ya existe una tarjeta asociada al documento
+        // Comprobar si ya existe una tarjeta para el mismo documento
         Document docLeerTarjeta = new Document().append("numeroDocumento", numeroDocumento);
         List<Document> listaTarjetasExistentes = db.readDocument(docLeerTarjeta, Collections.TARJETA);
         if (!listaTarjetasExistentes.isEmpty()) {
             return new ResultContext(Evento.CREAR_TARJETA_ERROR_TARJETA_EXISTENTE, null);
         }
 
-        // Generar número de tarjeta único
         String numeroTarjeta = generarNumeroTarjetaUnico();
-        
-        //TODO cambiar los campos de la tarjeta para que se adapten tanto al validator como al esquema de la BD
-        //PD Comentado por Hugo
+        int cvv = generarCVV();
+        String caducidad = generarCaducidad();
+
+        // Crear el documento de la nueva tarjeta
         Document nuevaTarjeta = new Document()
                 .append("Num_tarjeta", numeroTarjeta)
-                .append("nombreCompleto", nombre + " " + apellidos)
-                .append("tipoDocumento", tipoDocumento)
-                .append("numeroDocumento", numeroDocumento)
                 .append("IBAN", iban)
-                .append("fechaNacimiento", fechaNacimiento)
-                .append("direccion", direccion)
-                .append("telefono", telefono)
+                .append("cvv", cvv)
+                .append("caducidad", caducidad)
                 .append("tipoTarjeta", "Debito")
-                .append("estado", "Activa");
+                .append("estado", "Activa")
+                .append("numeroDocumento", numeroDocumento); // Asociar al cliente
 
         db.insertDocument(Collections.TARJETA, nuevaTarjeta);
 
-        // Verificar inserción
-        List<Document> listaTarjetas = db.readDocument(docLeerTarjeta, Collections.TARJETA);
+        // Verificar que se haya insertado correctamente
+        List<Document> listaTarjetas = db.readDocument(new Document("Num_tarjeta", numeroTarjeta), Collections.TARJETA);
         if (listaTarjetas.isEmpty()) {
             return new ResultContext(Evento.CREAR_TARJETA_ERROR_DB, null);
         }
 
-        // Pasamos la tarjeta con el número generado de vuelta en el ResultContext
         return new ResultContext(Evento.CREAR_TARJETA_OK, listaTarjetas.get(0));
-    }
-
-    private boolean validarDNI(String dni) {
-        String regexDNI = "^[0-9]{8}[A-Za-z]$";
-        return dni.matches(regexDNI);
-    }
-
-    private boolean validarNIE(String nie) {
-        String regexNIE = "^[XYZxyz][0-9]{7}[A-Za-z]$";
-        return nie.matches(regexNIE);
     }
 
     private boolean validarIBAN(String iban) {
@@ -132,20 +95,18 @@ public class SATarjetasImp implements SATarjetas {
         return iban.matches(regexIBAN);
     }
 
-    private boolean validarTelefono(String telefono) {
-        telefono = telefono.trim();        
-        if (telefono.length() != 9 || !telefono.matches("[0-9]+")) {
-            return false;
-        }
-        
-        String regexTelefono = "^[0-9]{9}$";
-        return telefono.matches(regexTelefono);
+    private int generarCVV() {
+        return (int)(Math.random() * 900) + 100; // Número entre 100 y 999
     }
 
-    private boolean validarSoloAlfabeticos(String cadena) {
-        String regex = "^[A-Za-z]+$";
-        return cadena.matches(regex);
+    private String generarCaducidad() {
+        java.time.LocalDate hoy = java.time.LocalDate.now();
+        java.time.LocalDate caducidad = hoy.plusYears(4);
+        int mes = caducidad.getMonthValue();
+        int anio = caducidad.getYear() % 100; // Solo dos dígitos del año
+        return String.format("%02d/%02d", mes, anio);
     }
+
 
     // -------- GENERADOR DE NÚMERO DE TARJETA --------
     private String generarNumeroTarjetaUnico() {

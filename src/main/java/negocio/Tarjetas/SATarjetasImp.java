@@ -78,7 +78,7 @@ public class SATarjetasImp implements SATarjetas {
 		int nTarjetasActivas = 0;
 		if(!listaTarjetasXcuenta.isEmpty()) {
 			for (Document d : listaTarjetasXcuenta) {
-				if (d.getString("estado").equalsIgnoreCase("Activa")) {
+				if (d.get("Estado").toString().equalsIgnoreCase("Activa")) {
 					nTarjetasActivas++;
 				}
 			}
@@ -109,7 +109,7 @@ public class SATarjetasImp implements SATarjetas {
 		db.insertDocument(Collections.TARJETA, nuevaTarjeta);
 
 		// Verificar que se haya insertado correctamente
-		Document docTarjeta = new Document().append("Num_Tarjeta", numeroTarjeta);
+		Document docTarjeta = new Document().append("Num_tarjeta", numeroTarjeta);
 		List<Document> listaTarjetas = db.readDocument(docTarjeta, Collections.TARJETA);
 		if (listaTarjetas.isEmpty()) {
 			return new ResultContext(Evento.CREAR_TARJETA_ERROR_DB, null);

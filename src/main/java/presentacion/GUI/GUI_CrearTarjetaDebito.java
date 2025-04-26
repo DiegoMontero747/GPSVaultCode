@@ -77,8 +77,8 @@ public class GUI_CrearTarjetaDebito extends JPanel implements ObservadorGUI {
 		switch (c.getEvento()) {
 		case CREAR_TARJETA_OK:
 			Document docTarjeta = (Document) c.getDato();
-			String numTarjeta = docTarjeta.getString("Num_Tarjeta");
-			String mensaje = "Tarjeta creada con éxito: " + numeroTarjeta;
+			String numTarjeta = (String) docTarjeta.get("Num_tarjeta");
+			String mensaje = "Tarjeta creada con éxito: " + numTarjeta;
 			formulario.mostrarMensaje(mensaje, false);
 			break;
 		case ERROR_TIPO_DOCUMENTO_INVALIDO:

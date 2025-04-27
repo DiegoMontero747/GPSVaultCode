@@ -161,4 +161,25 @@ public class SATarjetasImp implements SATarjetas {
 		}
 		return sb.toString();
 	}
+
+	@Override
+	public ResultContext desactivarTarjetaDebito(int numTarjeta) {
+		Document docTarjeta = new Document().append("numeroTarjeta", numTarjeta);
+		List<Document> listaTarjeta = db.readDocument(docTarjeta, Collections.TARJETA);
+		
+		//Con esto busco la tarjeta en la bd y compruebo que exista
+		if(listaTarjeta.isEmpty()) {
+			return new ResultContext(Evento.DESACTIVAR_TARJETA_ERROR_NO_EXISTE, null);
+		}
+		
+		docTarjeta = listaTarjeta.get(0);
+		Document newTarjeta = docTarjeta;
+		newTarjeta.append("Estado", "inactivo");
+		
+		db.updateDocument(Collections.TARJETA, newTarjeta, docTarjeta);
+		
+		listaTarjeta = db.readDocument(docTarjeta, Collections.TARJETA);
+		
+		return new ResultContext(Evento.DESACTIVAR_TARJETA_OK, listaTarjeta.get(0));
+	}
 }

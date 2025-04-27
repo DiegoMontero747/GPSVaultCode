@@ -56,6 +56,12 @@ public enum Evento {
 
     // Tarjeta creada con éxito
     CREAR_TARJETA_OK,
+    
+    //Errores en la desactivación de tarjetas de débito
+    DESACTIVAR_TARJETA_ERROR_NO_EXISTE,
+    
+    //Desactivar tarjeta realizada con éxito
+    DESACTIVAR_TARJETA_OK,
     // Se presiona el boton de menu en el header
     BOTON_MENU,
 

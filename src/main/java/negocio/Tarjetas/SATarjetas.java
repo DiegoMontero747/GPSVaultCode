@@ -4,4 +4,5 @@ import negocio.Factory.ResultContext;
 
 public interface SATarjetas {
     ResultContext crearTarjetaDebito(TTarjeta tarjeta);
+    ResultContext desactivarTarjetaDebito(int numTarjeta);
 }

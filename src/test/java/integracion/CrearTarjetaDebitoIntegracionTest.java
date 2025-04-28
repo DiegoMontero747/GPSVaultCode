@@ -31,13 +31,11 @@ public class CrearTarjetaDebitoIntegracionTest {
     public void set_up() {
     	saTarjetasImp = new SATarjetasImp();
         db = MongoDBManager.getInstance();
-        Document doc = new Document("nombreCompleto", "Juan Perez")
+        Document doc = new Document("Nombre", "Juan")
+        		.append("Apellidos", "Perez")
                 .append("tipoDocumento", "DNI")
-                .append("numeroDocumento", "12345678A")
-                .append("numeroCuenta", "ES1234567890123456789012")
-                .append("fechaNacimiento", "01-01-1990")
-                .append("telefono", "600123456")
-                .append("direccion", "Calle Falsa 123");
+                .append("DNI/NIE", "12345678A")
+                .append("IBAN", "ES1234567890123456789012");;
         //tenemos que eliminar los usuarios de la bd que vayamos a crear si existen y luego volver a crearlos
         db.deleteDocument(Collections.CUENTABANC, doc);
         tarjeta = new TTarjeta();
@@ -45,46 +43,34 @@ public class CrearTarjetaDebitoIntegracionTest {
     
     @After
     public void clean_up() {
-    	Document doc = new Document("nombreCompleto", "Juan Perez")
+    	Document doc = new Document("Nombre", "Juan")
+        		.append("Apellidos", "Perez")
                 .append("tipoDocumento", "DNI")
-                .append("numeroDocumento", "12345678A")
-                .append("numeroCuenta", "ES1234567890123456789012")
-                .append("fechaNacimiento", "01-01-1990")
-                .append("telefono", "600123456")
-                .append("direccion", "Calle Falsa 123");
+                .append("DNI/NIE", "12345678A")
+                .append("IBAN", "ES1234567890123456789012");
     	db.deleteDocument(Collections.CUENTABANC, doc);
-    	Document doc2 = new Document("nombreCompleto", "Juan Perez")
-				.append("tipoDocumento", "DNI")
-				.append("numeroDocumento", "12345678A")
-				.append("numeroCuenta", "ES1234567890123456789012")
-				.append("fechaNacimiento", "01-01-1990")
-				.append("telefono", "600123456")
-				.append("direccion", "Calle Falsa 123");
+    	Document doc2 = new Document("Nombre", "Juan")
+        		.append("Apellidos", "Perez")
+                .append("tipoDocumento", "DNI")
+                .append("DNI/NIE", "12345678A")
+                .append("IBAN", "ES1234567890123456789012");
 		db.deleteDocument(Collections.TARJETA, doc2);
     }
     
     @Test
     public void testCrearTarjetaDebito_Ok() {
         //cuenta bancaria existente en la BBDD
-        Document doc = new Document("nombreCompleto", "Juan Perez")
+        Document doc = new Document("Nombre", "Juan")
+        		.append("Apellidos", "Perez")
                 .append("tipoDocumento", "DNI")
-                .append("numeroDocumento", "12345678A")
-                .append("numeroCuenta", "ES1234567890123456789012")
-                .append("fechaNacimiento", "01-01-1990")
-                .append("telefono", "600123456")
-                .append("direccion", "Calle Falsa 123");
+                .append("DNI/NIE", "12345678A")
+                .append("IBAN", "ES1234567890123456789012");;
 
         
         db.insertDocument(Collections.CUENTABANC, doc);
 
-        tarjeta.setNombre("Juan");
-        tarjeta.setApellidos("Perez");
-        tarjeta.setTipoDocumento("DNI");
-        tarjeta.setNumeroDocumento("12345678A");
-        tarjeta.setNumeroCuenta("ES1234567890123456789012");
-        tarjeta.setFechaNacimiento("01-01-1990");
-        tarjeta.setTelefono("600123456");
-        tarjeta.setDireccion("Calle Falsa 123");
+        tarjeta.setDocCliente("12345678A"); // documento cliente
+        tarjeta.setIban("ES1234567890123456789012"); // IBAN
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
@@ -95,14 +81,8 @@ public class CrearTarjetaDebitoIntegracionTest {
     public void testCrearTarjetaDebito_CuentaNoExiste() {
         
 
-    	tarjeta.setNombre("Juan");
-        tarjeta.setApellidos("Perez");
-        tarjeta.setTipoDocumento("DNI");
-        tarjeta.setNumeroDocumento("12345678A");
-        tarjeta.setNumeroCuenta("ES1234567890123456789012");
-        tarjeta.setFechaNacimiento("01-01-1990");
-        tarjeta.setTelefono("600123456");
-        tarjeta.setDireccion("Calle Falsa 123");
+    	   tarjeta.setDocCliente("12345678A"); // documento cliente
+           tarjeta.setIban("ES1234567890123456780000"); // IBAN
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
@@ -111,22 +91,15 @@ public class CrearTarjetaDebitoIntegracionTest {
 
     @Test
     public void testCrearTarjetaDebito_DatosIncompletos() {
-    	tarjeta.setNombre("");
-        tarjeta.setApellidos("");
-        tarjeta.setTipoDocumento("");
-        tarjeta.setNumeroDocumento("");
-        tarjeta.setNumeroCuenta("");
-        tarjeta.setFechaNacimiento("");
-        tarjeta.setTelefono("");
-        tarjeta.setDireccion("");
+    	   tarjeta.setDocCliente(""); // documento cliente
+           tarjeta.setIban(""); // IBAN
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
         assertEquals(Evento.CREAR_TARJETA_ERROR_DATOS_INCOMPLETOS, result.getEvento());
 
-        tarjeta.setNombre(null);
-        tarjeta.setNumeroDocumento(null);
-        tarjeta.setNumeroCuenta(null);
+        tarjeta.setDocCliente(null); // documento cliente
+        tarjeta.setIban(null); // IBAN
 
         result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
@@ -136,14 +109,8 @@ public class CrearTarjetaDebitoIntegracionTest {
 
     @Test
     public void testCrearTarjetaDebito_NombreNulo() {
-    	tarjeta.setNombre(null);
-        tarjeta.setApellidos("Perez");
-        tarjeta.setTipoDocumento("DNI");
-        tarjeta.setNumeroDocumento("12345678A");
-        tarjeta.setNumeroCuenta("ES1234567890123456789012");
-        tarjeta.setFechaNacimiento("01-01-1990");
-        tarjeta.setTelefono("600123456");
-        tarjeta.setDireccion("Calle Falsa 123");
+    	   tarjeta.setDocCliente(null); // documento cliente
+           tarjeta.setIban("ES1234567890123456789012"); // IBAN
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
 
@@ -152,21 +119,14 @@ public class CrearTarjetaDebitoIntegracionTest {
 
     @Test
     public void testCrearTarjetaDebito_TipoDocumentoInvalido() {
-    	tarjeta.setNombre("Juan");
-        tarjeta.setApellidos("Perez");
-        tarjeta.setTipoDocumento("DNI");
-        tarjeta.setNumeroDocumento("12345"); //dni no valido
-        tarjeta.setNumeroCuenta("ES1234567890123456789012");
-        tarjeta.setFechaNacimiento("01-01-1990");
-        tarjeta.setTelefono("600123456");
-        tarjeta.setDireccion("Calle Falsa 123");
+    	   tarjeta.setDocCliente("12345678AAAAA"); // documento cliente
+           tarjeta.setIban("ES1234567890123456789012"); // IBAN
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
         assertEquals(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, result.getEvento());
 
-        tarjeta.setTipoDocumento("NIE");
-        tarjeta.setNumeroDocumento("X12345");  // nie no valido
-        tarjeta.setNumeroCuenta("ES1234567890123456789012");
-
+        tarjeta.setDocCliente("X12345CCC"); // documento cliente
+        tarjeta.setIban("ES1234567890123456789012"); // IBAN
+   
         result = saTarjetasImp.crearTarjetaDebito(tarjeta);
         assertEquals(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, result.getEvento());
     }

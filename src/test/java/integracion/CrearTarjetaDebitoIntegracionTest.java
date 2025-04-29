@@ -79,13 +79,18 @@ public class CrearTarjetaDebitoIntegracionTest {
 
     @Test
     public void testCrearTarjetaDebito_CuentaNoExiste() {
+    	
+        Document doc = new Document("Nombre", "Juan")
+        		.append("Apellidos", "Perez")
+                .append("DNI/NIE", "12345678A");
+        
+        db.insertDocument(Collections.CLIENTE, doc);
         
 
     	   tarjeta.setDocCliente("12345678A"); // documento cliente
            tarjeta.setIban("ES1234567890123456780000"); // IBAN
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
-        db.deleteDocument(Collections.TARJETA, new Document("Num_tarjeta", result.getDato().toString()));
         assertEquals(Evento.CREAR_TARJETA_ERROR_CUENTA_INEXISTENTE, result.getEvento());
     }
 

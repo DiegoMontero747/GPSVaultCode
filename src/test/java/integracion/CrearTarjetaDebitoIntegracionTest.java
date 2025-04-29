@@ -33,11 +33,13 @@ public class CrearTarjetaDebitoIntegracionTest {
         db = MongoDBManager.getInstance();
         Document doc = new Document("Nombre", "Juan")
         		.append("Apellidos", "Perez")
-                .append("tipoDocumento", "DNI")
-                .append("DNI/NIE", "12345678A")
-                .append("IBAN", "ES1234567890123456789012");;
+                .append("DNI/NIE", "12345678A");
+        Document doc2 = new Document()
+        		.append("DNI/NIE", "12345678A")
+                .append("IBAN", "ES1234567890123456789012");
         //tenemos que eliminar los usuarios de la bd que vayamos a crear si existen y luego volver a crearlos
-        db.deleteDocument(Collections.CUENTABANC, doc);
+        db.deleteDocument(Collections.CUENTABANC, doc2);
+        db.deleteDocument(Collections.CLIENTE, doc);
         tarjeta = new TTarjeta();
     }
     
@@ -45,16 +47,12 @@ public class CrearTarjetaDebitoIntegracionTest {
     public void clean_up() {
     	Document doc = new Document("Nombre", "Juan")
         		.append("Apellidos", "Perez")
-                .append("tipoDocumento", "DNI")
+                .append("DNI/NIE", "12345678A");
+    	db.deleteDocument(Collections.CLIENTE, doc);
+    	Document doc2 = new Document("Titular", "Juan")
                 .append("DNI/NIE", "12345678A")
                 .append("IBAN", "ES1234567890123456789012");
-    	db.deleteDocument(Collections.CUENTABANC, doc);
-    	Document doc2 = new Document("Nombre", "Juan")
-        		.append("Apellidos", "Perez")
-                .append("tipoDocumento", "DNI")
-                .append("DNI/NIE", "12345678A")
-                .append("IBAN", "ES1234567890123456789012");
-		db.deleteDocument(Collections.TARJETA, doc2);
+		db.deleteDocument(Collections.CUENTABANC, doc2);
     }
     
     @Test
@@ -62,18 +60,20 @@ public class CrearTarjetaDebitoIntegracionTest {
         //cuenta bancaria existente en la BBDD
         Document doc = new Document("Nombre", "Juan")
         		.append("Apellidos", "Perez")
-                .append("tipoDocumento", "DNI")
+                .append("DNI/NIE", "12345678A");
+        Document doc3 = new Document("Titular", "Juan")
                 .append("DNI/NIE", "12345678A")
-                .append("IBAN", "ES1234567890123456789012");;
+                .append("IBAN", "ES1234567890123456789012");
 
         
-        db.insertDocument(Collections.CUENTABANC, doc);
+        db.insertDocument(Collections.CUENTABANC, doc3);
+        db.insertDocument(Collections.CLIENTE, doc);
 
         tarjeta.setDocCliente("12345678A"); // documento cliente
         tarjeta.setIban("ES1234567890123456789012"); // IBAN
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
-
+        db.deleteDocument(Collections.TARJETA, new Document("Num_tarjeta", result.getDato().toString()));
         assertEquals(Evento.CREAR_TARJETA_OK, result.getEvento());
     }
 
@@ -85,7 +85,7 @@ public class CrearTarjetaDebitoIntegracionTest {
            tarjeta.setIban("ES1234567890123456780000"); // IBAN
 
         ResultContext result = saTarjetasImp.crearTarjetaDebito(tarjeta);
-
+        db.deleteDocument(Collections.TARJETA, new Document("Num_tarjeta", result.getDato().toString()));
         assertEquals(Evento.CREAR_TARJETA_ERROR_CUENTA_INEXISTENTE, result.getEvento());
     }
 

@@ -51,7 +51,7 @@ public class SATarjetasImp implements SATarjetas {
 
 		// Validar que el DNI exista en la coleccion de cuentas
 		Document docCliente = new Document().append("DNI/NIE", numeroDocumento);
-		List<Document> listaClientes = db.readDocument(docCliente, Collections.CUENTABANC);
+		List<Document> listaClientes = db.readDocument(docCliente, Collections.CLIENTE);
 		if (listaClientes.isEmpty()) {
 			return new ResultContext(Evento.ERROR_TIPO_DOCUMENTO_INVALIDO, null);
 		}

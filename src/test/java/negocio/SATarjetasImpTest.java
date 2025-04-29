@@ -39,16 +39,19 @@ public class SATarjetasImpTest {
     public void testCrearTarjetaDebito_Ok() {
         // Simular cuenta bancaria existente en la BBDD
         ArrayList<Document> listaCuentas = new ArrayList<>();
+        ArrayList<Document> listaCuentas2 = new ArrayList<>();
         Document doc = new Document("Nombre", "Juan")
         		.append("Apellidos", "Perez")
-                .append("tipoDocumento", "DNI")
+                .append("DNI/NIE", "12345678A");
+        Document doc3 = new Document("Titular", "Juan")
                 .append("DNI/NIE", "12345678A")
                 .append("IBAN", "ES1234567890123456789012");
         listaCuentas.add(doc);
-
-        when(db.readDocument(new Document().append("numeroCuenta", "ES1234567890123456789012"), Collections.CUENTABANC))
+        listaCuentas2.add(doc3);
+        when(db.readDocument(new Document().append("DNI/NIE", "12345678A"), Collections.CLIENTE))
                 .thenReturn(listaCuentas);
-
+        when(db.readDocument(new Document().append("IBAN", "ES1234567890123456789012"),Collections.CUENTABANC))
+				.thenReturn(listaCuentas2);
         tarjeta.setDocCliente("12345678A"); // documento cliente
         tarjeta.setIban("ES1234567890123456789012"); // IBAN
 
